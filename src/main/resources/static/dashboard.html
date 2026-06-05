@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medical Billing System</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    margin:0;
+    background:#f4f6f9;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:15px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    width:220px;
+    background:white;
+    display:inline-block;
+    margin:10px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+    text-align:center;
+}
+
+.card h2{
+    color:#3498db;
+}
+
+.modules{
+    margin-top:30px;
+}
+
+.module-btn{
+    width:200px;
+    padding:15px;
+    margin:10px;
+    border:none;
+    background:#3498db;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.module-btn:hover{
+    background:#2980b9;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    Medical Billing System
+</div>
+
+<div class="menu">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="medicine.html">Medicine</a>
+    <a href="customer.html">Customer</a>
+    <a href="billing.html">Billing</a>
+    <a href="inventory.html">Inventory</a>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <h3>Total Medicines</h3>
+        <h2 id="medicines">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Customers</h3>
+        <h2 id="customers">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>Low Stock</h3>
+        <h2 id="lowStock">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>Out Of Stock</h3>
+        <h2 id="outOfStock">0</h2>
+    </div>
+
+    <div class="card">
+        <h3>Expiring Soon</h3>
+        <h2 id="expiringSoon">0</h2>
+    </div>
+
+    <div class="modules">
+
+        <h2>Modules</h2>
+
+        <button class="module-btn"
+        onclick="location.href='medicine.html'">
+        Medicine Module
+        </button>
+
+        <button class="module-btn"
+        onclick="location.href='customer.html'">
+        Customer Module
+        </button>
+
+        <button class="module-btn"
+        onclick="location.href='billing.html'">
+        Billing Module
+        </button>
+
+        <button class="module-btn"
+        onclick="location.href='inventory.html'">
+        Inventory Module
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+fetch("/api/dashboard")
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("medicines").innerText =
+data.totalMedicines;
+
+document.getElementById("customers").innerText =
+data.totalCustomers;
+
+document.getElementById("lowStock").innerText =
+data.lowStock;
+
+document.getElementById("outOfStock").innerText =
+data.outOfStock;
+
+document.getElementById("expiringSoon").innerText =
+data.expiringSoon;
+
+});
+
+</script>
+
+</body>
+</html>

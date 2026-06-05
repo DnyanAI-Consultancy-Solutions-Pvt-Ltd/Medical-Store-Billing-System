@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medicine Management</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="navbar">
+Medical Billing System
+</div>
+
+<div class="menu">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="medicine.html">Medicine</a>
+
+<a href="customer.html">Customer</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="inventory.html">Inventory</a>
+
+</div>
+<div class="container">
+
+<h2>Billing Management</h2>
+
+<div class="card">
+
+<h3>Generate Bill</h3>
+
+<label>Select Customer</label>
+<br><br>
+
+<select id="customerSelect">
+</select>
+
+<br><br>
+
+<label>Select Medicine</label>
+<br><br>
+
+<select id="medicineSelect">
+</select>
+
+<br><br>
+
+<label>Quantity</label>
+<br><br>
+
+<input
+type="number"
+id="quantity"
+placeholder="Enter Quantity">
+
+<br><br>
+
+<button onclick="generateBill()">
+Generate Bill
+</button>
+
+</div>
+
+
+<div class="card" style="margin-top:20px;">
+
+<h3>Generated Bill</h3>
+
+<div id="billResult">
+
+No Bill Generated
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+loadCustomers();
+
+loadMedicines();
+function loadCustomers(){
+
+	fetch("/api/customers")
+
+	.then(res=>res.json())
+
+	.then(data=>{
+
+	let options="";
+
+	data.forEach(c=>{
+
+	options +=
+
+	`<option value="${c.id}">
+
+	${c.customerName}
+
+	</option>`;
+
+	});
+
+	document.getElementById("customerSelect")
+	.innerHTML = options;
+
+	});
+
+	}
+function loadMedicines(){
+
+	fetch("/api/medicines")
+
+	.then(res=>res.json())
+
+	.then(data=>{
+
+	let options="";
+
+	data.forEach(m=>{
+
+	options +=
+
+	`<option value="${m.id}">
+
+	${m.medicineName}
+
+	</option>`;
+
+	});
+
+	document.getElementById("medicineSelect")
+	.innerHTML = options;
+
+	});
+
+	}
+function generateBill(){
+
+	let customerId =
+	document.getElementById("customerSelect").value;
+
+	let medicineId =
+	document.getElementById("medicineSelect").value;
+
+	let quantity =
+	document.getElementById("quantity").value;
+
+	let billRequest = {
+
+	customerId: customerId,
+
+	medicines: [
+
+	{
+	medicineId: medicineId,
+	quantity: quantity
+	}
+
+	]
+
+	};
+
+	fetch("/api/bills",{
+
+	method:"POST",
+
+	headers:{
+	"Content-Type":"application/json"
+	},
+
+	body:JSON.stringify(billRequest)
+
+	})
+
+	.then(res=>res.json())
+
+	.then(data=>{
+
+	document.getElementById("billResult")
+	.innerHTML =
+
+	`
+	<h4>Bill Generated Successfully</h4>
+
+	<p><b>Bill ID:</b> ${data.id}</p>
+
+	<p><b>Subtotal:</b> ${data.subTotal}</p>
+
+	<p><b>GST:</b> ${data.gst}</p>
+
+	<p><b>Total:</b> ${data.totalAmount}</p>
+
+	<p><b>Date:</b> ${data.billDate}</p>
+	`;
+
+	});
+
+	}
+</script>
+
+</body>
+</html>

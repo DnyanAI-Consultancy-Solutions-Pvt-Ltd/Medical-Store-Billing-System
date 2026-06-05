@@ -1,0 +1,97 @@
+<button onclick="loadInventory()">
+All Inventory
+</button>
+
+<button onclick="loadLowStock()">
+Low Stock
+</button>
+
+<button onclick="loadOutOfStock()">
+Out Of Stock
+</button>
+<button onclick="loadExpiringSoon()">
+Expiring Soon
+</button>
+<br><br>
+
+<table border="1">
+<thead>
+<tr>
+<th>ID</th>
+<th>Medicine</th>
+<th>Company</th>
+<th>Price</th>
+<th>Quantity</th>
+<th>Expiry</th>
+</tr>
+</thead>
+
+<tbody id="inventoryBody">
+</tbody>
+
+</table>
+<script>
+
+function renderTable(data){
+
+let rows = "";
+
+data.forEach(medicine => {
+
+rows += `
+<tr>
+<td>${medicine.id}</td>
+<td>${medicine.medicineName}</td>
+<td>${medicine.companyName}</td>
+<td>${medicine.price}</td>
+<td>${medicine.quantity}</td>
+<td>${medicine.expiryDate}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("inventoryBody").innerHTML = rows;
+
+}
+
+function loadInventory(){
+
+fetch("/api/inventory")
+.then(res => res.json())
+.then(data => renderTable(data));
+
+}
+
+function loadLowStock(){
+
+fetch("/api/inventory/low-stock")
+.then(res => res.json())
+.then(data => renderTable(data));
+
+}
+
+function loadOutOfStock(){
+
+fetch("/api/inventory/out-of-stock")
+.then(res => res.json())
+.then(data => renderTable(data));
+
+}
+function loadExpiringSoon(){
+
+	fetch("/api/inventory/expiring-soon")
+
+	.then(res => res.json())
+
+	.then(data => {
+
+	renderTable(data);
+
+	});
+
+	}
+
+</script>
+</body>
+</html>

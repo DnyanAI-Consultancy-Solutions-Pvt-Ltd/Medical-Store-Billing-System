@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+
+<h2>Medical Billing System Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+<br><br>
+
+<input type="password" id="password" placeholder="Password">
+<br><br>
+
+<button onclick="login()">Login</button>
+
+<script>
+
+function login(){
+
+fetch("/api/auth/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+username:
+document.getElementById("username").value,
+
+password:
+document.getElementById("password").value
+
+})
+
+})
+.then(res=>res.text())
+.then(data=>{
+
+if(data==="LOGIN_SUCCESS"){
+
+window.location.href="dashboard.html";
+
+}else{
+
+alert("Invalid Credentials");
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

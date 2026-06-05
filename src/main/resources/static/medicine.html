@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medicine Management</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="navbar">
+Medical Billing System
+</div>
+
+<div class="menu">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="medicine.html">Medicine</a>
+
+<a href="customer.html">Customer</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="inventory.html">Inventory</a>
+
+</div>
+<div class="container">
+<h2>Medicine Management</h2>
+<input type="hidden" id="medicineId">
+
+<div class="card">
+
+<h3>Add / Update Medicine</h3>
+
+<input type="text"
+id="medicineName"
+placeholder="Medicine Name">
+
+<input type="text"
+id="companyName"
+placeholder="Company Name">
+
+<input type="number"
+id="price"
+placeholder="Price">
+
+<input type="number"
+id="quantity"
+placeholder="Quantity">
+
+<input type="date"
+id="expiryDate">
+
+<br>
+
+<button onclick="saveMedicine()">
+Save Medicine
+</button>
+
+</div>
+<div class="card" style="margin-top:20px;">
+
+<h3>Medicine List</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Name</th>
+<th>Company</th>
+<th>Price</th>
+<th>Qty</th>
+<th>Expiry</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="medicineTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+loadMedicines();
+
+function loadMedicines(){
+
+fetch("/api/medicines")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(m=>{
+
+rows += `
+
+<tr>
+
+<td>${m.id}</td>
+
+<td>${m.medicineName}</td>
+
+<td>${m.companyName}</td>
+
+<td>${m.price}</td>
+
+<td>${m.quantity}</td>
+
+<td>${m.expiryDate}</td>
+
+<td>
+
+<button onclick="editMedicine(${m.id})">
+Edit
+</button>
+
+<button onclick="deleteMedicine(${m.id})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("medicineTable").innerHTML
+= rows;
+
+});
+
+}
+function saveMedicine(){
+
+	let id =
+	document.getElementById("medicineId").value;
+
+	let medicine = {
+
+	medicineName:
+	document.getElementById("medicineName").value,
+
+	companyName:
+	document.getElementById("companyName").value,
+
+	price:
+	document.getElementById("price").value,
+
+	quantity:
+	document.getElementById("quantity").value,
+
+	expiryDate:
+	document.getElementById("expiryDate").value
+
+	};
+
+	let url="/api/medicines";
+
+	let method="POST";
+
+	if(id){
+
+	url="/api/medicines/"+id;
+
+	method="PUT";
+
+	}
+
+	fetch(url,{
+
+	method:method,
+
+	headers:{
+	"Content-Type":"application/json"
+	},
+
+	body:JSON.stringify(medicine)
+
+	})
+	.then(()=>{
+
+	alert("Saved Successfully");
+
+	loadMedicines();
+
+	});
+
+	}
+	
+function editMedicine(id){
+
+	fetch("/api/medicines/"+id)
+
+	.then(res=>res.json())
+
+	.then(m=>{
+
+	document.getElementById("medicineId").value =
+	m.id;
+
+	document.getElementById("medicineName").value =
+	m.medicineName;
+
+	document.getElementById("companyName").value =
+	m.companyName;
+
+	document.getElementById("price").value =
+	m.price;
+
+	document.getElementById("quantity").value =
+	m.quantity;
+
+	document.getElementById("expiryDate").value =
+	m.expiryDate;
+
+	});
+
+	}
+function deleteMedicine(id){
+
+	if(confirm("Delete Medicine ?")){
+
+	fetch("/api/medicines/"+id,{
+
+	method:"DELETE"
+
+	})
+	.then(()=>{
+
+	loadMedicines();
+
+	});
+
+	}
+
+	}
+	
+
+</script>
+</div>
+</body>
+</html>

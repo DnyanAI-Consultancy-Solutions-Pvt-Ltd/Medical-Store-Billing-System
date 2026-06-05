@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medicine Management</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body><div class="navbar">
+Medical Billing System
+</div>
+
+<div class="menu">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="medicine.html">Medicine</a>
+
+<a href="customer.html">Customer</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="inventory.html">Inventory</a>
+
+</div>
+<div class="container">
+
+<h2>Customer Management</h2>
+<input type="hidden" id="customerId">
+<div class="card">
+
+<h3>Add / Update Customer</h3>
+
+<input
+type="text"
+id="customerName"
+placeholder="Customer Name">
+
+<input
+type="text"
+id="mobileNo"
+placeholder="Mobile Number">
+
+<br>
+
+<button onclick="saveCustomer()">
+Save Customer
+</button>
+
+</div>
+<div class="card" style="margin-top:20px;">
+
+<h3>Customer List</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Customer Name</th>
+<th>Mobile No</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="customerTable">
+
+</tbody>
+
+</table>
+
+</div>
+<script>
+loadCustomers();
+function loadCustomers(){
+
+	fetch("/api/customers")
+
+	.then(res=>res.json())
+
+	.then(data=>{
+
+	let rows="";
+
+	data.forEach(c=>{
+
+	rows += `
+
+	<tr>
+
+	<td>${c.id}</td>
+
+	<td>${c.customerName}</td>
+
+	<td>${c.mobileNo}</td>
+
+	<td>
+
+	<button onclick="editCustomer(${c.id})">
+	Edit
+	</button>
+
+	<button onclick="deleteCustomer(${c.id})">
+	Delete
+	</button>
+
+	</td>
+
+	</tr>
+
+	`;
+
+	});
+
+	document.getElementById("customerTable").innerHTML
+	= rows;
+
+	});
+
+	}
+function saveCustomer(){
+
+	let id =
+	document.getElementById("customerId").value;
+
+	let customer = {
+
+	customerName:
+	document.getElementById("customerName").value,
+
+	mobileNo:
+	document.getElementById("mobileNo").value
+
+	};
+
+	let url="/api/customers";
+
+	let method="POST";
+
+	if(id){
+
+	url="/api/customers/"+id;
+
+	method="PUT";
+
+	}
+
+	fetch(url,{
+
+	method:method,
+
+	headers:{
+	"Content-Type":"application/json"
+	},
+
+	body:JSON.stringify(customer)
+
+	})
+	.then(()=>{
+
+	alert("Customer Saved");
+
+	loadCustomers();
+
+	document.getElementById("customerName").value="";
+	document.getElementById("mobileNo").value="";
+
+	});
+
+	}
+	
+function editCustomer(id){
+
+	fetch("/api/customers/"+id)
+
+	.then(res=>res.json())
+
+	.then(c=>{
+
+	document.getElementById("customerId").value =
+	c.id;
+
+	document.getElementById("customerName").value =
+	c.customerName;
+
+	document.getElementById("mobileNo").value =
+	c.mobileNo;
+
+	});
+
+	}
+function deleteCustomer(id){
+
+	if(confirm("Delete Customer ?")){
+
+	fetch("/api/customers/"+id,{
+
+	method:"DELETE"
+
+	})
+	.then(()=>{
+
+	loadCustomers();
+
+	});
+
+	}
+
+	}
+</script>
+</div>
+</body>
+</html>
