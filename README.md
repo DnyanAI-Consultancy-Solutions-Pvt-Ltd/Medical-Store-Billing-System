@@ -224,5 +224,4 @@ GET /api/bills
 
 Nikhil Dagadkar
 
-Medical Billing & Inventory Management System
-Final Year / Academic Project
+Medical Billing System
