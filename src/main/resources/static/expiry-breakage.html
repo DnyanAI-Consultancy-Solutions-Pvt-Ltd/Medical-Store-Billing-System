@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Expiry / Breakage Entry</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:20px;
+border-radius:10px;
+width:600px;
+margin:auto;
+box-shadow:0 0 10px #ccc;
+}
+
+h2{
+text-align:center;
+color:#0f4c81;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:15px;
+}
+
+button{
+background:#2196f3;
+color:white;
+border:none;
+padding:10px 20px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1976d2;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Expiry / Breakage Entry</h2>
+
+<label>Medicine</label>
+<select id="medicine"></select>
+
+<label>Quantity</label>
+<input type="number" id="quantity">
+
+<label>Reason</label>
+<select id="reason">
+<option value="EXPIRY">Expiry</option>
+<option value="BREAKAGE">Breakage</option>
+<option value="DAMAGED">Damaged</option>
+</select>
+
+<button onclick="saveEntry()">
+Save
+</button>
+
+</div>
+
+<script>
+
+fetch("/api/medicines")
+.then(res=>res.json())
+.then(data=>{
+
+let options="";
+
+data.forEach(m=>{
+
+options += `
+<option value="${m.id}">
+${m.medicineName}
+</option>
+`;
+
+});
+
+document.getElementById("medicine").innerHTML=
+options;
+
+});
+
+function saveEntry(){
+
+const data={
+
+medicineId:
+document.getElementById("medicine").value,
+
+quantity:
+document.getElementById("quantity").value,
+
+reason:
+document.getElementById("reason").value
+
+};
+
+fetch("/api/stock-adjustment",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+.then(res=>res.text())
+.then(msg=>{
+
+alert("Saved Successfully");
+
+location.reload();
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

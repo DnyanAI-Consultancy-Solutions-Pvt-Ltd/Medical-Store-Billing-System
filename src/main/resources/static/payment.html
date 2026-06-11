@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Supplier Payment</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+width:600px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px lightgray;
+}
+
+h2{
+text-align:center;
+color:#0f4c81;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:15px;
+}
+
+button{
+background:#2196f3;
+color:white;
+padding:10px 20px;
+border:none;
+cursor:pointer;
+}
+
+button:hover{
+background:#1976d2;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Supplier Payment Entry</h2>
+
+<label>Supplier</label>
+<select id="supplier"></select>
+
+<label>Payment Date</label>
+<input type="date" id="paymentDate">
+
+<label>Amount</label>
+<input type="number" id="amount">
+
+<label>Payment Mode</label>
+<select id="paymentMode">
+<option>Cash</option>
+<option>UPI</option>
+<option>Bank Transfer</option>
+<option>Cheque</option>
+</select>
+
+<label>Remarks</label>
+<input type="text" id="remarks">
+
+<button onclick="savePayment()">
+Save Payment
+</button>
+
+</div>
+
+<script>
+
+fetch("/api/suppliers")
+.then(res=>res.json())
+.then(data=>{
+
+let options="";
+
+data.forEach(s=>{
+
+options += `
+<option value="${s.id}">
+${s.supplierName}
+</option>
+`;
+
+});
+
+document.getElementById("supplier").innerHTML =
+options;
+
+});
+
+function savePayment(){
+
+const payment={
+
+supplierId:
+document.getElementById("supplier").value,
+
+paymentDate:
+document.getElementById("paymentDate").value,
+
+amount:
+document.getElementById("amount").value,
+
+paymentMode:
+document.getElementById("paymentMode").value,
+
+remarks:
+document.getElementById("remarks").value
+
+};
+
+fetch("/api/payments",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(payment)
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+alert("Payment Saved");
+
+location.reload();
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

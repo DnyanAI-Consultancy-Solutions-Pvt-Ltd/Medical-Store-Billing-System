@@ -1,0 +1,57 @@
+package com.medical.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="suppliers")
+public class Supplier {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String supplierName;
+    private String mobileNo;
+    private String address;
+    private String gstNo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getGstNo() {
+        return gstNo;
+    }
+
+    public void setGstNo(String gstNo) {
+        this.gstNo = gstNo;
+    }
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+}

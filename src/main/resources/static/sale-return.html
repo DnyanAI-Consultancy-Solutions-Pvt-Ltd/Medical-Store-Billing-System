@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sale Return</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:700px;
+margin:auto;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:8px 0;
+}
+
+button{
+background:#2196f3;
+color:white;
+border:none;
+padding:12px;
+cursor:pointer;
+width:100%;
+}
+
+h2{
+color:#0f4c81;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>Sale Return</h2>
+
+<label>Bill No</label>
+<input type="text" id="billNo">
+
+<label>Medicine</label>
+<select id="medicine"></select>
+
+<label>Return Quantity</label>
+<input type="number" id="qty">
+
+<label>Reason</label>
+<input type="text" id="reason">
+
+<button onclick="saveReturn()">
+Save Return
+</button>
+
+</div>
+
+<script>
+
+function saveReturn(){
+
+const data={
+billNo:document.getElementById("billNo").value,
+medicineId:document.getElementById("medicine").value,
+quantity:document.getElementById("qty").value,
+reason:document.getElementById("reason").value
+};
+
+fetch("/api/sale-returns",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+.then(()=>alert("Saved"));
+
+}
+
+fetch("/api/medicines")
+.then(r=>r.json())
+.then(data=>{
+
+let options="";
+
+data.forEach(m=>{
+
+options +=
+`<option value="${m.id}">
+${m.medicineName}
+</option>`;
+
+});
+
+document.getElementById("medicine").innerHTML=
+options;
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.medical.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -25,72 +26,118 @@ public class BillingService {
     private final MedicineRepository medicineRepository;
     private final BillRepository billRepository;
     private final BillItemRepository billItemRepository;
-    
 
-    public BillingService(CustomerRepository customerRepository, MedicineRepository medicineRepository,
-			BillRepository billRepository, BillItemRepository billItemRepository) {
-		super();
-		this.customerRepository = customerRepository;
-		this.medicineRepository = medicineRepository;
-		this.billRepository = billRepository;
-		this.billItemRepository = billItemRepository;
-	}
+    public BillingService(
+            CustomerRepository customerRepository,
+            MedicineRepository medicineRepository,
+            BillRepository billRepository,
+            BillItemRepository billItemRepository) {
 
+        this.customerRepository = customerRepository;
+        this.medicineRepository = medicineRepository;
+        this.billRepository = billRepository;
+        this.billItemRepository = billItemRepository;
+    }
 
-	public Bill generateBill(BillRequest request) {
+    public Bill generateBill(BillRequest request) {
 
         Customer customer =
-                customerRepository.findById(request.getCustomerId())
+                customerRepository.findById(
+                        request.getCustomerId())
                         .orElseThrow();
 
         double subTotal = 0;
 
         Bill bill = new Bill();
+
         bill.setCustomer(customer);
         bill.setBillDate(LocalDateTime.now());
 
-        Bill savedBill = billRepository.save(bill);
+        bill.setDoctorName(
+                request.getDoctorName());
 
-        for (BillMedicineDto dto : request.getMedicines()) {
+        bill.setBillType(
+                request.getBillType());
+
+        Bill savedBill =
+                billRepository.save(bill);
+
+        for (BillMedicineDto dto :
+                request.getMedicines()) {
 
             Medicine medicine =
-                    medicineRepository.findById(dto.getMedicineId())
+                    medicineRepository.findById(
+                            dto.getMedicineId())
                             .orElseThrow();
 
-            if (medicine.getQuantity() < dto.getQuantity()) {
+            if (medicine.getQuantity()
+                    < dto.getQuantity()) {
+
                 throw new RuntimeException(
                         "Stock not available for "
-                                + medicine.getCompanyName());
+                                + medicine.getMedicineName());
             }
 
             double amount =
-                    medicine.getPrice() * dto.getQuantity();
+                    medicine.getPrice()
+                    * dto.getQuantity();
 
-            BillItem item = new BillItem();
+            BillItem item =
+                    new BillItem();
 
             item.setBill(savedBill);
             item.setMedicine(medicine);
-            item.setQuantity(dto.getQuantity());
-            item.setUnitPrice(medicine.getPrice());
+            item.setQuantity(
+                    dto.getQuantity());
+
+            item.setUnitPrice(
+                    medicine.getPrice());
+
             item.setAmount(amount);
 
             billItemRepository.save(item);
 
             medicine.setQuantity(
-                    medicine.getQuantity() - dto.getQuantity());
+                    medicine.getQuantity()
+                    - dto.getQuantity());
 
             medicineRepository.save(medicine);
 
             subTotal += amount;
         }
 
+        // GST 18%
         double gst = subTotal * 0.18;
-        double total = subTotal + gst;
+
+        // Discount
+        double discount =
+                request.getDiscount() == null
+                ? 0
+                : request.getDiscount();
+
+        double total =
+                subTotal + gst - discount;
+
+        double paid =
+                request.getPaidAmount() == null
+                ? 0
+                : request.getPaidAmount();
+
+        double balance =
+                paid - total;
 
         savedBill.setSubTotal(subTotal);
         savedBill.setGst(gst);
+        savedBill.setDiscount(discount);
         savedBill.setTotalAmount(total);
 
+        savedBill.setPaidAmount(paid);
+        savedBill.setBalanceAmount(balance);
+
         return billRepository.save(savedBill);
+    }
+
+    public List<Bill> getAllBills() {
+        return billRepository.findAll();
     }
 }

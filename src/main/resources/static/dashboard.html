@@ -4,146 +4,572 @@
 <meta charset="UTF-8">
 <title>Medical Billing System</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 
-body{
-    font-family: Arial;
-    margin:0;
-    background:#f4f6f9;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
 }
+
+body{
+background:#eef3f8;
+}
+
+/* HEADER */
 
 .navbar{
-    background:#2c3e50;
-    color:white;
-    padding:15px;
-    font-size:22px;
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
 }
+
+/* MENU */
 
 .menu{
-    background:white;
-    padding:15px;
-    text-align:center;
+background:white;
+display:flex;
+justify-content:center;
+gap:30px;
+padding:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-.menu a{
-    text-decoration:none;
-    margin:15px;
-    font-weight:bold;
-    color:#2c3e50;
+.dropdown{
+position:relative;
 }
+
+.dropbtn{
+    font-size:20px;
+    font-weight:600;
+    padding:12px 25px;
+}
+
+.dropdown-content{
+display:none;
+position:absolute;
+background:white;
+min-width:230px;
+box-shadow:0 4px 10px rgba(0,0,0,.2);
+z-index:1000;
+}
+
+.dropdown-content a{
+display:block;
+padding:10px;
+text-decoration:none;
+color:black;
+}
+
+.dropdown-content a:hover{
+background:#f5f5f5;
+}
+
+.dropdown:hover .dropdown-content{
+display:block;
+}
+
+/* CONTAINER */
 
 .container{
-    padding:20px;
+padding:20px;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+margin-bottom:25px;
 }
 
 .card{
-    width:220px;
-    background:white;
-    display:inline-block;
-    margin:10px;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0px 2px 5px gray;
-    text-align:center;
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.08);
+text-align:center;
+}
+
+.card h3{
+font-size:14px;
+margin-bottom:8px;
 }
 
 .card h2{
-    color:#3498db;
+font-size:24px;
+color:#0f4c81;
+}
+/* QUICK ACTIONS */
+
+.section{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-top:25px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
 }
 
-.modules{
-    margin-top:30px;
+.section h2{
+margin-bottom:15px;
+color:#0f4c81;
 }
 
-.module-btn{
-    width:200px;
-    padding:15px;
-    margin:10px;
-    border:none;
-    background:#3498db;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:16px;
+.btn{
+padding:12px 18px;
+border:none;
+background:#2196f3;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+font-size:15px;
 }
 
-.module-btn:hover{
-    background:#2980b9;
+.btn:hover{
+background:#1976d2;
+}
+
+/* GRAPHS */
+
+.graph-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.graph-card{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+height:320px;
+}
+
+.graph-card h2{
+font-size:18px;
+margin-bottom:10px;
+color:#0f4c81;
+}
+
+.graph-card canvas{
+width:100% !important;
+height:240px !important;
+}
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+@media(max-width:900px){
+
+.graph-grid{
+grid-template-columns:1fr;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="navbar">
-    Medical Billing System
+🏥 Medical Billing System
 </div>
 
 <div class="menu">
-    <a href="dashboard.html">Dashboard</a>
-    <a href="medicine.html">Medicine</a>
-    <a href="customer.html">Customer</a>
-    <a href="billing.html">Billing</a>
-    <a href="inventory.html">Inventory</a>
+
+
+
+
+
+<div class="dropdown">
+<span class="dropbtn">
+Transactions ▼
+</span>
+
+<div class="dropdown-content">
+
+<a href="billing.html">
+Sale Billing
+</a>
+
+<a href="purchase.html">
+Purchase
+</a>
+
+<a href="sale-return.html">
+Sale Return
+</a>
+
+<a href="purchase-return.html">
+Purchase Return
+</a>
+
+<a href="opening-stock.html">
+Opening Stock
+</a>
+
+<a href="expiry-breakage.html">
+Expiry / Breakage
+</a>
+
+<a href="receipt.html">
+Receipt Entry
+</a>
+
+<a href="payment.html">
+Payment Entry
+</a>
+
+<a href="journal.html">
+Journal Voucher
+</a>
+
+<a href="estimate.html">
+Estimate
+</a>
+
+</div>
+</div>
+<div class="dropdown">
+<span class="dropbtn">
+Masters ▼
+</span>
+
+<div class="dropdown-content">
+
+<a href="medicine.html">
+Medicine Master
+</a>
+
+<a href="customer.html">
+Customer Master
+</a>
+
+<a href="supplier.html">
+Supplier Master
+</a>
+
+</div>
+</div>
+<div class="dropdown">
+<span class="dropbtn">
+Reports ▼
+</span>
+
+<div class="dropdown-content">
+
+<a href="bill-history.html">
+Bill History
+</a>
+
+<a href="purchase-list.html">
+Purchase History
+</a>
+
+<a href="daily-report.html">
+Daily Transaction
+</a>
+
+<a href="inventory.html">
+Inventory Report
+</a>
+
+<a href="profit-report.html">
+Profit Report
+</a>
+
+<a href="expiry-report.html">
+Expiry Report
+</a>
+
+</div>
 </div>
 
+<div class="dropdown">
+<span class="dropbtn">
+Utilities ▼
+</span>
+
+<div class="dropdown-content">
+
+<a href="order-generation.html">
+Order Generation
+</a>
+
+<a href="medicine-reminder.html">
+Medicine Reminder
+</a>
+
+<a href="whatsapp.html">
+WhatsApp Reminder
+</a>
+
+<a href="wholesaler.html">
+Wholesaler / Company
+</a>
+</div>
+</div>
+</div>
+<!-- DASHBOARD CARDS -->
 <div class="container">
 
-    <div class="card">
-        <h3>Total Medicines</h3>
-        <h2 id="medicines">0</h2>
-    </div>
+<div class="cards">
 
-    <div class="card">
-        <h3>Total Customers</h3>
-        <h2 id="customers">0</h2>
-    </div>
+<div class="card">
+<h3>Total Medicines</h3>
+<h2 id="medicines">0</h2>
+</div>
 
-    <div class="card">
-        <h3>Low Stock</h3>
-        <h2 id="lowStock">0</h2>
-    </div>
+<div class="card">
+<h3>Total Customers</h3>
+<h2 id="customers">0</h2>
+</div>
 
-    <div class="card">
-        <h3>Out Of Stock</h3>
-        <h2 id="outOfStock">0</h2>
-    </div>
+<div class="card">
+<h3>Low Stock</h3>
+<h2 id="lowStock">0</h2>
+</div>
 
-    <div class="card">
-        <h3>Expiring Soon</h3>
-        <h2 id="expiringSoon">0</h2>
-    </div>
+<div class="card">
+<h3>Out Of Stock</h3>
+<h2 id="outOfStock">0</h2>
+</div>
 
-    <div class="modules">
+<div class="card">
+<h3>Expiring Soon</h3>
+<h2 id="expiringSoon">0</h2>
+</div>
+<div class="card">
+<h3>Total Suppliers</h3>
+<h2 id="suppliers">0</h2>
+</div>
 
-        <h2>Modules</h2>
+<div class="card">
+<h3>Total Bills</h3>
+<h2 id="bills">0</h2>
+</div>
 
-        <button class="module-btn"
-        onclick="location.href='medicine.html'">
-        Medicine Module
-        </button>
+<div class="card">
+<h3>Total Purchases</h3>
+<h2 id="purchases">0</h2>
+</div>
+<div class="card">
+    <h3>Today's Sales</h3>
+    <h2 id="todaySales">0</h2>
+</div>
 
-        <button class="module-btn"
-        onclick="location.href='customer.html'">
-        Customer Module
-        </button>
+<div class="card">
+    <h3>Today's Purchase</h3>
+    <h2 id="todayPurchase">0</h2>
+</div>
 
-        <button class="module-btn"
-        onclick="location.href='billing.html'">
-        Billing Module
-        </button>
-
-        <button class="module-btn"
-        onclick="location.href='inventory.html'">
-        Inventory Module
-        </button>
-
-    </div>
+<div class="card">
+    <h3>Today's Profit</h3>
+    <h2 id="todayProfit">0</h2>
+</div>
 
 </div>
 
+<!-- QUICK ACTION -->
+
+<div class="section">
+
+<h2>Quick Actions</h2>
+
+<button class="btn"
+onclick="location.href='billing.html'">
+New Bill
+</button>
+
+<button class="btn"
+onclick="location.href='purchase.html'">
+New Purchase
+</button>
+
+<button class="btn"
+onclick="location.href='medicine.html'">
+Add Medicine
+</button>
+
+<button class="btn"
+onclick="location.href='supplier.html'">
+Add Supplier
+</button>
+
+<button class="btn"
+onclick="location.href='inventory.html'">
+Inventory
+</button>
+
+</div>
+
+<!-- GRAPHS -->
+
+<div class="graph-grid">
+
+<div class="graph-card">
+
+<h2>Monthly Sales Graph</h2>
+
+<canvas id="salesChart"></canvas>
+
+</div>
+
+<div class="graph-card">
+
+<h2>Monthly Purchase Graph</h2>
+
+<canvas id="purchaseChart"></canvas>
+
+</div>
+
+</div>
+
+<div class="graph-grid">
+
+<div class="graph-card">
+
+<h2>Inventory Status</h2>
+
+<canvas id="inventoryChart"></canvas>
+
+</div>
+
+<div class="graph-card">
+
+<h2>Top Selling Medicines</h2>
+
+<canvas id="medicineChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- RECENT PURCHASE -->
+
+<div class="section">
+
+<h2>Recent Purchases</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Invoice</th>
+<th>Supplier</th>
+<th>Date</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="purchaseTable">
+</tbody>
+
+</table>
+
+<br>
+
+<button class="btn"
+onclick="location.href='purchase-list.html'">
+View Full Purchase History
+</button>
+
+</div>
+<!-- RECENT BILLS -->
+
+<div class="section">
+
+<h2>Recent Bills</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Bill No</th>
+<th>Customer</th>
+<th>Date</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="billTable">
+</tbody>
+
+</table>
+<br>
+
+<button class="btn"
+onclick="location.href='bill-history.html'">
+View Full Bill History
+</button>
+</div>
+<div class="section">
+
+<h2>⚠ Low Stock Medicines</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Medicine</th>
+<th>Quantity</th>
+</tr>
+</thead>
+
+<tbody id="lowStockMedicineTable">
+</tbody>
+
+</table>
+
+</div>
+<div class="section">
+
+<h2>⏰ Expiring Medicines</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Medicine</th>
+<th>Expiry Date</th>
+</tr>
+</thead>
+
+<tbody id="expiryMedicineTable">
+</tbody>
+
+</table>
+
+</div>
 <script>
+
+/* EXISTING API */
 
 fetch("/api/dashboard")
 .then(response => response.json())
@@ -164,9 +590,239 @@ data.outOfStock;
 document.getElementById("expiringSoon").innerText =
 data.expiringSoon;
 
+document.getElementById("suppliers").innerText =
+	data.totalSuppliers;
+
+	document.getElementById("bills").innerText =
+	data.totalBills;
+
+	document.getElementById("purchases").innerText =
+	data.totalPurchases;
+	document.getElementById("todaySales").innerText =
+		"₹" + data.todaySales;
+
+		document.getElementById("todayPurchase").innerText =
+		"₹" + data.todayPurchase;
+
+		document.getElementById("todayProfit").innerText =
+		"₹" + data.todayProfit;
+
 });
 
-</script>
+/* SALES GRAPH */
 
+new Chart(
+document.getElementById('salesChart'),
+{
+type:'line',
+data:{
+labels:['Jan','Feb','Mar','Apr','May','Jun'],
+datasets:[{
+label:'Sales',
+data:[12000,18000,15000,22000,27000,25000],
+borderWidth:3,
+fill:false
+}]
+},
+options:{
+	responsive:true,
+	maintainAspectRatio:false,
+	plugins:{
+	legend:{
+	position:'bottom'
+	}
+	}
+	}
+
+});
+
+/* PURCHASE GRAPH */
+
+new Chart(
+document.getElementById('purchaseChart'),
+{
+type:'bar',
+data:{
+labels:['Jan','Feb','Mar','Apr','May','Jun'],
+datasets:[{
+label:'Purchase',
+data:[8000,12000,10000,17000,19000,18000]
+}]
+},
+options:{
+	responsive:true,
+	maintainAspectRatio:false,
+	plugins:{
+	legend:{
+	position:'bottom'
+	}
+	}
+	}
+});
+
+/* INVENTORY GRAPH */
+
+new Chart(
+document.getElementById('inventoryChart'),
+{
+type:'pie',
+data:{
+labels:[
+'Available',
+'Low Stock',
+'Out Of Stock'
+],
+datasets:[{
+data:[420,35,12]
+}]
+},
+options:{
+	responsive:true,
+	maintainAspectRatio:false,
+	plugins:{
+	legend:{
+	position:'bottom'
+	}
+	}
+	}
+});
+
+/* TOP MEDICINES */
+
+new Chart(
+document.getElementById('medicineChart'),
+{
+type:'doughnut',
+data:{
+labels:[
+'Dolo',
+'Calpol',
+'Azithral',
+'Paracetamol'
+],
+datasets:[{
+data:[40,25,20,15]
+}]
+},
+options:{
+	responsive:true,
+	maintainAspectRatio:false,
+	plugins:{
+	legend:{
+	position:'bottom'
+	}
+	}
+	}
+});
+/* RECENT PURCHASES */
+
+fetch("/api/purchases")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.slice(-5).reverse().forEach(p => {
+
+rows += `
+<tr>
+<td>${p.invoiceNo}</td>
+<td>${p.supplier ? p.supplier.supplierName : ''}</td>
+<td>${p.purchaseDate}</td>
+<td>₹${p.totalAmount}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("purchaseTable").innerHTML = rows;
+
+});
+
+
+/* RECENT BILLS */
+
+fetch("/api/bills")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.slice(-5).reverse().forEach(b => {
+
+rows += `
+<tr>
+<td>${b.id}</td>
+<td>${b.customer ? b.customer.customerName : '-'}</td>
+<td>${b.billDate ? b.billDate.substring(0,10) : '-'}</td>
+<td>₹${b.totalAmount}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("billTable").innerHTML = rows;
+
+});
+
+/* LOW STOCK MEDICINES */
+
+fetch("/api/inventory/low-stock")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(m => {
+
+rows += `
+<tr>
+<td>${m.medicineName}</td>
+<td>${m.quantity}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"lowStockMedicineTable").innerHTML = rows;
+
+});
+/* EXPIRING MEDICINES */
+
+fetch("/api/inventory/expiring-soon")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(m => {
+
+rows += `
+<tr>
+<td>${m.medicineName}</td>
+<td>${m.expiryDate}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"expiryMedicineTable").innerHTML = rows;
+
+});
+</script>
+<div style="
+margin-top:30px;
+padding:15px;
+text-align:center;
+background:white;
+color:#666;
+font-weight:bold;
+">
+
+Medical Billing ERP System © 2026
+
+</div>
 </body>
 </html>

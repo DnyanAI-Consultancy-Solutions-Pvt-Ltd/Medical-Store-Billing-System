@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Purchase History</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+Purchase History
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h3>All Purchases</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Invoice No</th>
+<th>Supplier</th>
+<th>Date</th>
+<th>Total</th>
+</tr>
+</thead>
+
+<tbody id="purchaseTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+loadPurchases();
+
+function loadPurchases(){
+
+fetch("/api/purchases")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(p=>{
+
+rows += `
+<tr>
+
+<td>${p.id}</td>
+
+<td>${p.invoiceNo}</td>
+
+<td>${p.supplier ? p.supplier.supplierName : ''}</td>
+
+<td>${p.purchaseDate}</td>
+
+<td>${p.totalAmount}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("purchaseTable")
+.innerHTML = rows;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

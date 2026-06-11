@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Purchase Entry</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+input,select{
+    padding:10px;
+    margin:5px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    margin-top:20px;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+.total-box{
+    text-align:right;
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+Purchase Entry
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Purchase Information</h3>
+
+<input
+type="text"
+id="invoiceNo"
+placeholder="Invoice No">
+
+<input
+type="date"
+id="purchaseDate">
+
+<select id="supplierSelect">
+</select>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>Add Medicine</h3>
+
+<select id="medicineSelect">
+</select>
+
+<input
+type="number"
+id="qty"
+placeholder="Qty">
+
+<input
+type="number"
+id="purchaseRate"
+placeholder="Purchase Rate">
+
+<button onclick="addItem()">
+Add Item
+</button>
+
+</div>
+
+<div class="card" style="margin-top:20px;">
+
+<h3>Purchase Items</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Medicine</th>
+<th>Qty</th>
+<th>Purchase Rate</th>
+<th>Amount</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="purchaseTable">
+</tbody>
+
+</table>
+
+<div class="total-box">
+
+Total : ₹ <span id="totalAmount">0</span>
+
+</div>
+
+<br>
+
+<button onclick="savePurchase()">
+Save Purchase
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let purchaseItems = [];
+
+loadSuppliers();
+loadMedicines();
+
+function loadSuppliers(){
+
+fetch("/api/suppliers")
+.then(res=>res.json())
+.then(data=>{
+
+let options="";
+
+data.forEach(s=>{
+
+options +=
+`<option value="${s.id}">
+${s.supplierName}
+</option>`;
+
+});
+
+document.getElementById("supplierSelect")
+.innerHTML=options;
+
+});
+
+}
+
+function loadMedicines(){
+
+fetch("/api/medicines")
+.then(res=>res.json())
+.then(data=>{
+
+let options="";
+
+data.forEach(m=>{
+
+options +=
+`<option value="${m.id}">
+${m.medicineName}
+</option>`;
+
+});
+
+document.getElementById("medicineSelect")
+.innerHTML=options;
+
+});
+
+}
+
+function addItem(){
+
+let medicineId =
+document.getElementById("medicineSelect").value;
+
+let medicineName =
+document.getElementById("medicineSelect")
+.options[
+document.getElementById("medicineSelect").selectedIndex
+].text;
+
+let qty =
+parseInt(document.getElementById("qty").value);
+
+let purchaseRate =
+parseFloat(document.getElementById("purchaseRate").value);
+
+let amount = qty * purchaseRate;
+
+purchaseItems.push({
+
+medicineId:medicineId,
+medicineName:medicineName,
+quantity:qty,
+purchaseRate:purchaseRate,
+amount:amount
+
+});
+
+renderTable();
+
+}
+
+function renderTable(){
+
+let rows="";
+
+let total=0;
+
+purchaseItems.forEach((item,index)=>{
+
+total += item.amount;
+
+rows += `
+<tr>
+
+<td>${item.medicineName}</td>
+
+<td>${item.quantity}</td>
+
+<td>${item.purchaseRate}</td>
+
+<td>${item.amount}</td>
+
+<td>
+
+<button onclick="removeItem(${index})">
+Delete
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("purchaseTable")
+.innerHTML = rows;
+
+document.getElementById("totalAmount")
+.innerText = total;
+
+}
+
+function removeItem(index){
+
+purchaseItems.splice(index,1);
+
+renderTable();
+
+}
+
+function savePurchase(){
+
+let request = {
+
+supplierId:
+document.getElementById("supplierSelect").value,
+
+invoiceNo:
+document.getElementById("invoiceNo").value,
+
+items: purchaseItems
+
+};
+
+fetch("/api/purchases",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(request)
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+alert("Purchase Saved");
+
+purchaseItems=[];
+
+renderTable();
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

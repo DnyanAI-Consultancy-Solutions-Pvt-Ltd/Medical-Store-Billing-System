@@ -12,12 +12,63 @@ public class Medicine {
     private Long id;
 
     private String medicineName;
-    private String companyName;
-    private Double price;
-    private Integer quantity;
-    private LocalDate expiryDate;
 
-    public Medicine() {
+    private String companyName;
+
+    private String batchNo;
+
+    private String unit;
+
+    private Double mrp;
+
+    private Double price;
+    private Double purchasePrice;
+    private Integer quantity;
+
+    private Double gstPercent;
+
+    private LocalDate expiryDate;
+    public Double getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(Double purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public Double getMrp() {
+		return mrp;
+	}
+
+	public void setMrp(Double mrp) {
+		this.mrp = mrp;
+	}
+
+	public Double getGstPercent() {
+		return gstPercent;
+	}
+
+	public void setGstPercent(Double gstPercent) {
+		this.gstPercent = gstPercent;
+	}
+
+	public Medicine() {
     }
 
     public Long getId() {

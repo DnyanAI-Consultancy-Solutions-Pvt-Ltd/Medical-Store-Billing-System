@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Purchase Return</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0px 2px 8px gray;
+}
+
+h2{
+text-align:center;
+color:#0f4c81;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#2196f3;
+color:white;
+border:none;
+padding:12px;
+width:100%;
+cursor:pointer;
+font-size:16px;
+border-radius:5px;
+}
+
+button:hover{
+background:#1976d2;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Purchase Return</h2>
+
+<label>Supplier</label>
+<select id="supplier">
+</select>
+
+<label>Invoice No</label>
+<input type="text" id="invoiceNo">
+
+<label>Medicine</label>
+<select id="medicine">
+</select>
+
+<label>Return Quantity</label>
+<input type="number" id="quantity">
+
+<label>Reason</label>
+<input type="text" id="reason">
+
+<button onclick="saveReturn()">
+Save Purchase Return
+</button>
+
+<hr>
+
+<h3>Purchase Return History</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Supplier</th>
+<th>Medicine</th>
+<th>Qty</th>
+<th>Reason</th>
+<th>Date</th>
+</tr>
+</thead>
+
+<tbody id="returnTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+/* Load Suppliers */
+
+fetch("/api/suppliers")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(s => {
+
+rows += `
+<option value="${s.id}">
+${s.supplierName}
+</option>
+`;
+
+});
+
+document.getElementById("supplier").innerHTML =
+rows;
+
+});
+
+
+/* Load Medicines */
+
+fetch("/api/medicines")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(m => {
+
+rows += `
+<option value="${m.id}">
+${m.medicineName}
+</option>
+`;
+
+});
+
+document.getElementById("medicine").innerHTML =
+rows;
+
+});
+
+
+/* Save Purchase Return */
+
+function saveReturn(){
+
+const data = {
+
+supplierId:
+document.getElementById("supplier").value,
+
+invoiceNo:
+document.getElementById("invoiceNo").value,
+
+medicineId:
+document.getElementById("medicine").value,
+
+quantity:
+document.getElementById("quantity").value,
+
+reason:
+document.getElementById("reason").value
+
+};
+
+fetch("/api/purchase-returns",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(data)
+
+})
+.then(res => res.json())
+.then(() => {
+
+alert("Purchase Return Saved");
+
+location.reload();
+
+});
+
+}
+
+
+/* History */
+
+fetch("/api/purchase-returns")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(r => {
+
+rows += `
+<tr>
+
+<td>${r.id}</td>
+
+<td>
+${r.supplier ?
+r.supplier.supplierName : ''}
+</td>
+
+<td>
+${r.medicine ?
+r.medicine.medicineName : ''}
+</td>
+
+<td>${r.quantity}</td>
+
+<td>${r.reason}</td>
+
+<td>${r.returnDate}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("returnTable")
+.innerHTML = rows;
+
+});
+
+</script>
+
+</body>
+</html>

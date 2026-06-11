@@ -1,6 +1,9 @@
 package com.medical.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,4 +31,11 @@ public class BillController {
         return ResponseEntity.ok(
                 billingService.generateBill(request));
     }
+	
+	@GetMapping
+	public List<Bill> getAllBills() {
+	    return billingService.getAllBills();
+	}
+	
+	
 }

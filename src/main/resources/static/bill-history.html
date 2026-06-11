@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bill History</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+}
+
+.navbar{
+background:#0f4c81;
+color:white;
+padding:15px;
+font-size:24px;
+}
+
+.container{
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+Bill History
+</div>
+
+<div class="container">
+
+<table>
+
+<thead>
+<tr>
+<th>Bill ID</th>
+<th>Customer</th>
+<th>Date</th>
+<th>Sub Total</th>
+<th>GST</th>
+<th>Total Amount</th>
+</tr>
+</thead>
+
+<tbody id="billTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+fetch("/api/bills")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(b => {
+
+rows += `
+<tr>
+<td>${b.id}</td>
+<td>${b.customer ? b.customer.customerName : '-'}</td>
+<td>${b.billDate ? b.billDate.substring(0,10) : '-'}</td>
+<td>₹${b.subTotal}</td>
+<td>₹${b.gst}</td>
+<td>₹${b.totalAmount}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("billTable").innerHTML = rows;
+
+});
+
+</script>
+
+</body>
+</html>

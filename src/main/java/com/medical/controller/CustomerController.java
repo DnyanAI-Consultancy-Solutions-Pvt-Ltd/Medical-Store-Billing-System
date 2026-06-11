@@ -1,6 +1,7 @@
 package com.medical.controller;
 
 import com.medical.entity.Customer;
+import com.medical.repository.CustomerRepository;
 import com.medical.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,21 +12,29 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
+private final CustomerRepository repository;
+    
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
+    public CustomerController(CustomerService customerService, CustomerRepository repository) {
+	super();
+	this.customerService = customerService;
+	this.repository = repository;
+}
 
-    @PostMapping
+	@PostMapping
     public Customer addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
+    @GetMapping
+    public List<Customer> getAll(){
+        return repository.findAll();
+    }
     @GetMapping("/{id}")
     public Customer getCustomerById(@PathVariable Long id) {
         return customerService.getCustomerById(id);

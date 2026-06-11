@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Supplier Management</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+Supplier Management
+</div>
+
+<div class="container">
+
+<input type="hidden" id="supplierId">
+
+<div class="card">
+
+<h3>Add / Update Supplier</h3>
+
+<input
+type="text"
+id="supplierName"
+placeholder="Supplier Name">
+
+<input
+type="text"
+id="mobileNo"
+placeholder="Mobile No">
+
+<br>
+
+<input
+type="text"
+id="address"
+placeholder="Address">
+
+<input
+type="text"
+id="gstNo"
+placeholder="GST No">
+
+<br>
+
+<button onclick="saveSupplier()">
+Save Supplier
+</button>
+
+</div>
+
+<div class="card" style="margin-top:20px;">
+
+<h3>Supplier List</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Mobile</th>
+<th>Address</th>
+<th>GST</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="supplierTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+loadSuppliers();
+
+function loadSuppliers(){
+
+fetch("/api/suppliers")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(s=>{
+
+rows += `
+
+<tr>
+
+<td>${s.id}</td>
+
+<td>${s.supplierName}</td>
+
+<td>${s.mobileNo}</td>
+
+<td>${s.address}</td>
+
+<td>${s.gstNo}</td>
+
+<td>
+
+<button onclick="editSupplier(${s.id})">
+Edit
+</button>
+
+<button onclick="deleteSupplier(${s.id})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("supplierTable")
+.innerHTML = rows;
+
+});
+
+}
+
+function saveSupplier(){
+
+let id =
+document.getElementById("supplierId").value;
+
+let supplier = {
+
+supplierName:
+document.getElementById("supplierName").value,
+
+mobileNo:
+document.getElementById("mobileNo").value,
+
+address:
+document.getElementById("address").value,
+
+gstNo:
+document.getElementById("gstNo").value
+
+};
+
+let url="/api/suppliers";
+let method="POST";
+
+if(id){
+
+url="/api/suppliers/"+id;
+method="PUT";
+
+}
+
+fetch(url,{
+
+method:method,
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(supplier)
+
+})
+.then(()=>{
+
+alert("Supplier Saved");
+
+document.getElementById("supplierId").value="";
+document.getElementById("supplierName").value="";
+document.getElementById("mobileNo").value="";
+document.getElementById("address").value="";
+document.getElementById("gstNo").value="";
+
+loadSuppliers();
+
+});
+
+}
+
+function editSupplier(id){
+
+fetch("/api/suppliers/"+id)
+
+.then(res=>res.json())
+
+.then(s=>{
+
+document.getElementById("supplierId").value=s.id;
+document.getElementById("supplierName").value=s.supplierName;
+document.getElementById("mobileNo").value=s.mobileNo;
+document.getElementById("address").value=s.address;
+document.getElementById("gstNo").value=s.gstNo;
+
+});
+
+}
+
+function deleteSupplier(id){
+
+if(confirm("Delete Supplier ?")){
+
+fetch("/api/suppliers/"+id,{
+
+method:"DELETE"
+
+})
+.then(()=>{
+
+loadSuppliers();
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

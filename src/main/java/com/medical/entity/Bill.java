@@ -22,13 +22,68 @@ public class Bill {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    // Doctor Name
+    private String doctorName;
+
+    // Cash / Credit
+    private String billType;
+
     private Double subTotal;
 
     private Double gst;
 
+    // Discount
+    private Double discount;
+
     private Double totalAmount;
 
+    // Cash received from customer
+    private Double paidAmount;
+
+    // Remaining balance
+    private Double balanceAmount;
+
     private LocalDateTime billDate;
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+
+	public String getBillType() {
+		return billType;
+	}
+
+	public void setBillType(String billType) {
+		this.billType = billType;
+	}
+
+	public Double getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Double discount) {
+		this.discount = discount;
+	}
+
+	public Double getPaidAmount() {
+		return paidAmount;
+	}
+
+	public void setPaidAmount(Double paidAmount) {
+		this.paidAmount = paidAmount;
+	}
+
+	public Double getBalanceAmount() {
+		return balanceAmount;
+	}
+
+	public void setBalanceAmount(Double balanceAmount) {
+		this.balanceAmount = balanceAmount;
+	}
 
 	public Long getId() {
 		return id;
