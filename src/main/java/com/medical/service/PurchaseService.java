@@ -91,7 +91,7 @@ public class PurchaseService {
             medicine.setPurchasePrice(
             	    itemRequest.getPurchaseRate());
 
-            	medicine.setPrice(
+            	medicine.setMrp(
             	    itemRequest.getSaleRate());
 
             	medicine.setQuantity(

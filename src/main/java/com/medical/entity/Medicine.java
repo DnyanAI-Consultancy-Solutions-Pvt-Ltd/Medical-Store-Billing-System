@@ -21,13 +21,30 @@ public class Medicine {
 
     private Double mrp;
 
-    private Double price;
     private Double purchasePrice;
     private Integer quantity;
 
     private Double gstPercent;
+    private String scheduleType;
+    private Integer openingStock;
+    
+    public Integer getOpeningStock() {
+		return openingStock;
+	}
 
-    private LocalDate expiryDate;
+	public void setOpeningStock(Integer openingStock) {
+		this.openingStock = openingStock;
+	}
+
+	public String getScheduleType() {
+		return scheduleType;
+	}
+
+	public void setScheduleType(String scheduleType) {
+		this.scheduleType = scheduleType;
+	}
+
+	private LocalDate expiryDate;
     public Double getPurchasePrice() {
 		return purchasePrice;
 	}
@@ -93,14 +110,6 @@ public class Medicine {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Integer getQuantity() {

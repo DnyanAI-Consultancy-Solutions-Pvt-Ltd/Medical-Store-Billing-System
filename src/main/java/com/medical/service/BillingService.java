@@ -79,7 +79,7 @@ public class BillingService {
             }
 
             double amount =
-                    medicine.getPrice()
+                    medicine.getMrp()
                     * dto.getQuantity();
 
             BillItem item =
@@ -91,7 +91,7 @@ public class BillingService {
                     dto.getQuantity());
 
             item.setUnitPrice(
-                    medicine.getPrice());
+                    medicine.getMrp());
 
             item.setAmount(amount);
 

@@ -82,20 +82,20 @@ placeholder="Supplier Name">
 
 <input
 type="text"
+id="gstNo"
+placeholder="GST No">
+<label>Drug License No</label>
+<input type="text" id="drugLicenseNo">
+<br>
+<input
+type="text"
 id="mobileNo"
 placeholder="Mobile No">
-
-<br>
 
 <input
 type="text"
 id="address"
 placeholder="Address">
-
-<input
-type="text"
-id="gstNo"
-placeholder="GST No">
 
 <br>
 
@@ -116,9 +116,10 @@ Save Supplier
 <tr>
 <th>ID</th>
 <th>Name</th>
+<th>GST</th>
+<th>License No</th>
 <th>Mobile</th>
 <th>Address</th>
-<th>GST</th>
 <th>Action</th>
 </tr>
 
@@ -158,11 +159,12 @@ rows += `
 
 <td>${s.supplierName}</td>
 
+<td>${s.gstNo}</td>
+<td>${s.drugLicenseNo}</td>
 <td>${s.mobileNo}</td>
 
 <td>${s.address}</td>
 
-<td>${s.gstNo}</td>
 
 <td>
 
@@ -199,14 +201,18 @@ let supplier = {
 supplierName:
 document.getElementById("supplierName").value,
 
+gstNo:
+	document.getElementById("gstNo").value,
+
+	drugLicenseNo:
+		document.getElementById("drugLicenseNo").value,
+
 mobileNo:
 document.getElementById("mobileNo").value,
 
 address:
-document.getElementById("address").value,
+document.getElementById("address").value
 
-gstNo:
-document.getElementById("gstNo").value
 
 };
 
@@ -237,9 +243,11 @@ alert("Supplier Saved");
 
 document.getElementById("supplierId").value="";
 document.getElementById("supplierName").value="";
+document.getElementById("gstNo").value="";
+document.getElementById("drugLicenseNo").value="";
 document.getElementById("mobileNo").value="";
 document.getElementById("address").value="";
-document.getElementById("gstNo").value="";
+
 
 loadSuppliers();
 
@@ -257,9 +265,10 @@ fetch("/api/suppliers/"+id)
 
 document.getElementById("supplierId").value=s.id;
 document.getElementById("supplierName").value=s.supplierName;
+document.getElementById("gstNo").value=s.gstNo;
+document.getElementById("drugLicenseNo").value=s.drugLicenseNo;
 document.getElementById("mobileNo").value=s.mobileNo;
 document.getElementById("address").value=s.address;
-document.getElementById("gstNo").value=s.gstNo;
 
 });
 

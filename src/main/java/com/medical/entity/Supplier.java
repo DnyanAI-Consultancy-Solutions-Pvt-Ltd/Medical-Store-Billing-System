@@ -11,11 +11,21 @@ public class Supplier {
     private Long id;
 
     private String supplierName;
+    private String drugLicenseNo;
+
     private String mobileNo;
     private String address;
     private String gstNo;
+    
+    public String getDrugLicenseNo() {
+		return drugLicenseNo;
+	}
 
-    public Long getId() {
+	public void setDrugLicenseNo(String drugLicenseNo) {
+		this.drugLicenseNo = drugLicenseNo;
+	}
+
+	public Long getId() {
         return id;
     }
 

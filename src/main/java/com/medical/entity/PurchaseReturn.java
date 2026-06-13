@@ -22,14 +22,31 @@ public class PurchaseReturn {
 
     @ManyToOne
     private Medicine medicine;
-
+    private String invoiceNo;
     private Integer quantity;
 
     private Double amount;
 
     private LocalDate returnDate;
 
-	public Long getId() {
+    private String reason;
+
+    public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+    public Long getId() {
 		return id;
 	}
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Outstanding Balance</title>
+</head>
+<body>
+
+<h2>Outstanding Supplier Balance</h2>
+
+Supplier Id :
+<input type="number" id="supplierId">
+
+<button onclick="checkBalance()">
+Check
+</button>
+
+<h3 id="result"></h3>
+
+<script>
+
+function checkBalance(){
+
+let id =
+document.getElementById("supplierId").value;
+
+fetch("/api/payments/outstanding/"+id)
+
+.then(r=>r.json())
+
+.then(data=>{
+
+document.getElementById("result")
+.innerHTML =
+"Outstanding Amount : ₹"+data;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

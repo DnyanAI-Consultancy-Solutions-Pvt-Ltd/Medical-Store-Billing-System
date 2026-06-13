@@ -107,18 +107,39 @@ placeholder="Medicine Name">
 <input type="text"
 id="companyName"
 placeholder="Company Name">
+<label>Batch No</label>
+<input type="text" id="batchNo">
+
+<label>Unit</label>
+<input type="text" id="unit">
 
 <input type="number"
 id="price"
-placeholder="Price">
+placeholder="MRP">
+<label>Purchase Price</label>
+<input type="number" id="purchasePrice">
 <label>Opening Stock</label>
-<input type="number"
-id="quantity"
-placeholder="Quantity">
+<input type="number" id="openingStock">
 
+<label>GST %</label>
+<select id="gstPercent">
+<option value="0">0%</option>
+<option value="5">5%</option>
+<option value="12">12%</option>
+<option value="18">18%</option>
+<option value="28">28%</option>
+</select>
+
+<label>Schedule Type</label>
+
+<select id="scheduleType">
+<option value="OTC">OTC</option>
+<option value="Schedule H">Schedule H</option>
+<option value="Schedule H1">Schedule H1</option>
+<option value="Schedule X">Schedule X</option>
+</select>
 <input type="date"
 id="expiryDate">
-
 <br>
 
 <button onclick="saveMedicine()">
@@ -139,8 +160,14 @@ Save Medicine
 <th>ID</th>
 <th>Name</th>
 <th>Company</th>
-<th>Price</th>
-<th>Qty</th>
+<th>Batch</th>
+<th>Unit</th>
+<th>MRP</th>
+<th>Purchase Price</th>
+<th>GST</th>
+<th>Schedule</th>
+<th>Opening</th>
+<th>Stock</th>
 <th>Expiry</th>
 <th>Action</th>
 
@@ -182,11 +209,17 @@ rows += `
 
 <td>${m.companyName}</td>
 
+<td>${m.batchNo}</td>
+<td>${m.unit}</td>
 <td>${m.price}</td>
-
+<td>${m.purchasePrice}</td>
+<td>${m.gstPercent}%</td>
+<td>${m.scheduleType}</td>
+<td>${m.openingStock}</td>
 <td>${m.quantity}</td>
 
 <td>${m.expiryDate}</td>
+<td>${m.scheduleType}</td>
 
 <td>
 
@@ -225,15 +258,36 @@ function saveMedicine(){
 	companyName:
 	document.getElementById("companyName").value,
 
+	batchNo:
+		document.getElementById("batchNo").value,
+
+		unit:
+		document.getElementById("unit").value,
+
 	price:
 	document.getElementById("price").value,
+	purchasePrice:
+		parseFloat(
+		document.getElementById("purchasePrice").value
+		),
 
-	quantity:
-	document.getElementById("quantity").value,
+	openingStock:
+		parseInt(
+		document.getElementById("openingStock").value
+		),
 
+		quantity:
+			parseInt(
+			document.getElementById("openingStock").value
+			),
+	gstPercent:
+		parseFloat(
+		document.getElementById("gstPercent").value
+		),
+		scheduleType:
+			document.getElementById("scheduleType").value,
 	expiryDate:
 	document.getElementById("expiryDate").value
-
 	};
 
 	let url="/api/medicines";
@@ -288,13 +342,15 @@ function editMedicine(id){
 
 	document.getElementById("price").value =
 	m.price;
-
+	document.getElementById("purchasePrice").value =
+		m.purchasePrice;
 	document.getElementById("quantity").value =
 	m.quantity;
 
 	document.getElementById("expiryDate").value =
 	m.expiryDate;
-
+	document.getElementById("scheduleType").value =
+m.scheduleType;
 	});
 
 	}

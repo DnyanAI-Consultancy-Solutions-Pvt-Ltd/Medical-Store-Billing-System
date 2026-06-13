@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Inventory Movement Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+background:#f4f6f9;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+h2{
+color:#0f4c81;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Inventory Movement Report</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Medicine</th>
+
+<th>Opening</th>
+
+<th>Purchase</th>
+
+<th>Sale</th>
+
+<th>Purchase Return</th>
+
+<th>Sale Return</th>
+
+<th>Closing</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reportTable">
+
+</tbody>
+
+</table>
+
+<script>
+
+fetch("/api/reports/movement")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(r=>{
+
+rows += `
+<tr>
+
+<td>${r.medicineName}</td>
+
+<td>${r.openingStock}</td>
+
+<td>${r.purchaseQty}</td>
+
+<td>${r.saleQty}</td>
+
+<td>${r.purchaseReturnQty}</td>
+
+<td>${r.saleReturnQty}</td>
+
+<td>${r.closingStock}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById(
+"reportTable"
+).innerHTML = rows;
+
+});
+
+</script>
+
+</body>
+</html>

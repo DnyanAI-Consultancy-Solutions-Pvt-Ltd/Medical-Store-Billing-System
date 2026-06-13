@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Daily Transaction Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+background:#f4f6f9;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:10px;
+border-radius:10px;
+box-shadow:0px 2px 5px gray;
+}
+
+h2{
+color:#0f4c81;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Daily Transaction Report</h1>
+
+<div class="card">
+<h2>Total Sales :
+<span id="sales"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Total Purchases :
+<span id="purchase"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Total Payments :
+<span id="payment"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Sale Returns :
+<span id="saleReturn"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Purchase Returns :
+<span id="purchaseReturn"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Today's Profit :
+<span id="profit"></span>
+</h2>
+</div>
+
+<script>
+
+fetch("/api/daily-report")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("sales")
+.innerHTML="₹"+data.totalSales;
+
+document.getElementById("purchase")
+.innerHTML="₹"+data.totalPurchases;
+
+document.getElementById("payment")
+.innerHTML="₹"+data.totalPayments;
+
+document.getElementById("saleReturn")
+.innerHTML="₹"+data.saleReturns;
+
+document.getElementById("purchaseReturn")
+.innerHTML="₹"+data.purchaseReturns;
+
+document.getElementById("profit")
+.innerHTML="₹"+data.profit;
+
+});
+
+</script>
+
+</body>
+</html>

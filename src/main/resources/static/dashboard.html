@@ -191,6 +191,58 @@ grid-template-columns:1fr;
 
 }
 
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(5px);
+z-index:9999;
+}
+
+.modal-content{
+width:90%;
+height:90%;
+background:white;
+margin:20px auto;
+border-radius:10px;
+overflow:hidden;
+position:relative;
+}
+
+#pageFrame{
+width:100%;
+height:100%;
+border:none;
+}
+
+.close-btn{
+position:fixed;
+top:25px;
+right:120px;
+
+width:40px;
+height:40px;
+
+background:#e53935;
+color:white;
+border:none;
+border-radius:50%;
+
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+
+z-index:99999;
+}
+#pageFrame{
+width:100%;
+height:100%;
+border:none;
+}
 </style>
 
 </head>
@@ -213,44 +265,51 @@ Transactions ▼
 </span>
 
 <div class="dropdown-content">
-
-<a href="billing.html">
-Sale Billing
+<a href="#"
+onclick="openPage('billing.html');return false;">
+Sale
 </a>
 
-<a href="purchase.html">
+<a href="#"
+onclick="openPage('purchase.html');return false;">
 Purchase
 </a>
 
-<a href="sale-return.html">
+
+
+<a href="#"
+onclick="openPage('sale-return.html');return false;">
 Sale Return
 </a>
 
-<a href="purchase-return.html">
+<a href="#"
+onclick="openPage('purchase-return.html');return false;">
 Purchase Return
 </a>
 
-<a href="opening-stock.html">
+<a href="#"
+onclick="openPage('opening-stock.html');return false;">
 Opening Stock
 </a>
 
-<a href="expiry-breakage.html">
+<a href="#"
+onclick="openPage('expiry-breakage.html');return false;">
 Expiry / Breakage
 </a>
-
-<a href="receipt.html">
+<a href="#"
+onclick="openPage('receipt.html');return false;">
 Receipt Entry
 </a>
-
-<a href="payment.html">
+<a href="#"
+onclick="openPage('payment.html');return false;">
 Payment Entry
 </a>
-
-<a href="journal.html">
+<a href="#"
+onclick="openPage('journal.html');return false;">
 Journal Voucher
 </a>
-
-<a href="estimate.html">
+<a href="#"
+onclick="openPage('estimate.html');return false;">
 Estimate
 </a>
 
@@ -263,18 +322,34 @@ Masters ▼
 
 <div class="dropdown-content">
 
-<a href="medicine.html">
+<a href="#"
+onclick="openPage('medicine.html');return false;">
 Medicine Master
 </a>
 
-<a href="customer.html">
+<a href="#"
+onclick="openPage('customer.html');return false;">
 Customer Master
 </a>
 
-<a href="supplier.html">
+<a href="#"
+onclick="openPage('supplier.html');return false;">
 Supplier Master
 </a>
+<a href="#"
+onclick="openPage('gst-master.html')">
+GST Master
+</a>
 
+<a href="#"
+onclick="openPage('schedule-master.html')">
+Schedule Master
+</a>
+
+<a href="#"
+onclick="openPage('company-master.html')">
+Company Master
+</a>
 </div>
 </div>
 <div class="dropdown">
@@ -283,30 +358,40 @@ Reports ▼
 </span>
 
 <div class="dropdown-content">
-
-<a href="bill-history.html">
+<a href="#"
+onclick="openPage('bill-history.html');return false;">
 Bill History
 </a>
-
-<a href="purchase-list.html">
+<a href="#"
+onclick="openPage('purchase-list.html');return false;">
 Purchase History
 </a>
 
-<a href="daily-report.html">
-Daily Transaction
+<a href="#"
+onclick="openPage('daily-report.html');return false;">
+Daily Transaction Report
 </a>
-
-<a href="inventory.html">
+<a href="#" onclick="openPage('movement-report.html')">
+Inventory Movement Report
+</a>
+<a href="#"
+onclick="openPage('inventory.html');return false;">
 Inventory Report
 </a>
 
-<a href="profit-report.html">
+<a href="#"
+onclick="openPage('outstanding.html');return false;">
+Outstanding Supplier Balance
+</a>
+<a href="#"
+onclick="openPage('profit-report.html');return false;">
 Profit Report
 </a>
-
-<a href="expiry-report.html">
+<a href="#"
+onclick="openPage('expiry-report.html');return false;">
 Expiry Report
 </a>
+
 
 </div>
 </div>
@@ -403,10 +488,9 @@ Wholesaler / Company
 <h2>Quick Actions</h2>
 
 <button class="btn"
-onclick="location.href='billing.html'">
+onclick="openSaleModal()">
 New Bill
 </button>
-
 <button class="btn"
 onclick="location.href='purchase.html'">
 New Purchase
@@ -811,6 +895,24 @@ document.getElementById(
 "expiryMedicineTable").innerHTML = rows;
 
 });
+function openPage(page){
+
+    document.getElementById("pageModal")
+    .style.display = "block";
+
+    document.getElementById("pageFrame")
+    .src = page;
+}
+
+function closeModal(){
+
+    document.getElementById("pageModal")
+    .style.display = "none";
+
+    document.getElementById("pageFrame")
+    .src = "";
+}
+
 </script>
 <div style="
 margin-top:30px;
@@ -824,5 +926,20 @@ font-weight:bold;
 Medical Billing ERP System © 2026
 
 </div>
+<!-- SALE MODAL -->
+
+<div id="pageModal" class="modal">
+
+    <button class="close-btn"
+    onclick="closeModal()">
+    ✖
+    </button>
+
+    <div class="modal-content">
+        <iframe id="pageFrame"></iframe>
+    </div>
+
+</div>
+
 </body>
 </html>

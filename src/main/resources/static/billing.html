@@ -190,6 +190,7 @@ Add Item
 <tr>
 <th>Sr</th>
 <th>Medicine</th>
+<th>Schedule</th>
 <th>Qty</th>
 <th>Rate</th>
 <th>Amount</th>
@@ -342,14 +343,55 @@ parseInt(document.getElementById("quantity").value);
 
 let medicine =
 medicines.find(m=>m.id==medicineId);
+//STOCK CHECK
 
+if(medicine.quantity <= 0){
+
+    alert("❌ Out Of Stock");
+
+    return;
+}
+
+// EXPIRY CHECK
+let today = new Date();
+
+let expiryDate =
+new Date(medicine.expiryDate);
+
+if(expiryDate < today){
+
+alert(
+"❌ Medicine Expired. Billing Not Allowed"
+);
+
+return;
+}
 let amount =
 medicine.price * qty;
+if(qty > medicine.quantity){
 
+    alert(
+    "❌ Available Stock : " +
+    medicine.quantity
+    );
+
+    return;
+}
+if(
+		medicine.scheduleType === "Schedule H" ||
+		medicine.scheduleType === "Schedule H1" ||
+		medicine.scheduleType === "Schedule X"
+		){
+		    alert(
+		      "⚠ Prescription Required For " +
+		      medicine.medicineName
+		    );
+		}
 billItems.push({
 
 medicineId: medicine.id,
 medicineName: medicine.medicineName,
+scheduleType: medicine.scheduleType,
 quantity: qty,
 price: medicine.price,
 amount: amount
@@ -375,6 +417,8 @@ html += `
 <td>${index+1}</td>
 
 <td>${item.medicineName}</td>
+<td>${item.scheduleType}</td>
+
 
 <td>${item.quantity}</td>
 
@@ -507,6 +551,7 @@ body:JSON.stringify(billRequest)
 
 		<tr>
 		<td><b>Medicine</b></td>
+		
 		<td><b>Qty</b></td>
 		<td><b>Rate</b></td>
 		</tr>
@@ -514,6 +559,7 @@ body:JSON.stringify(billRequest)
 		${billItems.map(item => `
 		<tr>
 		<td>${item.medicineName}</td>
+		<td>${item.scheduleType}</td>
 		<td>${item.quantity}</td>
 		<td>${item.price}</td>
 		</tr>
@@ -600,6 +646,24 @@ function printBill(){
 	win.print();
 
 	}
+/* ENTER = NEXT FIELD */
+
+window.onload = function() {
+
+    document.getElementById("invoiceNo").focus();
+
+    document.addEventListener("keydown", function(e) {
+
+        if (e.key === "Enter") {
+
+            alert("Enter Pressed");
+
+            e.preventDefault();
+        }
+
+    });
+
+};
 </script>
 
 </body>

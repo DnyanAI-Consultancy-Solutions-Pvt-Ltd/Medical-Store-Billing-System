@@ -98,7 +98,8 @@ border:1px solid #ddd;
 
 <label>Reason</label>
 <input type="text" id="reason">
-
+<label>Amount</label>
+<input type="number" id="amount">
 <button onclick="saveReturn()">
 Save Purchase Return
 </button>
@@ -196,7 +197,13 @@ quantity:
 document.getElementById("quantity").value,
 
 reason:
-document.getElementById("reason").value
+document.getElementById("reason").value,
+
+amount:
+	parseFloat(
+	document.getElementById("amount").value)
+
+
 
 };
 

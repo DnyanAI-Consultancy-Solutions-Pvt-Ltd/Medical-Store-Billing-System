@@ -34,7 +34,7 @@ public class MedicineService {
 
         existing.setMedicineName(medicine.getMedicineName());
         existing.setCompanyName(medicine.getCompanyName());
-        existing.setPrice(medicine.getPrice());
+        existing.setMrp(medicine.getMrp());
         existing.setQuantity(medicine.getQuantity());
         existing.setExpiryDate(medicine.getExpiryDate());
 

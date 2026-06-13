@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Company Master</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
+color:#0f4c81;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+display:block;
+margin-top:10px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+background:#2196f3;
+color:white;
+border:none;
+padding:12px;
+margin-top:15px;
+cursor:pointer;
+border-radius:5px;
+font-size:15px;
+}
+
+button:hover{
+background:#1976d2;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+.close-btn{
+float:right;
+background:red;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<button class="close-btn"
+onclick="parent.closeModal()">
+✖ Close
+</button>
+
+<h2>Company Master</h2>
+
+<label>Company Name</label>
+<input type="text" id="companyName">
+
+<label>GST Number</label>
+<input type="text" id="gstNo">
+
+<label>Drug License No</label>
+<input type="text" id="licenseNo">
+
+<label>Phone Number</label>
+<input type="text" id="phone">
+
+<label>Email</label>
+<input type="email" id="email">
+
+<label>Address</label>
+<textarea id="address"></textarea>
+
+<button onclick="saveCompany()">
+Save Company
+</button>
+
+<h3>Company Details</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Company</th>
+<th>GST</th>
+<th>License</th>
+<th>Phone</th>
+</tr>
+</thead>
+
+<tbody id="companyTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+loadCompanies();
+
+function saveCompany(){
+
+let company = {
+
+companyName:
+document.getElementById("companyName").value,
+
+gstNo:
+document.getElementById("gstNo").value,
+
+licenseNo:
+document.getElementById("licenseNo").value,
+
+phone:
+document.getElementById("phone").value,
+
+email:
+document.getElementById("email").value,
+
+address:
+document.getElementById("address").value
+
+};
+
+fetch("/api/company",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(company)
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+alert("Company Saved");
+
+loadCompanies();
+
+});
+
+}
+
+function loadCompanies(){
+
+fetch("/api/company")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(c=>{
+
+rows += `
+<tr>
+
+<td>${c.id}</td>
+
+<td>${c.companyName}</td>
+
+<td>${c.gstNo}</td>
+
+<td>${c.licenseNo}</td>
+
+<td>${c.phone}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("companyTable")
+.innerHTML = rows;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

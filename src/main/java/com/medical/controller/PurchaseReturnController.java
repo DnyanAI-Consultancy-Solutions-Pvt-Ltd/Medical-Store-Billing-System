@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.medical.dto.PurchaseReturnRequest;
 import com.medical.entity.PurchaseReturn;
 import com.medical.service.PurchaseReturnService;
 
@@ -17,13 +18,13 @@ public class PurchaseReturnController {
     @Autowired
     private PurchaseReturnService service;
 
+    
     @PostMapping
     public PurchaseReturn save(
-            @RequestBody PurchaseReturn pr){
+            @RequestBody PurchaseReturnRequest request){
 
-        return service.save(pr);
+        return service.save(request);
     }
-
     @GetMapping
     public List<PurchaseReturn> getAll(){
 
