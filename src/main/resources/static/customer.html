@@ -98,16 +98,27 @@ Medical Billing System
 <div class="card">
 
 <h3>Add / Update Customer</h3>
-
+<b><label>Customer Name:</label></b>
 <input
 type="text"
 id="customerName"
 placeholder="Customer Name">
-
+<b><label>Mobile No: </label></b>
 <input
 type="text"
 id="mobileNo"
 placeholder="Mobile Number">
+<b><label>Address: </label></b>
+<input
+type="text"
+id="address"
+placeholder="address">
+
+<b><label>Balance: </label></b>
+<input
+type="number"
+id="balance"
+placeholder="0">
 
 <br>
 
@@ -129,6 +140,10 @@ Save Customer
 <th>ID</th>
 <th>Customer Name</th>
 <th>Mobile No</th>
+<th>Address</th>
+
+<th>Balance</th>
+
 <th>Action</th>
 
 </tr>
@@ -165,7 +180,8 @@ function loadCustomers(){
 	<td>${c.customerName}</td>
 
 	<td>${c.mobileNo}</td>
-
+	<td>${c.address}</td>
+	<td>${c.balance}</td>
 	<td>
 
 	<button onclick="editCustomer(${c.id})">
@@ -201,8 +217,13 @@ function saveCustomer(){
 	document.getElementById("customerName").value,
 
 	mobileNo:
-	document.getElementById("mobileNo").value
+	document.getElementById("mobileNo").value,
 
+	address:
+		document.getElementById("address").value,
+		balance:
+			document.getElementById("balance").value
+		
 	};
 
 	let url="/api/customers";
@@ -257,6 +278,10 @@ function editCustomer(id){
 
 	document.getElementById("mobileNo").value =
 	c.mobileNo;
+	document.getElementById("balance").value =
+		c.balance;
+	document.getElementById("address").value =
+		c.address;
 
 	});
 

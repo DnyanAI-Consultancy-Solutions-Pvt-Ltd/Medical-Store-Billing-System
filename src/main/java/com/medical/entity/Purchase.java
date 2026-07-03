@@ -21,7 +21,52 @@ public class Purchase {
 
     private Double totalAmount;
 
-    public Long getId() {
+    private String batchNo;
+private Double purchaseRate;
+private Double MRP;
+private  LocalDate expiryDate;
+private Double gst;
+    public LocalDate getExpiryDate() {
+	return expiryDate;
+}
+
+public void setExpiryDate(LocalDate expiryDate) {
+	this.expiryDate = expiryDate;
+}
+
+public Double getGst() {
+	return gst;
+}
+
+public void setGst(Double gst) {
+	this.gst = gst;
+}
+
+	public Double getPurchaseRate() {
+	return purchaseRate;
+}
+
+public void setPurchaseRate(Double purchaseRate) {
+	this.purchaseRate = purchaseRate;
+}
+
+public Double getMRP() {
+	return MRP;
+}
+
+public void setMRP(Double mRP) {
+	MRP = mRP;
+}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public Long getId() {
         return id;
     }
 

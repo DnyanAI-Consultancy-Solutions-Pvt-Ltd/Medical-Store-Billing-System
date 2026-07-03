@@ -14,11 +14,9 @@ public class Medicine {
     private String medicineName;
 
     private String companyName;
-
     private String batchNo;
-
     private String unit;
-
+    @Column(name="mrp")
     private Double mrp;
 
     private Double purchasePrice;
@@ -27,7 +25,43 @@ public class Medicine {
     private Double gstPercent;
     private String scheduleType;
     private Integer openingStock;
-    
+    private Double marginPercent;
+    public Double getMarginPercent() {
+		return marginPercent;
+	}
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public void setMarginPercent(Double marginPercent) {
+		this.marginPercent = marginPercent;
+	}
+
+	public String getContents() {
+		return contents;
+	}
+
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
+
+	public String getSymptoms() {
+		return symptoms;
+	}
+
+	public void setSymptoms(String symptoms) {
+		this.symptoms = symptoms;
+	}
+
+	@Column(length = 1000)
+    private String contents;
+    @Column(length = 2000)
+    private String symptoms;
     public Integer getOpeningStock() {
 		return openingStock;
 	}
@@ -53,13 +87,7 @@ public class Medicine {
 		this.purchasePrice = purchasePrice;
 	}
 
-	public String getBatchNo() {
-		return batchNo;
-	}
-
-	public void setBatchNo(String batchNo) {
-		this.batchNo = batchNo;
-	}
+	
 
 	public String getUnit() {
 		return unit;

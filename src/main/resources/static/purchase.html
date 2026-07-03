@@ -63,6 +63,7 @@ th{
     font-weight:bold;
 }
 
+
 </style>
 
 </head>
@@ -78,16 +79,21 @@ Purchase Entry
 <div class="card">
 
 <h3>Purchase Information</h3>
-
+<b><label>Invoice No:</label></b>
 <input
 type="text"
 id="invoiceNo"
 placeholder="Invoice No">
-
+<b><label>Purchase Date :</label></b>
 <input
 type="date"
 id="purchaseDate">
+<b><label>Batch No:</label></b>
+<input
+type="number"
+id="batchNo">
 
+<b><label>Supplier/ WholeSaler:</label></b>
 <select id="supplierSelect">
 </select>
 
@@ -101,18 +107,35 @@ id="purchaseDate">
 
 <select id="medicineSelect">
 </select>
+<b><label>Quantity:</label></b>
 
 <input
 type="number"
 id="qty"
 placeholder="Qty">
+<b><label>Purchase Price:</label></b>
 
 <input
 type="number"
 id="purchaseRate"
 placeholder="Purchase Rate">
+<b><label>MRP :</label></b>
 
+<input
+type="number"
+id="mrp"
+placeholder="MRP">
+
+<b><label>Expiry Date :</label></b>
+<input
+type="date"
+id="expiryDate">
+<b><label>GST :</label></b>
+<input
+type="number"
+id="gst">
 <button onclick="addItem()">
+
 Add Item
 </button>
 
@@ -126,11 +149,18 @@ Add Item
 
 <thead>
 <tr>
+<th>Invoice No</th>
 <th>Medicine</th>
+<th>Batch No</th>
+<th>Purchase Date</th>
+<th>Supplier Name</th>
 <th>Qty</th>
 <th>Purchase Rate</th>
+<th>MRP</th>
+<th>Expiry Date</th>
+<th>Gst</th>
 <th>Amount</th>
-<th>Action</th>
+<th></th>
 </tr>
 </thead>
 
@@ -214,28 +244,50 @@ function addItem(){
 
 let medicineId =
 document.getElementById("medicineSelect").value;
+let invoiceNo =
+	document.getElementById("invoiceNo").value;
 
 let medicineName =
 document.getElementById("medicineSelect")
 .options[
 document.getElementById("medicineSelect").selectedIndex
 ].text;
-
+let batchNo =
+	document.getElementById("batchNo").value;
+let purchaseDate =
+	document.getElementById("purchaseDate").value;
+let supplierName =
+	document.getElementById("supplierSelect")
+	.options[
+	document.getElementById("supplierSelect").selectedIndex
+	].text;
 let qty =
 parseInt(document.getElementById("qty").value);
 
 let purchaseRate =
 parseFloat(document.getElementById("purchaseRate").value);
-
+let mrp =
+	parseInt(document.getElementById("mrp").value);
+let expiryDate =
+	document.getElementById("expiryDate").value;
+let gst =
+	parseInt(document.getElementById("gst").value);
 let amount = qty * purchaseRate;
 
 purchaseItems.push({
-
+	invoiceNo:invoiceNo,
 medicineId:medicineId,
 medicineName:medicineName,
+batchNo:batchNo,
+purchaseDate:purchaseDate,
+suppplierName:suppplierName,
 quantity:qty,
 purchaseRate:purchaseRate,
-amount:amount
+mrp:mrp,
+expiryDate:expiryDate,
+gst:gst,
+amount:amount,
+
 
 });
 
@@ -255,12 +307,18 @@ total += item.amount;
 
 rows += `
 <tr>
-
+	<td>${item.invoiceNo}</td>
 <td>${item.medicineName}</td>
+<td>${item.batchNo}</td>
+<td>${item.purchaseDate}</td>
+<td>${item.supplierName}</td>
 
 <td>${item.quantity}</td>
 
 <td>${item.purchaseRate}</td>
+<td>${item.mrp}</td>
+<td>${item.expiryDate}</td>
+<td>${item.gst}</td>
 
 <td>${item.amount}</td>
 

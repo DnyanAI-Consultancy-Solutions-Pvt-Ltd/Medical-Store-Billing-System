@@ -31,24 +31,61 @@ body{
     font-weight:bold;
     color:#2c3e50;
 }
+.modal-content{
+    overflow-y:auto;
+}
 
 .container{
-    padding:20px;
+padding:20px;
+min-width:1100px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+}
+
+.form-grid div{
+display:flex;
+flex-direction:column;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+width:100%;
+}
+.form-grid div{
+display:flex;
+flex-direction:column;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:10px;
+box-sizing:border-box;
+}
+
+textarea{
+height:80px;
 }
 
 .card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0px 2px 5px gray;
+background:white;
+padding:20px;
+border-radius:10px;
+max-height:none;
+overflow:visible;
 }
 
-input{
-    width:250px;
-    padding:10px;
-    margin:10px;
+@media(max-width:768px){
+.form-grid{
+grid-template-columns:1fr;
 }
-
+}
 button{
     padding:10px 15px;
     cursor:pointer;
@@ -92,36 +129,57 @@ Medical Billing System
 <a href="inventory.html">Inventory</a>
 
 </div>
+
 <div class="container">
 <h2>Medicine Management</h2>
 <input type="hidden" id="medicineId">
-
-<div class="card">
-
-<h3>Add / Update Medicine</h3>
-
-<input type="text"
-id="medicineName"
-placeholder="Medicine Name">
-
+<div class="form-grid">
+<h3>Add / Update Products</h3>
+<br>
+<div>
+<label>Product Name</label>
+<input type="text" id="medicineName" placeholder="Medicine Name">
+<datalist id="medicineList"></datalist>
+</div>
+<div>
+<label>Company Name</label>
 <input type="text"
 id="companyName"
 placeholder="Company Name">
-<label>Batch No</label>
+<datalist id="companyList"></datalist>
+</div>
+<div><label>Batch No</label>
 <input type="text" id="batchNo">
-
+</div>
+<div>
 <label>Unit</label>
-<input type="text" id="unit">
-
+<select id="unit">
+    <option value="Tablet">Tablet</option>
+    <option value="Capsule">Capsule</option>
+    <option value="Strip">Strip</option>
+    <option value="Bottle">Bottle</option>
+    <option value="Tube">Tube</option>
+    <option value="Vial">Vial</option>
+    <option value="Injection">Injection</option>
+    <option value="Sachet">Sachet</option>
+    <option value="Pack">Pack</option>
+    <option value="Piece">Piece</option>
+</select>
+</div>
+<div>
+<label>MRP</label>
 <input type="number"
-id="price"
+id="mrp"
 placeholder="MRP">
-<label>Purchase Price</label>
+</div>
+<div><label>Purchase Price</label>
 <input type="number" id="purchasePrice">
+</div>
+<div>
 <label>Opening Stock</label>
 <input type="number" id="openingStock">
-
-<label>GST %</label>
+</div>
+<div><label>GST %</label>
 <select id="gstPercent">
 <option value="0">0%</option>
 <option value="5">5%</option>
@@ -129,7 +187,8 @@ placeholder="MRP">
 <option value="18">18%</option>
 <option value="28">28%</option>
 </select>
-
+</div>
+<div>
 <label>Schedule Type</label>
 
 <select id="scheduleType">
@@ -138,14 +197,31 @@ placeholder="MRP">
 <option value="Schedule H1">Schedule H1</option>
 <option value="Schedule X">Schedule X</option>
 </select>
+</div>
+<div>
+<label>Expiry Date</label>
+
 <input type="date"
 id="expiryDate">
-<br>
+</div>
+<div>
+<label>Margin %</label>
+<input type="number" id="marginPercent">
+</div>
+<div>
+<label>Contents</label>
 
+<textarea id="contents"></textarea>
+</div>
+<div>
+<label>Substitues / Uses</label>
+<textarea id="symptoms"></textarea>
+
+</div>
 <button onclick="saveMedicine()">
 Save Medicine
 </button>
-
+</div>
 </div>
 <div class="card" style="margin-top:20px;">
 
@@ -169,7 +245,9 @@ Save Medicine
 <th>Opening</th>
 <th>Stock</th>
 <th>Expiry</th>
-<th>Action</th>
+<th>Margin %</th>
+<th>Contents</th>
+<th>Substitutes</th>
 
 </tr>
 
@@ -178,17 +256,14 @@ Save Medicine
 <tbody id="medicineTable">
 
 </tbody>
-
 </table>
-
 </div>
-
 <script>
-
 loadMedicines();
 
 function loadMedicines(){
-
+	
+	
 fetch("/api/medicines")
 
 .then(res=>res.json())
@@ -198,7 +273,7 @@ fetch("/api/medicines")
 let rows="";
 
 data.forEach(m=>{
-
+	 
 rows += `
 
 <tr>
@@ -211,18 +286,19 @@ rows += `
 
 <td>${m.batchNo}</td>
 <td>${m.unit}</td>
-<td>${m.price}</td>
+<td>${m.mrp}</td>
 <td>${m.purchasePrice}</td>
 <td>${m.gstPercent}%</td>
 <td>${m.scheduleType}</td>
 <td>${m.openingStock}</td>
 <td>${m.quantity}</td>
-
 <td>${m.expiryDate}</td>
-<td>${m.scheduleType}</td>
+<td>${m.marginPercent || 0}</td>
+<td>${m.contents || ''}</td>
+<td>${m.symptoms || ''}</td>
+
 
 <td>
-
 <button onclick="editMedicine(${m.id})">
 Edit
 </button>
@@ -264,8 +340,8 @@ function saveMedicine(){
 		unit:
 		document.getElementById("unit").value,
 
-	price:
-	document.getElementById("price").value,
+	mrp: parseFloat(
+	document.getElementById("mrp").value),
 	purchasePrice:
 		parseFloat(
 		document.getElementById("purchasePrice").value
@@ -285,9 +361,19 @@ function saveMedicine(){
 		document.getElementById("gstPercent").value
 		),
 		scheduleType:
-			document.getElementById("scheduleType").value,
-	expiryDate:
-	document.getElementById("expiryDate").value
+		document.getElementById("scheduleType").value,
+	
+		expiryDate:
+	document.getElementById("expiryDate").value,
+	marginPercent:
+		document.getElementById("marginPercent").value,
+	contents:
+		document.getElementById("contents").value,
+
+		symptoms:
+		document.getElementById("symptoms").value
+
+		
 	};
 
 	let url="/api/medicines";
@@ -340,17 +426,25 @@ function editMedicine(id){
 	document.getElementById("companyName").value =
 	m.companyName;
 
-	document.getElementById("price").value =
-	m.price;
+	document.getElementById("mrp").value =
+	m.mrp;
 	document.getElementById("purchasePrice").value =
 		m.purchasePrice;
-	document.getElementById("quantity").value =
+	document.getElementById("openingStock").value =
 	m.quantity;
 
 	document.getElementById("expiryDate").value =
 	m.expiryDate;
 	document.getElementById("scheduleType").value =
 m.scheduleType;
+	document.getElementById("marginPercent").value =
+		m.marginPercent || "";
+
+		document.getElementById("contents").value =
+		m.contents || "";
+
+		document.getElementById("symptoms").value =
+		m.symptoms || "";
 	});
 
 	}
@@ -371,10 +465,8 @@ function deleteMedicine(id){
 
 	}
 
-	}
-	
+}
 
 </script>
-</div>
 </body>
 </html>

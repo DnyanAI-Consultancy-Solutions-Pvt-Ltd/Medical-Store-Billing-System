@@ -13,11 +13,32 @@ public class Customer {
     private String customerName;
 
     private String mobileNo;
-
+private String address;
+private Double balance;
     public Customer() {
     }
 
-    public Long getId() {
+    public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
         return id;
     }
 

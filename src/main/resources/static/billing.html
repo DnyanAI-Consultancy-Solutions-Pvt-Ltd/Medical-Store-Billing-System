@@ -12,36 +12,115 @@ font-family:Arial;
 background:#eef3f8;
 margin:0;
 }
+.navbar{
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+ text-align: center;
 
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
 .header{
 background:#198754;
 color:white;
-padding:15px;
-font-size:24px;
+padding:20px;
+font-size:28px;
 font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
 }
+.logo{
+ position:absolute;
+   left:20px;
+
+    width:150px;
+    height:40px;
+    
+}
+.header span{
+    margin:0 auto;
+}
+.billing-top{
+    padding:8px;
+}
+
+.billing-top input,
+.billing-top select{
+    height:30px;
+    padding:4px 8px;
+    margin:2px;
+}
+
 
 .container{
-padding:20px;
+    height:95vh;
+    display:flex;
+    flex-direction:column;
 }
-
+.table-container{
+    height:310px;
+    overflow-y:auto;
+}
+.table-container table{
+    width:100%;
+}
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,0.4);
+    z-index:9999;
+}
+.modal-content{
+    width:99%;
+    height:98vh;
+    margin:5px auto;
+    background:white;
+    border-radius:8px;
+    overflow:hidden;
+}
 .card{
 background:white;
-padding:20px;
+padding:10px;
 border-radius:10px;
 box-shadow:0 0 10px #ccc;
-margin-bottom:20px;
+margin-bottom:8px;
 }
-
+.medicine-info{
+    padding:5px;
+    margin-top:5px;
+}
+.medicine-info p{
+   margin:2px 0;
+    font-size:13px;
+}
 .row{
 display:flex;
 gap:15px;
 margin-bottom:10px;
 flex-wrap:wrap;
 }
+.form-row{
+display:flex;
+gap:15px;
+align-items:center;
+}
 
+.form-row input,
+.form-row select{
+height:40px;
+width:220px;
+}
 input,select{
-padding:8px;
+padding:10px;
 width:220px;
 }
 
@@ -54,15 +133,20 @@ margin-top:20px;
 th{
 background:#198754;
 color:white;
-padding:10px;
+padding:8px;
 }
 
 td{
 border:1px solid #ddd;
-padding:8px;
+padding:6px;
 text-align:center;
 }
-
+.action-buttons{
+    position:sticky;
+    bottom:0;
+    background:white;
+    padding:5px;
+}
 .btn{
 padding:10px 15px;
 border:none;
@@ -73,8 +157,21 @@ margin:5px;
 }
 
 .total-box{
-text-align:right;
-margin-top:20px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.total-box input{
+    width:70px;
+    height:25px;
+}
+
+.total-box h3{
+    margin:0;
+    color:#0f4c81;
 }
 @media print{
 
@@ -113,65 +210,173 @@ text-align:center;
 .receipt hr{
 border:1px dashed black;
 }
+.bill-summary{
+    margin-top:10px;
+    padding:10px;
+    background:#f5f5f5;
+}
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:5px;
+}
 
+.action-buttons button{
+    width:90px;
+    height:30px;
+    font-size:13px;
+    padding:5px 10px;
+}
+#pageFrame{
+    width:100%;
+    height:100%;
+    border:none;
+}
+.medicine-details{
+    display:flex;
+    gap:15px;
+    margin-top:10px;
+}
+
+.detail-box{
+    flex:1;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:12px;
+    background:#fff;
+    min-height:80px;
+}
+
+.detail-box h4{
+    margin:0 0 8px;
+    color:#2c3e50;
+    border-bottom:1px solid #ddd;
+    padding-bottom:5px;
+}
+.invoice-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:nowrap;
+}
+
+.invoice-row label{
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.invoice-row input,
+.invoice-row select{
+    width:180px;
+    height:17px;
+}
+#billType{
+    width:180px;
+    height:36px;
+    font-size:14px;
+}
+.medicine-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-top:15px;
+}
+
+.medicine-row label{
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+#medicineSearch{
+    width:220px;
+}
+
+#quantity{
+    width:120px;
+}
 </style>
-
 </head>
 
 <body>
 
 <div class="header">
-🏥 Medical Billing System
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
 </div>
 
 <div class="container">
 
 <div class="card">
 
+
 <h3>Invoice Details</h3>
-
 <div class="row">
-
+<div class="invoice-row">
+<b><label>Bill No : </label></b>
 <input type="text"
-id="invoiceNo"
-placeholder="Invoice No">
-
+id="invoiceNo" readonly>
+<b><label>Bill Date : </label></b>
 <input type="date"
 id="billDate">
 
 
+<div style="position:relative;width:250px;">
+<input type="hidden" id="customerId">
+<input type="text"
+       id="customerSearch"
+       placeholder="Search Customer"
+       onkeyup="filterCustomers()">
+       <input type="hidden" id="customerId">
 
+<div id="customerDropdown"
+     style="
+     position:absolute;
+     width:100%;
+     background:white;
+     border:1px solid #ccc;
+     max-height:150px;
+     overflow-y:auto;
+     display:none;
+     z-index:1000;">
 </div>
 
-<div class="row">
-
-<select id="customerSelect">
-</select>
-<input type="text"
-id="doctorName"
-placeholder="Doctor Name">
-
+</div>
+<b><label>Type :</label></b>
 <select id="billType">
 <option value="Cash">Cash</option>
 <option value="Credit">Credit</option>
 </select>
 
-
-
-
 </div>
-
+</div>
 </div>
 
 <div class="card">
-
-<h3>Add Medicines</h3>
-
 <div class="row">
+<div class="medicine-row">
+<h3>Add Medicines</h3>
+<div style="position:relative;width:250px;">
 
-<select id="medicineSelect">
-</select>
+<input type="text"
+       id="medicineSearch"
+       placeholder="Search Medicine"
+       onkeyup="filterMedicines()">
 
+<div id="medicineDropdown"
+     style="
+     position:absolute;
+     width:100%;
+     background:white;
+     border:1px solid #ccc;
+     max-height:150px;
+     overflow-y:auto;
+     display:none;
+     z-index:1000;">
+</div>
+
+</div>
+<div id="medicineInfo">
 <input type="number"
 id="quantity"
 placeholder="Quantity">
@@ -180,21 +385,22 @@ placeholder="Quantity">
 onclick="addMedicine()">
 Add Item
 </button>
-
 </div>
-
-<table>
+</div>
+</div>
+<div class="table-container">
+    <table id="billTable">
 
 <thead>
 
 <tr>
-<th>Sr</th>
-<th>Medicine</th>
-<th>Schedule</th>
+<th>Sr No:</th>
+<th>Product</th>
+<th>Batch no</th>
 <th>Qty</th>
+<th>Unit</th>
 <th>Rate</th>
-<th>Amount</th>
-<th>Action</th>
+<th>Total Amount</th>
 </tr>
 
 </thead>
@@ -204,77 +410,103 @@ Add Item
 </tbody>
 
 </table>
+</div>
+<table>
+
+<thead>
+
+<tr>
+<td><b>Stock :</b>
+<span id="stockInfo">0</span>
+</td>
+
+<td><b>Margin :</b>
+<span id="marginInfo">0</span> %
+</td>
+</tr>
+<tr>
+<td><b>MRP :</b>
+₹<span id="mrpInfo">0</span>
+</td>
+
+<td><b>Purchase Price :</b>
+₹<span id="purchasePriceInfo">0</span>
+</td>
+</tr>
+
+</thead>
+
+<tbody id="info">
+
+</tbody>
+
+</table>
+
+
+<div class="medicine-info">
+
+    
+
+
+<b><label>Prescribed By DR. :</label></b>
+<input type="text"
+id="doctorName"
+placeholder="Doctor Name">
+
+   <div class="medicine-details">
+
+    <div class="detail-box">
+        <h4>Contents</h4>
+        <div id="contentsInfo">-</div>
+    </div>
+
+    <div class="detail-box">
+        <h4>Substitutes</h4>
+        <div id="symptomsInfo">-</div>
+    </div>
+
+</div>
+</div>
+
+</div>
 
 <div class="total-box">
 
-<p>
-Sub Total :
-₹ <span id="subTotal">0</span>
-</p>
+<span>GST (18%): ₹ <span id="gst">0</span></span>
 
-<p>
-GST (18%) :
-₹ <span id="gst">0</span>
-</p>
-
-<p>
-Discount :
+<span>
+Discount:
 ₹ <input type="number"
 id="discount"
 value="0"
-onkeyup="calculateTotal()"
-style="width:100px;">
-</p>
+onkeyup="calculateTotal()">
+</span>
 
-<p>
-Paid Amount :
+<span>
+Paid:
 ₹ <input type="number"
 id="paidAmount"
-value="0"
-style="width:100px;">
-</p>
+value="0">
+</span>
 
-<h2>
-Net Amount :
-₹ <span id="netTotal">0</span>
-</h2>
-
+<h3>
+Net Amount: ₹ <span id="netTotal"></span>
+</h3>
 </div>
+<div class="action-buttons">
 
 <button class="btn"
+onclick="printtBill()">
+Print
+</button>  
+  <button class="btn"
 onclick="generateBill()">
-Generate Bill
+View
 </button>
-
+</div>
 
 
 </div>
-<div class="card">
-<h3>Generated Bill</h3>
-
-<div id="printArea">
-
-<div class="receipt">
-
-<h2> MEDICAL STORE</h2>
-
-<p style="text-align:center">
-GSTIN : 27ABCDE1234F1Z5
-</p>
-
-<hr>
-
-<div id="billResult">
-No Bill Generated
-</div>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
 <script>
 
 let medicines = [];
@@ -283,66 +515,163 @@ let billItems = [];
 loadCustomers();
 loadMedicines();
 
+let customers = [];
+
 function loadCustomers(){
 
 fetch("/api/customers")
-.then(res=>res.json())
-.then(data=>{
+.then(res => res.json())
+.then(data => {
 
-let html="";
-
-data.forEach(c=>{
-
-html += `
-<option value="${c.id}">
-${c.customerName}
-</option>
-`;
+    customers = data;
 
 });
+}
+function filterCustomers(){
 
-document.getElementById("customerSelect").innerHTML = html;
+	let search =
+	document.getElementById("customerSearch")
+	.value.toLowerCase();
 
-});
+	let dropdown =
+	document.getElementById("customerDropdown");
+
+	let html = "";
+
+	customers
+	.filter(c =>
+	c.customerName.toLowerCase().includes(search)
+	)
+	.forEach(c => {
+
+		html += `
+			<div onclick="selectCustomer(${c.id}, '${c.customerName}')"
+			     style="padding:8px;cursor:pointer;">
+			     ${c.customerName}
+			</div>
+			`;
+
+	});
+
+	dropdown.innerHTML = html;
+
+	dropdown.style.display =
+	html ? "block" : "none";
+	}
+function selectCustomer(id, name){
+
+    document.getElementById("customerSearch").value = name;
+
+    document.getElementById("customerId").value = id;
+
+    document.getElementById("customerDropdown").style.display = "none";
+}function loadMedicines(){
+	let options = "";
+
+	medicines.forEach(m => {
+	    options += `
+	    <option value="${m.medicineName}">
+	    `;
+	});
+
+	fetch("/api/medicines")
+	.then(res => res.json())
+	.then(data => {
+
+	    medicines = data;
+
+	    let html = "";
+
+	    data.forEach(m => {
+
+	        html += `
+	        <div onclick="selectMedicine('${m.medicineName}')"
+	             style="padding:8px;cursor:pointer;">
+	            ${m.medicineName}
+	        </div>
+	        `;
+	    });
+
+	    document.getElementById("medicineDropdown").innerHTML = html;
+
+	});
 
 }
+function filterMedicines(){
 
-function loadMedicines(){
+	let search =
+	document.getElementById("medicineSearch")
+	.value.toLowerCase();
 
-fetch("/api/medicines")
-.then(res=>res.json())
-.then(data=>{
+	let dropdown =
+	document.getElementById("medicineDropdown");
 
-medicines = data;
+	let html = "";
 
-let html="";
+	medicines
+	.filter(m =>
+	m.medicineName.toLowerCase().includes(search)
+	)
+	.forEach(m => {
 
-data.forEach(m=>{
+	html += `
+	<div onclick="selectMedicine('${m.medicineName}')"
+	     style="padding:8px;cursor:pointer;">
+	     ${m.medicineName}
+	</div>
+	`;
 
-html += `
-<option value="${m.id}">
-${m.medicineName}
-</option>
-`;
+	});
 
-});
+	dropdown.innerHTML = html;
 
-document.getElementById("medicineSelect").innerHTML = html;
+	dropdown.style.display =
+	html ? "block" : "none";
 
-});
+	}
+function selectMedicine(name){
 
-}
+	document.getElementById("medicineSearch").value =
+	name;
 
+	document.getElementById("medicineDropdown").style.display =
+	"none";
+
+	}
 function addMedicine(){
+	let medicineName =
+		document.getElementById("medicineSearch").value;
 
-let medicineId =
-document.getElementById("medicineSelect").value;
+		let medicine =
+		medicines.find(
+		m => m.medicineName === medicineName
+		);
 
+		if(!medicine){
+		alert("Select valid medicine");
+		return;
+		}
 let qty =
-parseInt(document.getElementById("quantity").value);
+	parseInt(document.getElementById("quantity").value);
 
-let medicine =
-medicines.find(m=>m.id==medicineId);
+	
+document.getElementById("stockInfo").innerText =
+	medicine.quantity || 0;
+	document.getElementById("mrpInfo").innerText =
+	medicine.mrp || 0;
+
+	document.getElementById("purchasePriceInfo").innerText =
+	medicine.purchasePrice || 0;
+
+	document.getElementById("marginInfo").innerText =
+	medicine.marginPercent || 0;
+
+	document.getElementById("contentsInfo").innerText =
+	medicine.contents || "-";
+
+	document.getElementById("symptomsInfo").innerText =
+	medicine.symptoms || "-";
+
 //STOCK CHECK
 
 if(medicine.quantity <= 0){
@@ -367,7 +696,7 @@ alert(
 return;
 }
 let amount =
-medicine.price * qty;
+medicine.mrp * qty;
 if(qty > medicine.quantity){
 
     alert(
@@ -391,17 +720,29 @@ billItems.push({
 
 medicineId: medicine.id,
 medicineName: medicine.medicineName,
-scheduleType: medicine.scheduleType,
+batchNo: medicine.batchNo,
+
 quantity: qty,
-price: medicine.price,
+unit: medicine.unit,
+unitPrice: medicine.mrp,
 amount: amount
+
 
 });
 
 renderTable();
 
 }
+window.onload = function(){
 
+	let today = new Date()
+	.toISOString()
+	.split('T')[0];
+
+	document.getElementById("billDate").value =
+	today;
+
+	}
 function renderTable(){
 
 let html="";
@@ -417,15 +758,26 @@ html += `
 <td>${index+1}</td>
 
 <td>${item.medicineName}</td>
-<td>${item.scheduleType}</td>
+<td>${item.batchNo}</td>
 
 
-<td>${item.quantity}</td>
 
-<td>${item.price}</td>
+<td>
+<input type="number"
+value="${item.quantity}"
+onchange="calculateRow(this)">
+</td>
+<td>${item.unit}</td>
 
-<td>${item.amount}</td>
+<td>
+<input type="number"
+value="${item.unitPrice}"
+onchange="calculateRow(this)">
+</td>
 
+<td class="amount">
+${item.amount}
+</td>
 <td>
 <button onclick="removeItem(${index})">
 X
@@ -468,14 +820,14 @@ let net = subtotal + gst - discount;
 document.getElementById("gst").innerText =
 gst.toFixed(2);
 
-document.getElementById("netTotal").innerText =
+document.getElementById("net").innerText =
 net.toFixed(2);
 
 }
 
 function generateBill(){
 	let customerId =
-		document.getElementById("customerSelect").value;
+		document.getElementById("customerId").value;
 
 let medicinesPayload=[];
 
@@ -530,38 +882,38 @@ body:JSON.stringify(billRequest)
 
 .then(data=>{
 
-	document.getElementById("billResult").innerHTML = `
+	let billContent = `
 
 		<p><b>Invoice :</b> ${data.invoiceNo}</p>
 
 		<p><b>Bill No :</b> ${data.id}</p>
 
-		<p><b>Date :</b>
-		${data.billDate.substring(0,10)}</p>
+		<p><b>Date :</b> ${data.billDate.substring(0,10)}</p>
 
-		<p><b>Customer :</b>
-		${data.customer.customerName}</p>
+		<p><b>Customer :</b> ${data.customer.customerName}</p>
 
-		<p><b>Doctor :</b>
-		${data.doctorName}</p>
+		<p><b>Doctor :</b> ${data.doctorName}</p>
 
 		<hr>
 
-		<table style="width:100%;font-size:12px">
+		<table>
 
 		<tr>
-		<td><b>Medicine</b></td>
-		
-		<td><b>Qty</b></td>
-		<td><b>Rate</b></td>
+		<th>Product</th>
+		<th>Batch</th>
+		<th>Qty</th>
+		<th>Unit</th>
+		<th>Rate</th>
 		</tr>
 
 		${billItems.map(item => `
 		<tr>
 		<td>${item.medicineName}</td>
-		<td>${item.scheduleType}</td>
+		<td>${item.batchNo}</td>
 		<td>${item.quantity}</td>
-		<td>${item.price}</td>
+		<td>${item.unit}</td>
+		<td>${item.unitPrice}</td>
+
 		</tr>
 		`).join("")}
 
@@ -569,39 +921,309 @@ body:JSON.stringify(billRequest)
 
 		<hr>
 
-		<p>Sub Total :
-		₹ ${data.subTotal}</p>
+		<p><b>Sub Total :</b> ₹ ${data.subTotal}</p>
 
-		<p>GST :
-		₹ ${data.gst}</p>
+		<p><b>GST :</b> ₹ ${data.gst}</p>
 
-		<p>Discount :
-		₹ ${data.discount}</p>
+		<p><b>Discount :</b> ₹ ${data.discount}</p>
 
-		<h3>Total :
-		₹ ${data.totalAmount}</h3>
+		<h3><b>Total :</b> ₹ ${data.totalAmount}</h3>
 
-		<p>Paid :
-		₹ ${data.paidAmount}</p>
+		<p><b>Paid :</b> ₹ ${data.paidAmount}</p>
 
-		<p>Balance :
-		₹ ${data.balanceAmount}</p>
+		<p><b>Balance :</b> ₹ ${data.balanceAmount}</p>
+
+		`;
+
+	let win = window.open("","_blank","width=900,height=700");
+
+	win.document.write(`
+			<html>
+			<head>
+			<title>Medical Bill</title>
+
+			<style>
+
+			body{
+			    font-family:Arial;
+			    padding:20px;
+			}
+
+			.bill{
+			    width:700px;
+			    margin:auto;
+			    border:1px solid #000;
+			    padding:15px;
+			}
+
+			.header{
+			    text-align:center;
+			    border-bottom:1px solid #000;
+			    padding-bottom:10px;
+			}
+
+			.header h2{
+			    margin:0;
+			}
+
+			table{
+			    width:100%;
+			    border-collapse:collapse;
+			    margin-top:10px;
+			}
+
+			th,td{
+			    border:1px solid #000;
+			    padding:6px;
+			    text-align:center;
+			}
+
+			.summary{
+			    margin-top:15px;
+			    text-align:right;
+			}
+
+			.footer{
+			    text-align:center;
+			    margin-top:20px;
+			    font-weight:bold;
+			}
+
+			</style>
+			</head>
+
+			<body>
+
+			<div class="bill">
+
+			<div class="header">
+			    <h2>🏥 MEDICAL STORE</h2>
+			    <p>Medical Billing System</p>
+			</div>
+
+			${billContent}
+
+			<div class="footer">
+			    Thank You Visit Again
+			</div>
+
+			</div>
+
+			</body>
+			</html>
+			`);
+	win.document.close();
+
+	});
+
+}
+function printtBill(){
+	let customerId =
+		document.getElementById("customerId").value;
+
+let medicinesPayload=[];
+
+billItems.forEach(item=>{
+
+medicinesPayload.push({
+
+medicineId:item.medicineId,
+quantity:item.quantity
+
+});
+
+});
+
+let billRequest = {
+
+customerId: customerId,
+
+doctorName:
+document.getElementById("doctorName").value,
+
+billType:
+document.getElementById("billType").value,
+
+discount:
+parseFloat(
+document.getElementById("discount").value || 0
+),
+
+paidAmount:
+parseFloat(
+document.getElementById("paidAmount").value || 0
+),
+
+medicines: medicinesPayload
+
+};
+
+fetch("/api/bills",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(billRequest)
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+	let billContent = `
+
+		<p><b>Invoice :</b> ${data.invoiceNo}</p>
+
+		<p><b>Bill No :</b> ${data.id}</p>
+
+		<p><b>Date :</b> ${data.billDate.substring(0,10)}</p>
+
+		<p><b>Customer :</b> ${data.customer.customerName}</p>
+
+		<p><b>Doctor :</b> ${data.doctorName}</p>
 
 		<hr>
 
-		<p style="text-align:center">
-		Thank You Visit Again
-		</p>
+		<table>
 
-		<button onclick="printBill()"
-		class="btn">
-		🖨 Print Bill
-		</button>
+		<tr>
+		<th>Product</th>
+		<th>Batch</th>
+		<th>Qty</th>
+		<th>Unit</th>
+		<th>Rate</th>
+		</tr>
+
+		${billItems.map(item => `
+		<tr>
+		<td>${item.medicineName}</td>
+		<td>${item.batchNo}</td>
+		<td>${item.quantity}</td>
+		<td>${item.unit}</td>
+		<td>${item.unitPrice}</td>
+		</tr>
+		`).join("")}
+
+		</table>
+
+		<hr>
+
+		<p><b>Sub Total :</b> ₹ ${data.subTotal}</p>
+
+		<p><b>GST :</b> ₹ ${data.gst}</p>
+
+		<p><b>Discount :</b> ₹ ${data.discount}</p>
+
+		<h3><b>Total :</b> ₹ ${data.totalAmount}</h3>
+
+		<p><b>Paid :</b> ₹ ${data.paidAmount}</p>
+
+		<p><b>Balance :</b> ₹ ${data.balanceAmount}</p>
 
 		`;
-});
+	let win = window.open("","_blank","width=900,height=700");
+
+	win.document.write(`
+			<html>
+			<head>
+			<title>Medical Bill</title>
+
+			<style>
+
+			body{
+			    font-family:Arial;
+			    padding:20px;
+			}
+
+			.bill{
+			    width:700px;
+			    margin:auto;
+			    border:1px solid #000;
+			    padding:15px;
+			}
+
+			.header{
+			    text-align:center;
+			    border-bottom:1px solid #000;
+			    padding-bottom:10px;
+			}
+
+			.header h2{
+			    margin:0;
+			}
+
+			table{
+			    width:100%;
+			    border-collapse:collapse;
+			    margin-top:10px;
+			}
+
+			th,td{
+			    border:1px solid #000;
+			    padding:6px;
+			    text-align:center;
+			}
+
+			.summary{
+			    margin-top:15px;
+			    text-align:right;
+			}
+
+			.footer{
+			    text-align:center;
+			    margin-top:20px;
+			    font-weight:bold;
+			}
+
+			</style>
+			</head>
+
+			<body>
+
+			<div class="bill">
+
+			<div class="header">
+			    <h2>🏥 MEDICAL STORE</h2>
+			    <p>Medical Billing System</p>
+			</div>
+
+			${billContent}
+
+			<div class="footer">
+			    Thank You Visit Again
+			</div>
+
+			</div>
+
+			</body>
+			</html>
+			`);
+	win.document.close();
+win.print();
+	});
 
 }
+function medicineChanged(){
+
+	let medicineId =
+	document.getElementById("medicineSelect").value;
+
+	let medicine =
+	medicines.find(m => m.id == medicineId);
+
+	document.getElementById("contentsView")
+	.innerText = medicine.contents || "";
+
+	document.getElementById("symptomsView")
+	.innerText = medicine.symptoms || "";
+
+	document.getElementById("marginView")
+	.innerText = medicine.marginPercent || 0;
+	}
 function printBill(){
 
 	let content =
@@ -646,22 +1268,53 @@ function printBill(){
 	win.print();
 
 	}
+
+function calculateRow(element){
+
+	let row = element.parentElement.parentElement;
+
+	let qty =
+	row.cells[3].querySelector("input").value;
+
+	let rate =
+	row.cells[5].querySelector("input").value;
+
+	let amount = qty * rate;
+
+	row.cells[6].innerHTML = amount.toFixed(5);
+
+	calculateBillTotal();
+
+	}
 /* ENTER = NEXT FIELD */
 
 window.onload = function() {
 
-    document.getElementById("invoiceNo").focus();
+    let today = new Date()
+    .toISOString()
+    .split("T")[0];
 
-    document.addEventListener("keydown", function(e) {
+    document.getElementById("billDate").value = today;
 
-        if (e.key === "Enter") {
+};
+window.onload = function() {
 
-            alert("Enter Pressed");
+    let today = new Date();
+    let today1 = new Date().toISOString().split('T')[0];
+    let datePart =
+        today.getFullYear() +
+        String(today.getMonth()+1).padStart(2,'0') +
+        String(today.getDate()).padStart(2,'0');
 
-            e.preventDefault();
-        }
+    let invoiceNo =
+        "INV-" + datePart + "-" +
+        Math.floor(Math.random()*1000);
 
-    });
+    document.getElementById("invoiceNo").value =
+        invoiceNo;
+   
+
+    document.getElementById("billDate").value = today1;
 
 };
 </script>

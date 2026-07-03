@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
 <meta charset="UTF-8">
 <title>Medical Billing System</title>
 
@@ -12,8 +19,7 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
+font-family:'Poppins',sans-serif;}
 
 body{
 background:#eef3f8;
@@ -29,7 +35,114 @@ font-size:28px;
 font-weight:bold;
 box-shadow:0 2px 10px rgba(0,0,0,.2);
 }
+.header{
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
 
+.logo{
+    height:40px;
+    width:150px;
+    margin-right:10px;
+}
+
+.help-modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:9999;
+}
+
+.help-content{
+    width:500px;
+    max-width:90%;
+    background:white;
+    margin:80px auto;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.help-header{
+    background:#0d6efd;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.close-help{
+    cursor:pointer;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.help-body{
+    padding:20px;
+    line-height:1.8;
+}
+
+.help-btn{
+    background:#ffc107;
+    color:black;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+.help-dropdown{
+    position:relative;
+    display:inline-block;
+}
+
+.help-btn{
+    background:#ffc107;
+    border:none;
+    padding:10px 15px;
+    cursor:pointer;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.help-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:100%;
+    background:white;
+    min-width:220px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    border-radius:8px;
+    z-index:999;
+}
+
+.help-menu a{
+    display:block;
+    padding:10px 15px;
+    text-decoration:none;
+    color:black;
+}
+
+.help-menu a:hover{
+    background:#f1f1f1;
+}
+
+.help-dropdown:hover .help-menu{
+    display:block;
+}
 /* MENU */
 
 .menu{
@@ -192,56 +305,106 @@ grid-template-columns:1fr;
 }
 
 .modal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-backdrop-filter:blur(5px);
-z-index:9999;
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:9999;
 }
 
 .modal-content{
-width:90%;
-height:90%;
-background:white;
-margin:20px auto;
-border-radius:10px;
-overflow:hidden;
-position:relative;
+    width:100vw;
+    height:100vh;
+    margin:0;
+    border-radius:0;
+    background:white;
 }
 
 #pageFrame{
+    width:100%;
+    height:100%;
+    border:none;
+
+}
+#contentFrame{
 width:100%;
-height:100%;
+height:calc(95vh - 50px);
 border:none;
+}
+
+
+.modal-header{
+    background:#0d6efd;
+    color:white;
+    padding:12px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 .close-btn{
-position:fixed;
-top:25px;
-right:120px;
+    position:fixed;
+    top:15px;
+    right:20px;
 
-width:40px;
-height:40px;
-
-background:#e53935;
-color:white;
-border:none;
-border-radius:50%;
-
-font-size:20px;
-font-weight:bold;
-cursor:pointer;
-
-z-index:99999;
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:10000;
 }
+.close-btn:hover{
+    background:#bb2d3b;
+}
+
 #pageFrame{
-width:100%;
-height:100%;
-border:none;
+    width:100%;
+    height:calc(98vh - 60px);
+    border:none;
+}
+.alert-box{
+    background:white;
+    border-radius:8px;
+    padding:10px;
+    margin-bottom:15px;
+    border:1px solid #ddd;
+}
+
+.alert-title{
+    font-weight:bold;
+    color:red;
+    margin-bottom:8px;
+}
+
+.marquee{
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.marquee-content{
+    display:inline-block;
+    animation:scrollLeft 18s linear infinite;
+}
+
+.marquee:hover .marquee-content{
+    animation-play-state:paused;
+}
+
+@keyframes scrollLeft{
+
+0%{
+transform:translateX(100%);
+}
+
+100%{
+transform:translateX(-100%);
+}
+
 }
 </style>
 
@@ -249,10 +412,68 @@ border:none;
 
 <body>
 
-<div class="navbar">
-🏥 Medical Billing System
-</div>
+<div class="header">
 
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
+<div class="help-dropdown">
+
+<button class="help-btn">
+❓ Help
+</button>
+
+<div class="help-menu">
+
+<a href="#"
+onclick="openPage('medicine.html');return false;">
+💊 Add Medicine
+</a>
+
+<a href="#"
+onclick="openPage('supplier.html');return false;">
+🏢 Suppliers
+</a>
+
+<a href="#"
+onclick="openPage('purchase.html');return false;">
+📦 Purchase
+</a>
+
+<a href="#"
+onclick="openPage('billing.html');return false;">
+🧾 Billing
+</a>
+
+<a href="dashboard.html">
+📊 Dashboard
+</a>
+
+<hr>
+
+<p>
+
+<a href="helpme@dnyanai.co.in">
+ 📧 Email : helpme@dnyanai.co.in
+</a>
+</p>
+
+<p>
+
+<a href="tel:+919876543210">
+📞 Call : +91 7506064193
+</a>
+</p>
+
+<p>
+
+<a href="https://wa.me/919876543210"
+target="_blank">
+💬 WhatsApp : +91 7506064193
+</a>
+</p>
+</div>
+</div>
+</div>
 <div class="menu">
 
 
@@ -334,7 +555,7 @@ Customer Master
 
 <a href="#"
 onclick="openPage('supplier.html');return false;">
-Supplier Master
+Supplier/Wholesaler Master
 </a>
 <a href="#"
 onclick="openPage('gst-master.html')">
@@ -483,36 +704,37 @@ Wholesaler / Company
 
 <!-- QUICK ACTION -->
 
-<div class="section">
+<div class="alert-box">
 
-<h2>Quick Actions</h2>
+    <div class="alert-title">
+        🔴 Low Stock Medicines
+    </div>
 
-<button class="btn"
-onclick="openSaleModal()">
-New Bill
-</button>
-<button class="btn"
-onclick="location.href='purchase.html'">
-New Purchase
-</button>
+    <div class="marquee"  onclick="showLowStockMedicines()">
 
-<button class="btn"
-onclick="location.href='medicine.html'">
-Add Medicine
-</button>
+        <div id="lowStockBanner"
+             class="marquee-content">
+        </div>
 
-<button class="btn"
-onclick="location.href='supplier.html'">
-Add Supplier
-</button>
-
-<button class="btn"
-onclick="location.href='inventory.html'">
-Inventory
-</button>
+    </div>
 
 </div>
 
+<div class="alert-box">
+
+    <div class="alert-title" onclick="showExpiringMedicines()">
+        🟠 Expiring Medicines
+    </div>
+
+    <div class="marquee">
+
+        <div id="expiryBanner"
+             class="marquee-content">
+        </div>
+
+    </div>
+
+</div>
 <!-- GRAPHS -->
 
 <div class="graph-grid">
@@ -651,11 +873,44 @@ View Full Bill History
 </table>
 
 </div>
-<script>
+<div id="medicineModal" class="modal">
 
+    <div class="modal-content">
+
+        <span class="close"
+              onclick="closeModal()">&times;</span>
+
+        <h3 id="modalTitle"></h3>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Medicine</th>
+                <th>Stock</th>
+                <th>Expiry</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="modalBody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<script>
+let dashboardAlerts = {};
+window.onload = function() {
+
+    loadMedicineAlerts();
+
+};
 /* EXISTING API */
 
-fetch("/api/dashboard")
+fetch("/api/dashboard/stast")
 .then(response => response.json())
 .then(data => {
 
@@ -692,59 +947,104 @@ document.getElementById("suppliers").innerText =
 		"₹" + data.todayProfit;
 
 });
+/*alerts*/
+ 
+ function loadMedicineAlerts(){
 
+fetch("/api/dashboard/alerts")
+
+.then(res=>res.json())
+
+.then(data=>{
+	dashboardAlerts = data;
+let low="";
+
+data.lowStock.forEach(m=>{
+
+low +=
+`🔴 ${m.medicineName}
+(Stock : ${m.quantity})
+&nbsp;&nbsp;&nbsp;&nbsp;`;
+
+});
+
+document.getElementById("lowStockBanner")
+.innerHTML = low;
+
+
+
+let exp="";
+
+data.expiring.forEach(m=>{
+
+exp +=
+`🟠 ${m.medicineName}
+(Expiry : ${m.expiryDate})
+&nbsp;&nbsp;&nbsp;&nbsp;`;
+
+});
+
+document.getElementById("expiryBanner")
+.innerHTML = exp;
+
+});
+
+}
 /* SALES GRAPH */
+fetch("/api/dashboard/sales")
+.then(res=>res.json())
+.then(data=>{
 
 new Chart(
 document.getElementById('salesChart'),
 {
 type:'line',
 data:{
-labels:['Jan','Feb','Mar','Apr','May','Jun'],
+labels:[
+'Jan','Feb','Mar','Apr',
+'May','Jun','Jul','Aug',
+'Sep','Oct','Nov','Dec'
+],
 datasets:[{
 label:'Sales',
-data:[12000,18000,15000,22000,27000,25000],
+data:data,
 borderWidth:3,
 fill:false
 }]
-},
-options:{
-	responsive:true,
-	maintainAspectRatio:false,
-	plugins:{
-	legend:{
-	position:'bottom'
-	}
-	}
-	}
+}
+});
 
 });
 
 /* PURCHASE GRAPH */
+fetch("/api/dashboard/purchase")
+.then(res=>res.json())
+.then(data=>{
 
 new Chart(
 document.getElementById('purchaseChart'),
 {
 type:'bar',
 data:{
-labels:['Jan','Feb','Mar','Apr','May','Jun'],
+labels:[
+'Jan','Feb','Mar','Apr',
+'May','Jun','Jul','Aug',
+'Sep','Oct','Nov','Dec'
+],
 datasets:[{
 label:'Purchase',
-data:[8000,12000,10000,17000,19000,18000]
+data:data
 }]
-},
-options:{
-	responsive:true,
-	maintainAspectRatio:false,
-	plugins:{
-	legend:{
-	position:'bottom'
-	}
-	}
-	}
+}
 });
 
+});
+
+
 /* INVENTORY GRAPH */
+fetch("/api/dashboard/inventory")
+.then(res => res.json())
+.then(data => {
 
 new Chart(
 document.getElementById('inventoryChart'),
@@ -757,47 +1057,50 @@ labels:[
 'Out Of Stock'
 ],
 datasets:[{
-data:[420,35,12]
+data:[
+data.available,
+data.lowStock,
+data.outOfStock
+]
 }]
 },
 options:{
-	responsive:true,
-	maintainAspectRatio:false,
-	plugins:{
-	legend:{
-	position:'bottom'
-	}
-	}
-	}
+responsive:true,
+maintainAspectRatio:false
+}
 });
 
+});
+
+
 /* TOP MEDICINES */
+fetch("/api/dashboard/top-medicines")
+.then(res=>res.json())
+.then(data=>{
 
 new Chart(
 document.getElementById('medicineChart'),
 {
 type:'doughnut',
 data:{
-labels:[
-'Dolo',
-'Calpol',
-'Azithral',
-'Paracetamol'
-],
+labels:data.labels,
 datasets:[{
-data:[40,25,20,15]
+data:data.data
 }]
 },
 options:{
-	responsive:true,
-	maintainAspectRatio:false,
-	plugins:{
-	legend:{
-	position:'bottom'
-	}
-	}
-	}
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{
+position:'bottom'
+}
+}
+}
 });
+
+});
+
 /* RECENT PURCHASES */
 
 fetch("/api/purchases")
@@ -895,6 +1198,56 @@ document.getElementById(
 "expiryMedicineTable").innerHTML = rows;
 
 });
+function showLowStockMedicines(){
+
+	document.getElementById("modalTitle").innerText =
+	"Low Stock Medicines";
+
+	let rows = "";
+
+	dashboardAlerts.lowStock.forEach(m=>{
+
+	rows += `
+	<tr>
+	<td>${m.medicineName}</td>
+	<td>${m.quantity}</td>
+	<td>${m.expiryDate}</td>
+	</tr>
+	`;
+
+	});
+
+	document.getElementById("modalBody").innerHTML = rows;
+
+	document.getElementById("medicineModal").style.display =
+	"block";
+
+	}
+function showExpiringMedicines(){
+
+	document.getElementById("modalTitle").innerText =
+	"Expiring Medicines";
+
+	let rows = "";
+
+	dashboardAlerts.expiring.forEach(m=>{
+
+	rows += `
+	<tr>
+	<td>${m.medicineName}</td>
+	<td>${m.quantity}</td>
+	<td>${m.expiryDate}</td>
+	</tr>
+	`;
+
+	});
+
+	document.getElementById("modalBody").innerHTML = rows;
+
+	document.getElementById("medicineModal").style.display =
+	"block";
+
+	}
 function openPage(page){
 
     document.getElementById("pageModal")
@@ -911,8 +1264,26 @@ function closeModal(){
 
     document.getElementById("pageFrame")
     .src = "";
+    function closeModal(){
+
+    	document.getElementById("medicineModal").style.display =
+    	"none";
+
+    	}
+}
+function showHelp(){
+
+    document.getElementById("helpModal")
+    .style.display = "block";
+
 }
 
+function closeHelp(){
+
+    document.getElementById("helpModal")
+    .style.display = "none";
+
+}
 </script>
 <div style="
 margin-top:30px;
@@ -927,12 +1298,12 @@ Medical Billing ERP System © 2026
 
 </div>
 <!-- SALE MODAL -->
-
 <div id="pageModal" class="modal">
 
+       
     <button class="close-btn"
     onclick="closeModal()">
-    ✖
+    ✖ Close
     </button>
 
     <div class="modal-content">
@@ -940,6 +1311,64 @@ Medical Billing ERP System © 2026
     </div>
 
 </div>
+<div id="helpModal" class="help-modal">
 
+    <div class="help-content">
+
+        <div class="help-header">
+            <h2>Help Center</h2>
+
+            <span class="close-help"
+            onclick="closeHelp()">
+            ✖
+            </span>
+        </div>
+
+        <div class="help-body">
+
+            <h4>Medical Billing System Guide</h4>
+
+            <p>💊 Add Medicine - Add new medicines to inventory</p>
+
+            <p>🏢 Supplier - Manage suppliers and purchases</p>
+
+            <p>🧾 Billing - Create customer invoices</p>
+
+            <p>👥 Customers - Manage customer records</p>
+
+            <p>📦 Stock - Monitor medicine stock levels</p>
+
+            <p>📊 Dashboard - View reports and graphs</p>
+
+            <hr>
+
+           <h4>Contact Us</h4>
+
+<p>
+📧 Email :
+<a href="mailto:support@medicalstore.com">
+ helpme@dnyanai.co.in
+</a>
+</p>
+
+<p>
+📞 Call :
+<a href="tel:+917506064193">
++91 7506064193
+</a>
+</p>
+
+<p>
+💬 WhatsApp :
+<a target="_blank"
+href="https://wa.me/919876543210">
+Chat on WhatsApp
+</a>
+
+        </div>
+
+    </div>
+
+</div>
 </body>
 </html>
