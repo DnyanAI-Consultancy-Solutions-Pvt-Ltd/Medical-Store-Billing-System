@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Supplier Management</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+.header{
+background:#198754;
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+   height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+    
+}
+.header span{
+    margin:0 auto;
+}
+.container{
+
+    padding:20px;
+
+    background:#eef3f8;
+
+}
+
+.card{
+
+    max-width:900px;
+
+    margin:auto;
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+}
+
+.form-title{
+
+    color:#0f4c81;
+
+    font-size:24px;
+
+    margin-bottom:20px;
+
+    border-bottom:2px solid #2196f3;
+
+    padding-bottom:10px;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    margin-bottom:6px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:#444;
+
+}
+
+.form-group input{
+
+    height:42px;
+
+    padding:10px;
+
+    border:1px solid #cfd8dc;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.form-group input:focus{
+
+    border-color:#2196f3;
+
+    box-shadow:0 0 5px rgba(33,150,243,.4);
+
+}
+
+.full-width{
+
+    grid-column:1 / 3;
+
+}
+
+.btn-section{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+.save-btn{
+
+    background:#198754;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 35px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#157347;
+
+}
+
+@media(max-width:768px){
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.full-width{
+
+grid-column:1;
+
+}
+
+}
+
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Supplier Management</span>
+<button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+
+</div>
+
+<div class="container">
+
+<input type="hidden" id="supplierId">
+
+<div class="card">
+
+<h2 class="form-title">
+Supplier / Wholesaler Master
+</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Supplier Name</label>
+<input type="text"
+id="supplierName"
+placeholder="Enter Supplier Name">
+</div>
+
+<div class="form-group">
+<label>GST Number</label>
+<input type="text"
+id="gstNo"
+placeholder="Enter GST Number">
+</div>
+
+<div class="form-group">
+<label>Drug License No</label>
+<input type="text"
+id="drugLicenseNo"
+placeholder="Enter Drug License No">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input type="text"
+id="mobileNo"
+placeholder="Enter Mobile Number">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<input type="text"
+id="address"
+placeholder="Enter Address">
+</div>
+<div class="form-group">
+<label>Balance</label>
+<input type="text"
+id="balance"
+placeholder="Enter Balance">
+</div>
+</div>
+
+<div class="btn-section">
+
+<button id="saveBtn" class="save-btn"
+onclick="saveSupplier()">
+💾 Save Supplier
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:20px;">
+<div class="form-group">
+
+ <label><b>Search Supplier</b></label>
+
+    <input
+        type="text"
+        id="searchSupplier"
+        placeholder="Search Supplier by Name..."
+        onkeyup="searchSupplier()">
+
+</div>
+<h3>Supplier List</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>GST</th>
+<th>License No</th>
+<th>Mobile</th>
+<th>Address</th>
+<th>Balance</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="supplierTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<script>
+
+loadSuppliers();
+
+function loadSuppliers(){
+
+fetch("/api/suppliers")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(s=>{
+
+rows += `
+
+<tr>
+
+<td>${s.id}</td>
+
+<td>${s.supplierName}</td>
+
+<td>${s.gstNo}</td>
+<td>${s.drugLicenseNo}</td>
+<td>${s.mobileNo}</td>
+
+<td>${s.address}</td>
+<td>${s.balance}</td>
+
+
+<td>
+
+<button onclick="editSupplier(${s.id})">
+Edit
+</button>
+
+<button onclick="deleteSupplier(${s.id})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("supplierTable")
+.innerHTML = rows;
+
+});
+
+}
+function saveSupplier(){
+
+    let supplierName =
+        document.getElementById("supplierName").value.trim();
+
+    let mobileNo =
+        document.getElementById("mobileNo").value.trim();
+
+    let address =
+        document.getElementById("address").value.trim();
+
+    let drugLicenseNo =
+        document.getElementById("drugLicenseNo").value.trim();
+
+    let gstNo =
+        document.getElementById("gstNo").value.trim();
+
+    let balance =
+        document.getElementById("balance").value.trim();
+
+
+    /* ALL FIELDS EMPTY */
+
+    if(
+        supplierName === "" &&
+        mobileNo === "" &&
+        address === "" &&
+        drugLicenseNo === "" &&
+        gstNo === "" &&
+        balance === ""
+    ){
+
+        alert("Please fill all required fields.");
+
+        document.getElementById("supplierName").focus();
+
+        return;
+    }
+
+
+    /* INDIVIDUAL VALIDATION */
+
+    if(supplierName === ""){
+
+        alert("Supplier Name is required.");
+
+        document.getElementById("supplierName").focus();
+
+        return;
+    }
+
+    if(gstNo === ""){
+
+        alert("GST Number is required.");
+
+        document.getElementById("gstNo").focus();
+
+        return;
+    }
+
+    if(mobileNo === ""){
+
+        alert("Mobile Number is required.");
+
+        document.getElementById("mobileNo").focus();
+
+        return;
+    }
+
+
+    if(address === ""){
+
+        alert("Address is required.");
+
+        document.getElementById("address").focus();
+
+        return;
+    }
+
+
+  
+
+    if(balance === ""){
+
+        alert("Balance is required.");
+
+        document.getElementById("balance").focus();
+
+        return;
+    }
+
+
+    /* SUPPLIER OBJECT */
+
+    let id =
+        document.getElementById("supplierId").value;
+
+
+    let supplier = {
+
+        supplierName: supplierName,
+
+        gstNo: gstNo,
+
+        drugLicenseNo: drugLicenseNo,
+
+        mobileNo: mobileNo,
+
+        address: address,
+
+        balance: balance
+
+    };
+
+
+    let url = "/api/suppliers";
+
+    let method = "POST";
+
+
+    /* UPDATE */
+
+    if(id){
+
+        url = "/api/suppliers/" + id;
+
+        method = "PUT";
+
+    }
+
+
+    fetch(url,{
+
+        method: method,
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(supplier)
+
+    })
+
+    .then(res => {
+
+        if(!res.ok){
+
+            throw new Error("Failed to save supplier");
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(data => {
+
+        alert("Supplier Saved Successfully");
+
+
+        /* CLEAR */
+
+        document.getElementById("supplierId").value = "";
+
+        document.getElementById("supplierName").value = "";
+
+        document.getElementById("gstNo").value = "";
+
+        document.getElementById("drugLicenseNo").value = "";
+
+        document.getElementById("mobileNo").value = "";
+
+        document.getElementById("address").value = "";
+
+        document.getElementById("balance").value = "";
+
+
+        loadSuppliers();
+
+        document.getElementById("supplierName").focus();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Failed to save supplier.");
+
+    });
+
+}
+function editSupplier(id){
+
+fetch("/api/suppliers/"+id)
+
+.then(res=>res.json())
+
+.then(s=>{
+
+document.getElementById("supplierId").value=s.id;
+document.getElementById("supplierName").value=s.supplierName;
+document.getElementById("gstNo").value=s.gstNo;
+document.getElementById("drugLicenseNo").value=s.drugLicenseNo;
+document.getElementById("mobileNo").value=s.mobileNo;
+document.getElementById("address").value=s.address;
+document.getElementById("balance").value=s.balance;
+
+});
+
+}
+
+function deleteSupplier(id){
+
+if(confirm("Delete Supplier ?")){
+
+fetch("/api/suppliers/"+id,{
+
+method:"DELETE"
+
+})
+.then(()=>{
+
+loadSuppliers();
+
+});
+
+}
+
+}
+
+function closePage(){
+
+    parent.closeModal();
+
+}
+function searchSupplier(){
+
+    let value = document
+        .getElementById("searchSupplier")
+        .value
+        .toLowerCase();
+
+    let rows = document.querySelectorAll("#supplierTable tr");
+
+    rows.forEach(row => {
+
+        let supplierName = row.cells[1].innerText.toLowerCase();
+
+        row.style.display =
+            supplierName.includes(value) ? "" : "none";
+
+    });
+
+}
+window.onload = function(){
+
+
+	document.getElementById("supplierName").focus();
+};
+/* ==============================
+ENTER KEY = NEXT FIELD
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(e.key !== "Enter") return;
+
+ let active = document.activeElement;
+
+ // Button वर Enter असेल तर click होऊ दे
+ if(active.tagName === "BUTTON"){
+     return;
+ }
+
+ // Textarea मध्ये Enter allow
+ if(active.tagName === "TEXTAREA"){
+     return;
+ }
+
+ e.preventDefault();
+
+ let fields = Array.from(
+     document.querySelectorAll(
+         "input:not([type='hidden']), select, textarea, button"
+     )
+ ).filter(el =>
+     !el.disabled &&
+     el.offsetParent !== null
+ );
+
+ let index = fields.indexOf(active);
+
+ if(index >= 0 && index < fields.length - 1){
+     fields[index + 1].focus();
+ }
+
+});
+/* ==============================
+ARROW KEY NAVIGATION
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ let fields = Array.from(
+     document.querySelectorAll(
+         "input:not([type='hidden']), select, textarea, button"
+     )
+ ).filter(el =>
+     !el.disabled &&
+     el.offsetParent !== null
+ );
+
+ let index = fields.indexOf(document.activeElement);
+
+ if(index === -1) return;
+
+ // Right Arrow / Down Arrow -> Next Field
+ if(e.key === "ArrowRight" || e.key === "ArrowDown"){
+
+     e.preventDefault();
+
+     if(index < fields.length - 1){
+         fields[index + 1].focus();
+     }
+
+ }
+
+ // Left Arrow / Up Arrow -> Previous Field
+ if(e.key === "ArrowLeft" || e.key === "ArrowUp"){
+
+     e.preventDefault();
+
+     if(index > 0){
+         fields[index - 1].focus();
+     }
+
+ }
+
+});
+/* ==============================
+ESC KEY = CLOSE PAGE
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(e.key === "Escape"){
+
+     e.preventDefault();
+
+     closePage();
+
+ }
+
+});
+document.getElementById("saveBtn")
+.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+
+        e.preventDefault();
+        e.stopPropagation();   // हे add करा
+
+
+        saveSupplier();
+
+    }
+
+});
+</script>
+
+</body>
+</html>

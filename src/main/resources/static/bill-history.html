@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bill History</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:0;
+}
+
+.navbar{
+background:#0f4c81;
+color:white;
+padding:15px;
+font-size:24px;
+}
+
+.container{
+padding:20px;
+}
+.header{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:70px;
+
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+
+    margin-bottom:20px;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+    height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+.view-btn{
+    background:#28a745;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.view-btn:hover{
+    background:#218838;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    background:#bb2d3b;
+}
+.search-panel{
+
+    display:flex;
+    align-items:flex-end;
+    gap:20px;
+
+    background:white;
+    padding:20px;
+
+    border-radius:10px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,0.12);
+
+    margin-bottom:20px;
+
+    flex-wrap:wrap;
+
+}
+
+
+.search-group{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:7px;
+
+}
+
+
+.search-group label{
+
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+
+}
+
+
+.search-group input{
+
+    width:220px;
+
+    padding:10px 12px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:0.3s;
+
+}
+
+
+.search-group input:focus{
+
+    border-color:#2196f3;
+
+    box-shadow:0 0 5px rgba(33,150,243,0.4);
+
+}
+.clear-btn{
+
+    height:40px;
+
+    padding:0 25px;
+
+    background:#6c757d;
+
+    color:white;
+
+    border:none;
+
+    border-radius:6px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.clear-btn:hover{
+
+    background:#5a6268;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+
+Bill History
+<button class="close-btn" onclick="window.parent.closeModal()">
+        ✖ Close
+    </button>
+</div>
+<div class="search-panel">
+
+    <div class="search-group">
+
+        <label>Search Customer</label>
+        <input type="text"
+               id="searchCustomer"
+               placeholder="Enter customer name..."
+               onkeyup="filterBills()">
+
+    </div>
+
+
+    <div class="search-group">
+
+        <label>Search Date</label>
+        <input type="date"
+               id="searchDate"
+               onchange="filterBills()">
+
+    </div>
+
+
+    <div class="search-group">
+
+        <label>Search Bill No</label>
+        <input type="text"
+               id="searchBillNo"
+               placeholder="Enter bill number..."
+               onkeyup="filterBills()">
+
+    </div>
+
+
+ <button class="clear-btn" onclick="clearSearch()">
+    Clear
+</button>
+
+</div>
+<div class="container">
+
+<table>
+
+<thead>
+<tr>
+<th>Bill ID</th>
+<th>Customer</th>
+<th>Date</th>
+  <th>Bill Type</th> <!-- New -->
+<th>Sub Total</th>
+<th>Total Amount</th>
+<th>View</th>
+    <th>Delete</th>
+</tr>
+</thead>
+
+<tbody id="billTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+fetch("/api/bills")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(b => {
+
+	rows += `
+	<tr>
+	<td>${b.id}</td>
+	<td>${b.customer ? b.customer.customerName : '-'}</td>
+	<td>${b.billDate ? b.billDate.substring(0,10) : '-'}</td>
+	<td>
+	${b.billType == "Credit"
+	    ? "<span style='color:red;font-weight:bold;'>Credit</span>"
+	    : "<span style='color:green;font-weight:bold;'>Cash</span>"}
+	</td>
+
+	<td>₹${b.subTotal}</td>
+	<td>₹${b.totalAmount}</td>
+
+	<td>
+	<button class="view-btn"
+	onclick="viewBill(${b.id})">
+	View
+	</button>
+	</td>
+
+	<td>
+	<button class="delete-btn"
+	onclick="deleteBill(${b.id})">
+	Delete
+	</button>
+	</td>
+
+	</tr>
+	`;
+
+});
+
+document.getElementById("billTable").innerHTML = rows;
+
+});
+let billWindow;
+
+function openBillHistory() {
+    billWindow = window.open("billhistory.html", "billWindow");
+}
+
+function closeModal() {
+    if (billWindow && !billWindow.closed) {
+        billWindow.close();
+    }
+
+    document.getElementById("pageModal").style.display = "none";
+}
+function openPage(page) {
+    document.getElementById("pageFrame").src = page;
+    document.getElementById("pageModal").style.display = "block";
+}
+function goBack() {
+    window.location.href = "dashboard.html";
+}
+function viewBill(id){
+
+	fetch("/api/bills/"+id)
+
+	.then(r=>r.json())
+
+	.then(data=>{
+
+let bill = data.bill;
+let rows = "";
+
+data.items.forEach(item=>{
+	rows+=`
+
+	<tr>
+
+	<td>${item.medicine.medicineName}</td>
+
+	<td>${item.medicine.batchNo}</td>
+	<td>${item.medicine.scheduleType}</td>
+
+	<td>${item.quantity}</td>
+
+	<td>${item.unitPrice}</td>
+
+	<td>${item.amount}</td>
+
+	</tr>
+
+	`;
+
+	});
+
+	let win=window.open("");
+
+	win.document.write(`
+			<html>
+			<head>
+			<title>Medical Bill</title>
+			</head>
+
+			<body>
+
+			<div style="text-align:right;margin-bottom:15px;">
+			    <button onclick="window.close()"
+			        style="background:#dc3545;color:white;border:none;
+			               padding:8px 18px;border-radius:5px;cursor:pointer;">
+			        ✖ Close
+			    </button>
+			</div>
+	<h2 align="center">Medical Bill</h2>
+
+	<p>Bill No : ${bill.id}</p>
+
+	<p>Customer : ${bill.customer.customerName}</p>
+
+	<p>Date : ${bill.billDate.substring(0,10)}</p>
+
+	<table border="1" width="100%" cellspacing="0">
+
+	<tr>
+
+	<th>Medicine</th>
+
+	<th>Batch</th>
+	<th>Schedule</th>
+
+	<th>Qty</th>
+
+	<th>Rate</th>
+
+	<th>Amount</th>
+
+	</tr>
+
+	${rows}
+
+	</table>
+
+	<h3>Total : ₹${bill.totalAmount}</h3>
+	</body>
+	</html>
+	`);
+
+	win.document.close();
+
+	});
+
+	}
+function deleteBill(id){
+
+    if(confirm("Delete this bill?")){
+
+        fetch("/api/bills/" + id,{
+
+            method:"DELETE"
+
+        })
+
+        .then(()=>{
+
+            alert("Bill Deleted");
+
+            location.reload();
+
+        });
+
+    }
+
+}
+function loadBills(){
+
+	let customer=
+	document.getElementById("customerSearch").value;
+
+	let type=
+	document.getElementById("billType").value;
+
+	let filter=
+	document.getElementById("dateFilter").value;
+
+	let from=
+	document.getElementById("fromDate").value;
+
+	let to=
+	document.getElementById("toDate").value;
+
+	fetch(`/api/bills/search?customer=${customer}&type=${type}`)
+	.then(res=>res.json())
+
+	.then(showBills);
+
+	}
+function showBills(data){
+
+	let rows="";
+
+	data.forEach(b=>{
+
+	rows+=`
+	<tr>
+	<td>${b.id}</td>
+	<td>${b.customer.customerName}</td>
+	<td>${b.billDate.substring(0,10)}</td>
+	<td>${b.subTotal}</td>
+	<td>${b.totalAmount}</td>
+
+	<td>
+	<button onclick="viewBill(${b.id})">
+	View
+	</button>
+	</td>
+
+	<td>
+	<button class="delete-btn"
+	onclick="deleteBill(${b.id})">
+	Delete
+	</button>
+	</td>
+
+	</tr>
+	`;
+
+	});
+
+	document.getElementById("billTable").innerHTML=rows;
+
+	}
+function filterBills() {
+
+    let customer = document.getElementById("searchCustomer")
+        .value.toLowerCase();
+
+    let billNo = document.getElementById("searchBillNo")
+        .value.toLowerCase();
+
+    let date = document.getElementById("searchDate")
+        .value;
+
+
+    let rows = document.querySelectorAll("#billTable tr");
+
+
+    rows.forEach(row => {
+
+        let billNumber = row.cells[0].innerText.toLowerCase();
+        let customerName = row.cells[1].innerText.toLowerCase();
+        let billDate = row.cells[2].innerText;
+
+
+        let customerMatch =
+        customerName.includes(customer);
+
+
+        let billMatch =
+        billNumber.includes(billNo);
+
+
+        let dateMatch =
+        date === "" || billDate === date;
+
+
+
+        if(customerMatch && billMatch && dateMatch){
+
+            row.style.display="";
+
+        }
+        else{
+
+            row.style.display="none";
+
+        }
+
+    });
+
+}
+function clearSearch(){
+
+    document.getElementById("searchCustomer").value="";
+    document.getElementById("searchDate").value="";
+    document.getElementById("searchBillNo").value="";
+
+
+    let rows=document.querySelectorAll("#billTable tr");
+
+
+    rows.forEach(row=>{
+
+        row.style.display="";
+
+    });
+
+}
+</script>
+
+</body>
+</html>

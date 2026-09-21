@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Purchase History</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+.header{
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    height:70px;
+
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+
+    margin-bottom:20px;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+    height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.header span{
+    margin:0 auto;
+}
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0px 2px 5px gray;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+Purchase History
+<button class="close-btn" onclick="window.parent.closeModal()">
+        ✖ Close
+    </button>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h3>Purchase History</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Invoice No</th>
+
+<th>Purchase Date</th>
+
+<th>Supplier ID</th>
+
+<th>Supplier Name</th>
+
+<th>Medicine</th>
+
+<th>Batch No</th>
+
+<th>Qty</th>
+
+<th>Purchase Price</th>
+
+<th>MRP</th>
+
+<th>GST %</th>
+
+<th>Expiry Date</th>
+
+<th>Current Stock</th>
+
+<th>Amount</th>
+
+<th>Supplier Balance</th>
+
+</tr>
+
+</thead>
+
+<tbody id="purchaseTable">
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+<script>
+
+loadPurchases();
+
+function loadPurchases() {
+
+    fetch("/api/purchases")
+    .then(res => res.json())
+    .then(data => {
+
+        let rows = "";
+        let total = 0;
+
+        data.forEach(purchase => {
+
+            if (purchase.items && purchase.items.length > 0) {
+
+                purchase.items.forEach(item => {
+
+                    let amount = item.amount || 0;
+                    total += amount;
+
+                    rows += `
+                    <tr>
+
+                        <td>${purchase.invoiceNo}</td>
+
+                        <td>${purchase.purchaseDate}</td>
+
+                        <td>${purchase.supplier ? purchase.supplier.id : ""}</td>
+
+                        <td>${purchase.supplier ? purchase.supplier.supplierName : ""}</td>
+
+                        <td>${item.medicine ? item.medicine.medicineName : ""}</td>
+
+                        <td>${item.batchNo || ""}</td>
+
+                        <td>${item.quantity}</td>
+
+                        <td>${item.purchaseRate}</td>
+
+                        <td>${item.saleRate}</td>
+
+                        <td>${item.gst || ""}</td>
+
+                        <td>${item.expiryDate || ""}</td>
+
+                        <td>${item.medicine ? item.medicine.quantity : ""}</td>
+
+                        <td>${amount}</td>
+
+                        <td>${purchase.supplier ? purchase.supplier.balance : ""}</td>
+
+                    </tr>
+                    `;
+                });
+
+            }
+
+        });
+
+        document.getElementById("purchaseTable").innerHTML = rows;
+        document.getElementById("totalAmount").innerText = total;
+
+    });
+  
+}
+</script>
+
+
+       
+   
+</body>
+</html>

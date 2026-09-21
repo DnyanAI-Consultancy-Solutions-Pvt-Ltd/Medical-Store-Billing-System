@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medical Billing System Login</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+overflow:hidden;
+}
+.logo{
+ position:center;
+
+   height:60px;
+    width:170px;
+    border-radius: 15px;  
+        
+    
+    
+}
+.login-box{
+
+width:420px;
+background:rgba(255,255,255,.95);
+padding:35px;
+border-radius:20px;
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+text-align:center;
+
+}
+
+
+.logo-box{
+
+    text-align:center;
+    margin-bottom:20px;
+
+}
+
+.logo-box img{
+
+    width:180px;
+    height:auto;
+    border-radius:12px;
+
+}
+h2{
+
+color:#0f4c81;
+margin-bottom:5px;
+
+}
+
+.subtitle{
+
+color:#666;
+margin-bottom:25px;
+
+}
+
+.input-box{
+
+position:relative;
+margin-bottom:18px;
+
+}
+
+.input-box i{
+
+position:absolute;
+left:15px;
+top:15px;
+color:#0f4c81;
+
+}
+
+.input-box input{
+
+width:100%;
+padding:14px 14px 14px 45px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:15px;
+outline:none;
+
+}
+
+.input-box input:focus{
+
+border-color:#2196f3;
+
+}
+
+.password-box{
+
+position:relative;
+
+}
+
+.password-box span{
+
+position:absolute;
+right:15px;
+top:15px;
+cursor:pointer;
+color:#666;
+
+}
+
+.options{
+
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+font-size:14px;
+
+}
+
+button{
+
+width:100%;
+padding:14px;
+background:#198754;
+color:white;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#146c43;
+
+}
+
+.footer{
+
+margin-top:20px;
+font-size:13px;
+color:#666;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+
+  
+<img src="/images/logo.jpeg" class="logo"><br><br>
+
+<h2>Medical Billing System</h2>
+
+<p class="subtitle">
+Sign in to continue
+</p>
+
+<div class="input-box">
+
+<i class="fa-solid fa-user"></i>
+
+<input
+type="text"
+id="username"
+placeholder="Username">
+
+</div>
+
+<div class="input-box password-box">
+
+<i class="fa-solid fa-lock"></i>
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<span onclick="togglePassword()">
+<i class="fa-solid fa-eye"></i>
+</span>
+
+</div>
+
+<div class="options">
+
+<label>
+<input type="checkbox">
+Remember Me
+</label>
+
+<a href="#">
+Forgot Password?
+</a>
+
+</div>
+
+<button id="saveBtn" onclick="login()">
+<i class="fa-solid fa-right-to-bracket"></i>
+ Login
+</button>
+
+<div class="footer">
+
+© DnyanAi
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+let pwd =
+document.getElementById("password");
+
+pwd.type =
+pwd.type==="password"
+?
+"text"
+:
+"password";
+
+}
+
+function login(){
+
+fetch("/api/auth/login",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+username:
+document.getElementById("username").value,
+
+password:
+document.getElementById("password").value
+
+})
+
+})
+
+.then(res=>res.text())
+
+.then(data=>{
+
+if(data==="LOGIN_SUCCESS"){
+
+window.location.href="dashboard.html";
+
+}else{
+
+alert("Invalid Credentials");
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

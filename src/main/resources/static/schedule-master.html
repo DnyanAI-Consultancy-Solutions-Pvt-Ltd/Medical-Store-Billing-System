@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Schedule Master</title>
+
+<style>
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#eef3f8;
+    margin:0;
+}
+
+/* HEADER */
+
+.header{
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+    color:#fff;
+    padding:18px;
+    font-size:28px;
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+.logo{
+    position:absolute;
+    left:20px;
+    height:60px;
+    width:170px;
+    border-radius:15px;
+}
+
+.close-btn{
+    position:absolute;
+    right:20px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.close-btn:hover{
+    background:#bb2d3b;
+}
+
+/* CARD */
+
+.container{
+    width:900px;
+    margin:25px auto;
+    background:#fff;
+    padding:22px;
+    border-radius:12px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.title{
+    color:#0f4c81;
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:18px;
+    border-bottom:2px solid #2196f3;
+    padding-bottom:8px;
+}
+
+/* FORM */
+
+.row{
+    display:flex;
+    gap:15px;
+    align-items:flex-end;
+    margin-bottom:15px;
+}
+
+
+
+.field label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
+    margin-bottom:6px;
+}
+
+input,
+textarea{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid #ccc;
+    border-radius:6px;
+    padding:10px;
+    font-size:14px;
+}
+
+input{
+    height:40px;
+}
+
+textarea{
+    height:40px;
+    resize:none;
+}
+
+input:focus,
+textarea:focus{
+    outline:none;
+    border-color:#2196f3;
+}
+
+/* BUTTON */
+
+.btn{
+    width:170px;
+    height:40px;
+    background:#198754;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#146c43;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:25px;
+}
+
+th{
+    background:#198754;
+    color:white;
+    padding:12px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tr:hover{
+    background:#eef6ff;
+}
+select{
+
+width:100%;
+
+height:40px;
+
+border:1px solid #ccc;
+
+border-radius:6px;
+
+padding:0 10px;
+
+font-size:14px;
+
+}
+
+select:focus{
+
+outline:none;
+
+border-color:#2196f3;
+
+}
+.field{
+    flex:1;
+    position:relative;
+}
+
+#medicineDropdown{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    max-height:220px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    z-index:9999;
+}
+
+#medicineDropdown div{
+    padding:10px 12px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+    background:#fff;
+    color:#333;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+#medicineDropdown div:hover,
+#medicineDropdown div.keyboard-selected{
+    background:#2196f3 !important;
+    color:#fff !important;
+}
+/* ==========================================
+   CUSTOM SCHEDULE DROPDOWN
+========================================== */
+
+.custom-select{
+    position:relative;
+    width:100%;
+    height:40px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    background:#fff;
+    cursor:pointer;
+    outline:none;
+}
+
+.custom-select:focus{
+    border-color:#2196f3;
+    box-shadow:0 0 0 2px rgba(33,150,243,.15);
+}
+
+.custom-selected{
+    height:40px;
+    padding:0 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:14px;
+}
+
+.custom-selected::after{
+    content:"▼";
+    font-size:11px;
+    color:#555;
+}
+
+.schedule-dropdown{
+    display:none;
+    position:absolute;
+    top:42px;
+    left:0;
+    width:100%;
+    max-height:180px;
+    overflow-y:auto;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+    z-index:10000;
+}
+
+.schedule-dropdown div{
+    padding:10px 12px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+    background:#fff;
+    color:#333;
+}
+
+.schedule-dropdown div:hover,
+.schedule-dropdown div.keyboard-selected{
+    background:#2196f3 !important;
+    color:#fff !important;
+}
+
+.schedule-dropdown.open{
+    display:block;
+}
+.edit-btn{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-right:5px;
+}
+
+.edit-btn:hover{
+    background:#0b5ed7;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    background:#bb2d3b;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <img src="/images/logo.jpeg" class="logo">
+    <span>Schedule Master</span>
+
+    <button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+</div>
+
+<div class="container">
+
+    <div class="title">
+        Schedule Information
+    </div>
+
+   <div class="row">
+
+    <div class="field">
+
+        <label>Medicine Name</label>
+<input
+    type="text"
+    id="medicineSearch"
+    placeholder="Search Medicine"
+    autocomplete="off">
+        <input
+            type="hidden"
+            id="medicineId">
+
+        <div id="medicineDropdown"></div>
+
+    </div>
+<div class="field">
+    <label>Schedule Type</label>
+
+    <div id="scheduleSelect"
+         class="custom-select"
+         tabindex="0">
+
+        <div id="scheduleSelected"
+             class="custom-selected">
+            OTC
+        </div>
+
+        <div id="scheduleDropdown"
+             class="schedule-dropdown">
+
+            <div data-value="OTC">OTC</div>
+            <div data-value="Schedule H">Schedule H</div>
+            <div data-value="Schedule H1">Schedule H1</div>
+            <div data-value="Schedule X">Schedule X</div>
+
+        </div>
+
+    </div>
+
+    <!-- Backend साठी hidden value -->
+    <input
+        type="hidden"
+        id="scheduleType"
+        value="OTC">
+</div>
+</div>
+
+<div class="row">
+
+    <button
+        class="btn"
+        id="saveBtn"
+        onclick="saveSchedule()">
+
+        Save Schedule
+
+    </button>
+
+</div>
+<div style="margin:15px 0;">
+    <input
+        type="text"
+        id="searchSchedule"
+        placeholder="Search by Medicine or Schedule..."
+        onkeyup="searchSchedule()"
+        style="width:300px;height:40px;padding:8px;">
+</div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Medicine</th>
+                <th>Schedule</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="scheduleTable">
+        </tbody>
+
+    </table>
+
+</div>
+<script>
+let medicineIndex = -1;
+let medicines = [];
+let editId = null;
+let selectedExistingScheduleId = null;
+
+
+/* =====================================================
+   LOAD MEDICINES
+===================================================== */
+
+function loadMedicines(){
+
+    fetch("/api/medicines")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        medicines = Array.isArray(data)
+            ? data
+            : [];
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Medicine loading error:",
+            error
+        );
+
+    });
+}
+
+
+/* =====================================================
+   FILTER MEDICINES
+===================================================== */
+
+function filterMedicines(){
+
+    let input =
+        document.getElementById("medicineSearch");
+
+    let dropdown =
+        document.getElementById("medicineDropdown");
+
+    let search =
+        input.value
+        .trim()
+        .toLowerCase();
+
+    medicineIndex = -1;
+
+    dropdown.innerHTML = "";
+
+    /*
+       Empty search असल्यास dropdown hide
+    */
+
+    if(search === ""){
+
+        dropdown.style.display = "none";
+
+        return;
+    }
+
+
+    /*
+       Matching medicines
+    */
+
+    let results =
+        medicines.filter(function(m){
+
+            let name =
+                String(
+                    m.medicineName || ""
+                ).toLowerCase();
+
+            return name.includes(search);
+
+        });
+
+
+    /*
+       No medicine found
+       म्हणजे New Medicine असू शकते
+    */
+
+    if(results.length === 0){
+
+        dropdown.style.display = "none";
+
+        return;
+    }
+
+
+    /*
+       Dropdown items
+    */
+
+    results.forEach(function(m){
+
+        let div =
+            document.createElement("div");
+
+        div.textContent =
+            String(
+                m.medicineName || ""
+            );
+
+        div.dataset.id =
+            m.id;
+
+        div.addEventListener(
+            "mousedown",
+            function(e){
+
+                e.preventDefault();
+
+                selectMedicine(
+                    m.id,
+                    m.medicineName
+                );
+
+            }
+        );
+
+        dropdown.appendChild(div);
+
+    });
+
+
+    dropdown.style.display = "block";
+}
+
+
+/* =====================================================
+   MEDICINE INPUT
+===================================================== */
+
+document
+.getElementById("medicineSearch")
+.addEventListener(
+    "input",
+    function(){
+
+        /*
+           User पुन्हा typing करत असेल
+           तर previous selection reset
+        */
+
+        document.getElementById(
+            "medicineId"
+        ).value = "";
+
+        selectedExistingScheduleId = null;
+
+        editId = null;
+
+        filterMedicines();
+
+    }
+);
+
+
+/* =====================================================
+   SELECT EXISTING MEDICINE
+===================================================== */
+function selectMedicine(id, name){
+
+    document.getElementById("medicineId").value = id;
+
+    document.getElementById("medicineSearch").value = name;
+
+    document.getElementById("medicineDropdown").style.display = "none";
+
+    medicineIndex = -1;
+
+    /*
+       Existing medicine चा schedule fetch करा
+    */
+
+    loadExistingSchedule(id);
+}
+
+/* =====================================================
+   LOAD EXISTING MEDICINE SCHEDULE
+===================================================== */
+function loadExistingSchedule(medicineId){
+
+    selectedExistingScheduleId = null;
+    editId = null;
+
+    fetch("/api/schedule-master")
+    .then(res => {
+        if(!res.ok){
+            throw new Error("Unable to load schedules");
+        }
+        return res.json();
+    })
+    .then(data => {
+
+        let schedules = Array.isArray(data) ? data : [];
+
+        let record = schedules.find(function(s){
+
+            return (
+                s.medicine &&
+                Number(s.medicine.id) === Number(medicineId)
+            );
+
+        });
+
+        if(record){
+
+            selectedExistingScheduleId = record.id;
+            editId = record.id;
+
+            selectSchedule(
+                record.scheduleType || "OTC"
+            );
+
+        }else{
+
+            selectedExistingScheduleId = null;
+            editId = null;
+
+            selectSchedule("OTC");
+        }
+
+        // IMPORTANT:
+        // Existing medicine असो किंवा schedule नसो,
+        // cursor Schedule वर जाईल
+        document.getElementById("scheduleSelect").focus();
+
+    })
+    .catch(error => {
+
+        console.error("Schedule loading error:", error);
+
+        // API error आला तरी Schedule वर cursor
+        selectSchedule("OTC");
+
+        document.getElementById("scheduleSelect").focus();
+
+    });
+}
+
+/* =====================================================
+   MEDICINE KEYBOARD NAVIGATION
+===================================================== */
+
+document
+.getElementById("medicineSearch")
+.addEventListener(
+    "keydown",
+    function(e){
+
+        let dropdown =
+            document.getElementById(
+                "medicineDropdown"
+            );
+
+        let items =
+            dropdown.querySelectorAll(
+                "div[data-id]"
+            );
+
+
+        /* ==========================================
+           ARROW DOWN
+        ========================================== */
+
+        if(e.key === "ArrowDown"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            /*
+               Dropdown open नसेल
+               तर search results तयार करा
+            */
+
+            if(items.length === 0){
+
+                filterMedicines();
+
+                items =
+                    dropdown.querySelectorAll(
+                        "div[data-id]"
+                    );
+            }
+
+
+            if(items.length === 0){
+
+                return;
+            }
+
+
+            medicineIndex++;
+
+
+            if(
+                medicineIndex >=
+                items.length
+            ){
+
+                medicineIndex = 0;
+
+            }
+
+
+            highlightMedicine(items);
+
+            return;
+        }
+
+
+        /* ==========================================
+           ARROW UP
+        ========================================== */
+
+        if(e.key === "ArrowUp"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            if(items.length === 0){
+
+                filterMedicines();
+
+                items =
+                    dropdown.querySelectorAll(
+                        "div[data-id]"
+                    );
+            }
+
+
+            if(items.length === 0){
+
+                return;
+            }
+
+
+            medicineIndex--;
+
+
+            if(medicineIndex < 0){
+
+                medicineIndex =
+                    items.length - 1;
+
+            }
+
+
+            highlightMedicine(items);
+
+            return;
+        }
+
+
+        /* ==========================================
+           ENTER
+        ========================================== */
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            /*
+               Existing medicine dropdown selection
+            */
+
+            if(
+                items.length > 0 &&
+                medicineIndex >= 0 &&
+                medicineIndex < items.length
+            ){
+
+                let selected =
+                    items[medicineIndex];
+
+                selectMedicine(
+                    selected.dataset.id,
+                    selected.textContent
+                );
+
+                return;
+            }
+
+
+            /*
+               जर dropdown open आहे पण
+               index select केलेला नाही
+               तर first medicine select करा
+            */
+
+            if(items.length > 0){
+
+                selectMedicine(
+                    items[0].dataset.id,
+                    items[0].textContent
+                );
+
+                return;
+            }
+
+
+            /*
+            NEW MEDICINE
+         */
+
+         let medicineName = this.value.trim();
+
+         if(medicineName === ""){
+             alert("Please enter medicine name");
+             return;
+         }
+
+         /*
+            New medicine आहे
+            म्हणून medicineId blank राहील
+         */
+         document.getElementById("medicineId").value = "";
+
+         selectedExistingScheduleId = null;
+         editId = null;
+
+         /*
+            Dropdown close
+         */
+         dropdown.style.display = "none";
+         medicineIndex = -1;
+
+         /*
+            Default schedule OTC
+         */
+         selectSchedule("OTC");
+
+         /*
+            IMPORTANT:
+            New medicine असली तरी
+            cursor Schedule वर जाईल
+         */
+         document.getElementById("scheduleSelect").focus();
+
+         return;        }
+
+
+        /* ==========================================
+           ESC
+        ========================================== */
+
+        if(e.key === "Escape"){
+
+            e.preventDefault();
+
+            dropdown.style.display =
+                "none";
+
+            medicineIndex = -1;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   HIGHLIGHT MEDICINE
+===================================================== */
+
+function highlightMedicine(items){
+
+    items.forEach(function(item){
+
+        item.classList.remove(
+            "keyboard-selected"
+        );
+
+    });
+
+
+    if(
+        medicineIndex >= 0 &&
+        medicineIndex < items.length
+    ){
+
+        let selected =
+            items[medicineIndex];
+
+
+        selected.classList.add(
+            "keyboard-selected"
+        );
+
+
+        selected.scrollIntoView({
+            block:"nearest"
+        });
+
+    }
+}
+function saveSchedule(){
+
+    let medicineId =
+        document.getElementById("medicineId").value.trim();
+
+    let medicineName =
+        document.getElementById("medicineSearch").value.trim();
+
+    let scheduleType =
+        document.getElementById("scheduleType").value;
+
+
+    /* Medicine name compulsory */
+
+    if(medicineName === ""){
+
+        alert("Please enter medicine name");
+
+        document.getElementById("medicineSearch").focus();
+
+        return;
+
+    }
+
+
+    /* Schedule compulsory */
+
+    if(scheduleType === ""){
+
+        alert("Please select schedule");
+
+        document.getElementById("scheduleType").focus();
+
+        return;
+
+    }
+
+
+    /*
+       =========================================
+       EXISTING MEDICINE
+       =========================================
+    */
+
+    let data;
+
+
+    if(medicineId !== ""){
+
+        data = {
+
+            medicineId: Number(medicineId),
+
+            medicineName: medicineName,
+
+            scheduleType: scheduleType
+
+        };
+
+    }
+
+
+    /*
+       =========================================
+       NEW MEDICINE
+       =========================================
+    */
+
+    else{
+
+        data = {
+
+            medicineId: null,
+
+            medicineName: medicineName,
+
+            scheduleType: scheduleType
+
+        };
+
+    }
+
+
+    let url = "/api/schedule-master";
+
+    let method = "POST";
+
+
+    /*
+       =========================================
+       EDIT EXISTING SCHEDULE
+       =========================================
+    */
+
+    if(editId !== null){
+
+        url = "/api/schedule-master/" + editId;
+
+        method = "PUT";
+
+    }
+
+
+    fetch(url,{
+
+        method: method,
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(data)
+
+    })
+
+    .then(res => {
+
+        if(!res.ok){
+
+            throw new Error("Save failed");
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(data => {
+
+        alert(
+            editId === null
+            ? "Schedule Saved Successfully"
+            : "Schedule Updated Successfully"
+        );
+
+
+        editId = null;
+
+
+        /* Clear form */
+
+        document.getElementById("medicineSearch").value = "";
+
+        document.getElementById("medicineId").value = "";
+
+        document.getElementById("scheduleType").value = "OTC";
+
+
+        /* Button text */
+
+        document.getElementById("saveBtn").innerText =
+            "Save Schedule";
+
+
+        /* Reload table */
+
+        loadSchedules();
+
+
+        /* Focus again on medicine */
+
+        document
+        .getElementById("medicineSearch")
+        .focus();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Unable to save schedule");
+
+    });
+
+}
+function searchSchedule(){
+
+    let value = document
+        .getElementById("searchSchedule")
+        .value
+        .trim()
+        .toLowerCase();
+
+    let rows = document.querySelectorAll("#scheduleTable tr");
+
+    rows.forEach(row=>{
+
+        let medicine = row.cells[1].innerText.toLowerCase();
+        let schedule = row.cells[2].innerText.toLowerCase();
+
+        let show = false;
+
+        // Medicine search
+        if(medicine.includes(value)){
+            show = true;
+        }
+
+        // Exact Schedule Search
+        if(value === "h" && schedule === "schedule h"){
+            show = true;
+        }
+        else if(value === "h1" && schedule === "schedule h1"){
+            show = true;
+        }
+        else if(value === "x" && schedule === "schedule x"){
+            show = true;
+        }
+        else if(value === "otc" && schedule === "otc"){
+            show = true;
+        }
+
+        row.style.display = show ? "" : "none";
+
+    });
+
+}
+function editSchedule(id){
+
+    fetch("/api/schedule-master/"+id)
+
+    .then(res=>res.json())
+
+    .then(data=>{
+
+        editId=id;
+
+         document.getElementById("medicineId").value=
+        data.medicine.id;
+
+        document.getElementById("medicineSearch").value=
+        data.medicine.medicineName;
+
+        document.getElementById("scheduleType").value=
+        data.scheduleType;
+
+    });
+
+}
+function deleteSchedule(id){
+
+    if(!confirm("Delete this Schedule?"))
+        return;
+
+    fetch("/api/schedule-master/"+id,{
+
+        method:"DELETE"
+
+    })
+
+    .then(()=>{
+
+        alert("Schedule Deleted Successfully");
+
+        loadSchedules();
+
+    });
+
+}
+	
+	
+	
+	
+	
+	
+	
+	
+
+function loadSchedules(){
+
+    fetch("/api/schedule-master")
+    .then(res=>res.json())
+    .then(data=>{
+
+        let rows="";
+
+        data.forEach(s=>{
+
+            rows+=`
+            <tr>
+
+                <td>${s.id}</td>
+
+                <td>${s.medicine.medicineName}</td>
+
+                <td>${s.scheduleType}</td>
+
+                <td>
+
+                    <button
+                        class="btn"
+                        style="background:#0d6efd;width:70px;height:35px"
+                        onclick="editSchedule(${s.id})">
+                        Edit
+                    </button>
+
+                    <button
+                        class="btn"
+                        style="background:#dc3545;width:70px;height:35px"
+                        onclick="deleteSchedule(${s.id})">
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+            `;
+
+        });
+
+        document.getElementById("scheduleTable").innerHTML=rows;
+
+    });
+
+}
+function closePage(){
+
+    parent.closeModal();
+
+}
+window.onload=function(){
+
+	loadMedicines();
+
+	loadSchedules();
+
+	document.getElementById("medicineSearch").focus();
+
+	}
+
+/* =====================================================
+ENTER NAVIGATION
+===================================================== */
+/* =====================================================
+ENTER NAVIGATION
+===================================================== */
+
+document.addEventListener(
+ "keydown",
+ function(e){
+
+     let active =
+         document.activeElement;
+
+
+     /* ==========================================
+        MEDICINE SEARCH
+     ========================================== */
+
+     if(active.id === "medicineSearch"){
+
+         /*
+            Medicine search चा
+            स्वतःचा Enter handler आहे.
+         */
+
+         return;
+     }
+
+
+     /* ==========================================
+        SCHEDULE TYPE
+     ========================================== */
+     /* ==========================================
+     SCHEDULE DROPDOWN
+  ========================================== */
+
+  if(active.id === "scheduleSelect"){
+
+      /*
+         Schedule dropdown स्वतःचे
+         Enter handling करतो.
+      */
+
+      return;
+  }
+     /* ==========================================
+        SAVE BUTTON
+     ========================================== */
+
+     if(active.id === "saveBtn"){
+
+         if(e.key === "Enter"){
+
+             e.preventDefault();
+             e.stopPropagation();
+
+             saveSchedule();
+
+             return;
+         }
+
+     }
+
+
+     /* ==========================================
+        SEARCH
+     ========================================== */
+
+     if(active.id === "searchSchedule"){
+
+         if(e.key === "Enter"){
+
+             e.preventDefault();
+             e.stopPropagation();
+
+             document.querySelector(
+                 ".close-btn"
+             ).focus();
+
+             return;
+         }
+
+     }
+
+ }
+);
+/* =====================================================
+LEFT / RIGHT NAVIGATION
+===================================================== */
+const controls = [
+    "medicineSearch",
+    "scheduleSelect",
+    "saveBtn",
+    "searchSchedule"
+];
+
+document.addEventListener(
+ "keydown",
+ function(e){
+
+     if(
+         e.key !== "ArrowRight" &&
+         e.key !== "ArrowLeft"
+     ){
+
+         return;
+     }
+
+
+     let active =
+         document.activeElement;
+
+     let id =
+         active.id;
+
+
+     let index =
+         controls.indexOf(id);
+
+
+     if(index === -1){
+
+         return;
+     }
+
+
+     /* ==========================================
+        RIGHT
+     ========================================== */
+
+     if(e.key === "ArrowRight"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         if(
+             index <
+             controls.length - 1
+         ){
+
+             document.getElementById(
+                 controls[index + 1]
+             ).focus();
+
+         }
+
+         return;
+     }
+
+
+     /* ==========================================
+        LEFT
+     ========================================== */
+
+     if(e.key === "ArrowLeft"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         if(index > 0){
+
+             document.getElementById(
+                 controls[index - 1]
+             ).focus();
+
+         }
+
+         return;
+     }
+
+ }
+);
+/* =====================================================
+CUSTOM SCHEDULE DROPDOWN
+===================================================== */
+
+let scheduleIndex = -1;
+
+
+/* ==========================================
+ELEMENTS
+========================================== */
+
+const scheduleSelect =
+ document.getElementById("scheduleSelect");
+
+const scheduleSelected =
+ document.getElementById("scheduleSelected");
+
+const scheduleDropdown =
+ document.getElementById("scheduleDropdown");
+
+const scheduleHidden =
+ document.getElementById("scheduleType");
+
+const scheduleItems =
+ scheduleDropdown.querySelectorAll("div");
+
+
+/* ==========================================
+OPEN DROPDOWN
+========================================== */
+
+function openScheduleDropdown(){
+
+ scheduleDropdown.classList.add("open");
+
+ scheduleIndex = -1;
+
+}
+
+
+/* ==========================================
+CLOSE DROPDOWN
+========================================== */
+
+function closeScheduleDropdown(){
+
+ scheduleDropdown.classList.remove("open");
+
+ scheduleIndex = -1;
+
+ scheduleItems.forEach(function(item){
+
+     item.classList.remove(
+         "keyboard-selected"
+     );
+
+ });
+
+}
+
+
+/* ==========================================
+SELECT SCHEDULE
+========================================== */
+
+function selectSchedule(value){
+
+ scheduleHidden.value = value;
+
+ scheduleSelected.textContent = value;
+
+ closeScheduleDropdown();
+
+}
+
+
+/* ==========================================
+CLICK SELECT
+========================================== */
+
+scheduleItems.forEach(function(item){
+
+ item.addEventListener(
+     "mousedown",
+     function(e){
+
+         e.preventDefault();
+
+         selectSchedule(
+             item.dataset.value
+         );
+
+     }
+ );
+
+});
+
+
+/* ==========================================
+SCHEDULE KEYBOARD
+========================================== */
+
+scheduleSelect.addEventListener(
+ "keydown",
+ function(e){
+
+     /* ==============================
+        ENTER
+     ============================== */
+
+     if(e.key === "Enter"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         /*
+            Dropdown closed असेल तर
+            OPEN करा
+         */
+
+         if(
+             !scheduleDropdown.classList.contains(
+                 "open"
+             )
+         ){
+
+             openScheduleDropdown();
+
+             return;
+         }
+
+
+         /*
+            Dropdown already open असेल
+            तर selected option save करा
+         */
+
+         if(
+             scheduleIndex >= 0 &&
+             scheduleIndex < scheduleItems.length
+         ){
+
+             selectSchedule(
+                 scheduleItems[
+                     scheduleIndex
+                 ].dataset.value
+             );
+
+         }
+
+
+         /*
+            Save button वर focus
+         */
+
+         document
+             .getElementById("saveBtn")
+             .focus();
+
+         return;
+
+     }
+
+
+     /* ==============================
+        ARROW DOWN
+     ============================== */
+
+     if(e.key === "ArrowDown"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         /*
+            Dropdown open नसेल
+            तर open करा
+         */
+
+         if(
+             !scheduleDropdown.classList.contains(
+                 "open"
+             )
+         ){
+
+             openScheduleDropdown();
+
+         }
+
+
+         scheduleIndex++;
+
+
+         if(
+             scheduleIndex >=
+             scheduleItems.length
+         ){
+
+             scheduleIndex = 0;
+
+         }
+
+
+         highlightSchedule();
+
+         return;
+
+     }
+
+
+     /* ==============================
+        ARROW UP
+     ============================== */
+
+     if(e.key === "ArrowUp"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         if(
+             !scheduleDropdown.classList.contains(
+                 "open"
+             )
+         ){
+
+             openScheduleDropdown();
+
+         }
+
+
+         scheduleIndex--;
+
+
+         if(scheduleIndex < 0){
+
+             scheduleIndex =
+                 scheduleItems.length - 1;
+
+         }
+
+
+         highlightSchedule();
+
+         return;
+
+     }
+
+
+     /* ==============================
+        ESC
+     ============================== */
+
+     if(e.key === "Escape"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+         closeScheduleDropdown();
+
+         return;
+
+     }
+
+ }
+);
+
+
+/* ==========================================
+HIGHLIGHT
+========================================== */
+
+function highlightSchedule(){
+
+ scheduleItems.forEach(function(item){
+
+     item.classList.remove(
+         "keyboard-selected"
+     );
+
+ });
+
+
+ if(
+     scheduleIndex >= 0 &&
+     scheduleIndex < scheduleItems.length
+ ){
+
+     let current =
+         scheduleItems[
+             scheduleIndex
+         ];
+
+
+     current.classList.add(
+         "keyboard-selected"
+     );
+
+
+     current.scrollIntoView({
+         block:"nearest"
+     });
+
+ }
+
+}
+
+
+/* ==========================================
+MOUSE CLICK ON SELECTED AREA
+========================================== */
+
+scheduleSelected.addEventListener(
+ "mousedown",
+ function(e){
+
+     e.preventDefault();
+
+     scheduleSelect.focus();
+
+     if(
+         scheduleDropdown.classList.contains(
+             "open"
+         )
+     ){
+
+         closeScheduleDropdown();
+
+     }
+     else{
+
+         openScheduleDropdown();
+
+     }
+
+ }
+);
+</script>
+
+</body>
+</html>

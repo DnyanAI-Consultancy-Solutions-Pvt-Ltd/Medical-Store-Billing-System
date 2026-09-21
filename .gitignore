@@ -1,0 +1,57 @@
+HELP.md
+
+# Maven
+target/
+*.jar
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Build
+build/
+
+# VS Code
+.vscode/
+
+# Electron
+electron/node_modules/
+electron/dist/
+electron/bundled-jre/
+
+# Desktop application
+app/
+runtime/
+
+# Large binary files
+*.exe
+*.msi
+*.dll
+
+# Java crash logs
+hs_err_pid*.log
+
+# OS files
+.DS_Store
+Thumbs.db

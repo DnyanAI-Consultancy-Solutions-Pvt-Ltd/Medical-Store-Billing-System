@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Outstanding Balance</title>
+<style>
+body{
+    font-family:"Segoe UI",Arial;
+    background:#eef3f8;
+    margin:0;
+}
+
+
+/* HEADER */
+
+.header{
+
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+
+    color:white;
+
+    padding:18px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+ 
+    position:relative;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+
+}
+
+
+.logo{
+
+    position:absolute;
+
+    left:20px;
+
+    height:60px;
+
+    width:170px;
+
+    border-radius:15px;
+
+}
+
+
+
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+
+
+/* CONTENT */
+
+.container{
+
+    width:600px;
+
+    margin:30px auto;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+
+}
+
+
+
+h2{
+
+    margin:0;
+
+    font-size:26px;
+
+}
+
+
+
+.title{
+
+    color:#0f4c81;
+
+    margin-bottom:20px;
+
+    border-bottom:2px solid #2196f3;
+
+    padding-bottom:10px;
+
+}
+
+
+
+label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+
+
+input{
+
+    width:100%;
+
+    height:38px;
+
+    box-sizing:border-box;
+
+    padding:8px 10px;
+
+    margin-top:8px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+
+
+input:focus{
+
+    outline:none;
+
+    border-color:#2196f3;
+
+}
+
+
+
+/* BUTTON */
+
+.btn{
+
+    margin-top:20px;
+
+    background:#198754;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 40px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+}
+
+
+
+.btn:hover{
+
+    background:#146c43;
+
+}
+
+
+
+/* RESULT */
+
+.result-box{
+
+    margin-top:20px;
+
+    padding:15px;
+
+    background:#e8f5e9;
+
+    border-left:5px solid #198754;
+
+    border-radius:8px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#0f4c81;
+
+}
+
+</style>
+</head>
+
+<body>
+<div class="header">
+
+<img src="/images/logo.jpeg" class="logo">
+
+<h2>Outstanding Supplier Balance</h2>
+
+<button class="close-btn" onclick="closePage()">
+✖ Close
+</button>
+
+</div>
+
+
+<div class="container">
+
+
+<h2 class="title">
+Supplier Balance Check
+</h2>
+
+
+
+<label>
+Supplier ID
+</label>
+
+
+<input type="number" id="supplierId"
+placeholder="Enter Supplier ID">
+
+
+
+<center>
+
+<button id="saveBtn" class="btn" onclick="checkBalance()">
+Check Balance
+</button>
+
+</center>
+
+
+
+<div class="result-box" id="result">
+
+Outstanding Balance : ₹ 0
+
+</div>
+
+
+</div>
+<script>
+
+function checkBalance(){
+
+    let id = document.getElementById("supplierId").value;
+
+    if(id==""){
+        alert("Enter Supplier ID");
+        return;
+    }
+
+    fetch("/api/suppliers/" + id)
+    .then(res => {
+        if(!res.ok){
+            throw new Error("Supplier not found");
+        }
+        return res.json();
+    })
+    .then(data => {
+
+        document.getElementById("result").innerHTML =
+            "Supplier Name : " + data.supplierName +
+            "<br>Outstanding Balance : ₹" + data.balance;
+
+    })
+    .catch(err=>{
+        document.getElementById("result").innerHTML =
+            "Supplier not found";
+    });
+
+}
+/* ENTER KEY = NEXT FIELD */
+document.addEventListener("keydown", function(e) {
+
+    if (e.key !== "Enter") return;
+
+    // Textarea me Enter allow karo
+    if (document.activeElement.tagName === "TEXTAREA") return;
+
+    e.preventDefault();
+
+    let fields = Array.from(
+        document.querySelectorAll(
+            'input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])'
+        )
+    ).filter(el => el.offsetParent !== null);
+
+    let index = fields.indexOf(document.activeElement);
+
+    if (index > -1 && index < fields.length - 1) {
+        fields[index + 1].focus();
+    }
+});
+function closePage(){
+
+    parent.closeModal();
+
+}
+</script>
+
+</body>
+</html>

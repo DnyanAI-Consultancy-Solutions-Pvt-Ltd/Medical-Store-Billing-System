@@ -1,0 +1,2384 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medical Billing System</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef3f8;
+margin:0;
+}
+.navbar{
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+ text-align: center;
+
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.header{
+background:#198754;
+color:white;
+padding:24px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+   height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+        
+    
+    
+}
+.header span{
+    margin:0 auto;
+}
+.billing-top{
+    padding:8px;
+     gap:8px; 
+}
+
+.billing-top input,
+.billing-top select{
+    height:30px;
+    padding:4px 8px;
+    margin:2px;
+}
+
+
+.container{
+    height:95vh;
+    display:flex;
+    flex-direction:column;
+}
+.table-container{
+    height:250px;
+    overflow-y:auto;
+}
+.table-container table{
+    width:100%;
+}
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,0.4);
+    z-index:9999;
+}
+.modal-content{
+    width:99%;
+    height:98vh;
+    margin:5px auto;
+    background:white;
+    border-radius:8px;
+    overflow:hidden;
+}
+.card{
+    background:#fff;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    margin-bottom:15px;
+}
+
+.invoice-row,
+.medicine-row{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:15px;
+
+    flex-wrap:nowrap;
+}
+
+.field{
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.field label{
+
+     font-family: "Segoe UI", Tahoma, sans-serif;
+
+    font-size:14px;
+
+    font-weight:300;      /* Normal */
+
+    color:#444;
+
+    margin-bottom:5px;
+
+    letter-spacing:0.2px;
+    }
+
+.field input,
+.field select{
+
+    height:38px;
+
+    padding:6px 10px;
+
+    border:1px solid #ccc;
+
+    border-radius:5px;
+}
+.type-field{
+    margin-left:15px;    /* Bill Date sarkha gap */
+}
+#invoiceNo{
+    width:130px;
+}
+
+#billDate{
+    width:150px;
+}
+
+.customer-field{
+    position:relative;
+}
+
+#customerSearch{
+    width:240px;
+    
+}
+
+.type-field select{
+    width:110px;
+}
+
+.medicine-field{
+    position:relative;
+}
+
+#medicineSearch{
+    width:260px;
+     height:23px;
+     
+}
+
+#quantity{
+    width:120px;
+         height:23px;
+    
+}
+
+.button-field .btn{
+
+    width:140px;
+
+    height:38px;
+
+    margin-top:22px;
+}
+
+#customerDropdown,
+#medicineDropdown{
+
+    position:absolute;
+
+    top:65px;
+
+    left:0;
+
+    width:100%;
+
+    background:#fff;
+
+    border:1px solid #ccc;
+
+    max-height:150px;
+
+    overflow-y:auto;
+
+    display:none;
+
+    z-index:9999;
+}
+.medicine-info{
+    padding:5px;
+    margin-top:5px;
+}
+.medicine-info p{
+   margin:2px 0;
+    font-size:13px;
+}
+.row{
+display:flex;
+gap:15px;
+margin-bottom:10px;
+flex-wrap:wrap;
+}
+.form-row{
+display:flex;
+gap:6px;
+align-items:center;
+}
+
+.form-row input,
+.form-row select{
+height:40px;
+width:220px;
+}
+input,select{
+padding:10px;
+width:180px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th{
+background:#198754;
+color:white;
+padding:8px;
+}
+
+td{
+border:1px solid #ddd;
+padding:6px;
+text-align:center;
+}
+/* ===== TOTAL BOX ===== */
+
+.total-box{
+
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:20px;
+
+    background:#ffffff;
+
+    padding:15px 20px;
+
+    margin-top:20px;
+
+    border-radius:10px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.15);
+
+    flex-wrap:wrap;
+
+}
+
+.total-box span{
+
+    font-weight:bold;
+
+    color:#0f4c81;
+
+    font-size:15px;
+
+}
+
+.total-box select{
+
+    width:90px;
+
+    height:38px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    padding:5px;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    outline:none;
+
+}
+
+.total-box select:focus{
+
+    border-color:#0f4c81;
+
+    box-shadow:0 0 5px rgba(15,76,129,.4);
+
+}
+
+.total-box input{
+
+    width:100px;
+
+    height:38px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    padding:5px 10px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.total-box input:focus{
+
+    border-color:#0f4c81;
+
+    box-shadow:0 0 5px rgba(15,76,129,.4);
+
+}
+
+.total-box h3{
+
+    margin:0;
+
+    padding:10px 18px;
+
+    background:#0f4c81;
+
+    color:#fff;
+
+    border-radius:8px;
+
+    font-size:20px;
+
+}
+
+
+
+/* ===== ACTION BUTTONS ===== */
+
+.action-buttons{
+
+    position:sticky;
+
+    bottom:0;
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    background:#ffffff;
+
+    padding:15px 20px;
+
+    margin-top:15px;
+
+    border-top:2px solid #ddd;
+
+    box-shadow:0 -2px 10px rgba(0,0,0,.15);
+
+    z-index:100;
+
+}
+
+.btn{
+
+    min-width:140px;
+
+    padding:12px 20px;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.btn:first-child{
+
+    background:#198754;
+
+    color:#fff;
+
+}
+
+.btn:last-child{
+
+ background:#198754;
+    color:#fff;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 5px 12px rgba(0,0,0,.25);
+
+}
+
+
+
+/* ===== PRINT ===== */
+
+@media print{
+
+body *{
+
+visibility:hidden;
+
+}
+
+#printArea,
+#printArea *{
+
+visibility:visible;
+
+}
+
+#printArea{
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+}
+
+.action-buttons,
+.no-print{
+
+display:none !important;
+
+}
+
+}
+
+.receipt{
+width:300px;
+margin:auto;
+font-family:monospace;
+}
+
+.receipt h2{
+text-align:center;
+}
+
+.receipt hr{
+border:1px dashed black;
+}
+.bill-summary{
+    margin-top:10px;
+    padding:10px;
+    background:#f5f5f5;
+}
+.action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:5px;
+}
+
+.action-buttons button{
+    width:90px;
+    height:30px;
+    font-size:13px;
+    padding:5px 10px;
+}
+#pageFrame{
+    width:100%;
+    height:100%;
+    border:none;
+}
+.medicine-details{
+    display:flex;
+    gap:15px;
+    margin-top:10px;
+}
+
+.detail-box{
+    flex:1;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:12px;
+    background:#fff;
+    min-height:80px;
+}
+
+.detail-box h4{
+    margin:0 0 8px;
+    color:#2c3e50;
+    border-bottom:1px solid #ddd;
+    padding-bottom:5px;
+}
+.invoice-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:nowrap;
+}
+
+.invoice-row label{
+margin-left:10px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.invoice-row input,
+.invoice-row select{
+    width:180px;
+    height:15px;
+}
+#billType{
+
+    width:180px;
+    height:36px;
+    font-size:14px;
+    
+}
+.medicine-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-top:1px;
+}
+
+.medicine-row label{
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+#medicineSearch{
+    width:220px;
+}
+
+#quantity{
+    width:120px;
+}
+.customer-section{
+    display:flex;
+    align-items:center;
+    gap:15px;          /* Customer ani Type madhla gap */
+}
+
+.customer-box{
+    position:relative;
+    width:180px;      /* 250px aivaji kami */
+}
+
+#customerSearch{
+    width:100%;
+    height:24px;
+    padding:5px;
+}
+
+#customerDropdown{
+    position:absolute;
+ top:57px;      /* input khali yeil */
+     left:0;
+    width:100%;
+    background:#fff;
+    border:1px solid #ccc;
+    max-height:150px;
+    overflow-y:auto;
+    display:none;
+    z-index:1000;
+}
+
+#billType{
+    width:100px;
+    height:40px;
+}
+#customerDropdown div{
+
+    padding:8px 12px;
+
+    cursor:pointer;
+
+    background:#fff;
+
+    color:#000;
+
+}
+
+#customerDropdown div:hover{
+
+    background:#e3f2fd;
+
+}
+
+#customerDropdown div.active{
+
+    background:#1976d2;
+
+    color:#fff;
+
+    font-weight:600;
+
+}
+/* Schedule */
+
+#scheduleInfo{
+
+    padding:3px 10px;
+
+    border-radius:15px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    display:inline-block;
+
+}
+#scheduleInfo{
+
+    width:120px;
+
+    background:#f5f5f5;
+
+    color:#d32f2f;
+
+    font-weight:600;
+
+    text-align:center;
+
+}
+/* Prescription Medicines */
+
+.schedule-h{
+
+    background:#ffe5e5;
+
+    color:#c62828;
+
+    border:1px solid #c62828;
+
+}
+.active-item{
+    background:#0d6efd !important;
+    color:#fff !important;
+}
+
+/* OTC Medicines */
+
+.schedule-otc{
+
+    background:#e8f5e9;
+
+    color:#2e7d32;
+
+    border:1px solid #2e7d32;
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
+ <button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+</div>
+
+<div class="card">
+
+<h3>Invoice Details</h3>
+
+<div class="invoice-row">
+
+    <div class="field">
+        <label><b>Bill No :</b></label>
+        <input type="text" id="invoiceNo" readonly>
+    </div>
+
+    <div class="field">
+        <label><b>Bill Date :</b></label>
+        <input type="date" id="billDate">
+    </div>
+
+    <div class="field customer-field">
+
+        <label><b>Customer :</b></label>
+
+        <input type="hidden" id="customerId">
+
+        <input type="text"
+               id="customerSearch"
+               placeholder="Search Customer"
+               onkeyup="filterCustomers(event)">
+
+        <div id="customerDropdown"></div>
+
+    </div>
+
+    <div class="field type-field">
+
+        <label><b>Type :</b></label>
+
+        <select id="billType" onchange="calculateTotal()">
+            <option value="Cash">Cash</option>
+            <option value="Credit">Credit</option>
+        </select>
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Add Medicine</h3>
+
+<div class="medicine-row">
+
+    <div class="field medicine-field">
+
+        <label><b>Medicine :</b></label>
+
+        <input type="text"
+               id="medicineSearch"
+               placeholder="Search Medicine"
+               onkeyup="filterMedicines(event)">
+
+        <div id="medicineDropdown"></div>
+
+    </div>
+
+    <div class="field">
+
+        <label><b>Quantity :</b></label>
+
+        <input type="number"
+               id="quantity"
+               placeholder="Quantity">
+
+    </div>
+
+    <div class="field button-field">
+
+        <button id="addItemBtn" class="btn" onclick="addMedicine()">
+            Add Item
+        </button>
+        </div>
+           <div class="field">
+
+    
+
+</div>
+
+</div>
+<div class="table-container">
+    <table id="billTable">
+
+<thead>
+
+<tr>
+<th>Sr No:</th>
+<th>Product</th>
+<th>Schedule</th>
+<th>Batch no</th>
+<th>GST %</th>
+<th>Qty</th>
+<th>Unit</th>
+<th>Rate</th>
+<th>Total Amount</th>
+</tr>
+
+</thead>
+
+<tbody id="billBody">
+
+</tbody>
+
+</table>
+</div>
+<table>
+
+<thead>
+
+<tr>
+<td><b>Stock :</b>
+<span id="stockInfo">0</span>
+</td>
+
+<td><b>Margin :</b>
+<span id="marginInfo">0</span> %
+</td>
+</tr>
+<tr>
+<td><b>MRP :</b>
+₹<span id="mrpInfo">0</span>
+</td>
+
+<td><b>Purchase Price :</b>
+₹<span id="purchasePriceInfo">0</span>
+</td>
+</tr>
+
+</thead>
+
+<tbody id="info">
+
+</tbody>
+
+</table>
+
+
+<div class="medicine-info">
+
+    
+
+
+<b><label>Prescribed By DR. :</label></b>
+<input type="text"
+id="doctorName"
+placeholder="Doctor Name">
+
+   <div class="medicine-details">
+
+    <div class="detail-box">
+        <h4>Contents</h4>
+        <div id="contentsInfo">-</div>
+    </div>
+
+    <div class="detail-box">
+        <h4>Substitutes</h4>
+        <div id="symptomsInfo">-</div>
+    </div>
+
+</div>
+</div>
+
+</div>
+
+<div class="total-box">
+
+<span>
+Total Amount :
+₹ <span id="subTotal">0</span>
+</span>
+
+
+<span>
+Discount :
+<select id="discount" onchange="calculateTotal()">
+
+<option value="0" selected>0%</option>
+<option value="1">1%</option>
+<option value="2">2%</option>
+<option value="3">3%</option>
+<option value="4">4%</option>
+<option value="5">5%</option>
+<option value="6">6%</option>
+<option value="7">7%</option>
+<option value="8">8%</option>
+<option value="9">9%</option>
+<option value="10">10%</option>
+
+</select>
+</span>
+
+<span>
+Paid:
+₹ <input type="number"
+id="paidAmount"
+value="0">
+</span>
+
+<span>
+Net Amount: ₹ <input type="number"
+id="netTotal"
+value="0" readonly>
+</span>
+
+</div>
+<div class="action-buttons">
+
+<button id="printBtn" class="btn" 
+onclick="printtBill()">
+Print
+</button>  
+  <button class="btn"
+onclick="generateBill()">
+View
+</button>
+</div>
+
+
+</div>
+<script>
+
+let medicines = [];
+let billItems = [];
+
+loadCustomers();
+loadMedicines();
+
+let customers = [];
+
+function loadCustomers(){
+
+fetch("/api/customers")
+.then(res => res.json())
+.then(data => {
+
+    customers = data;
+
+});
+}
+function filterCustomers(event){
+	 if(event &&
+		      (event.key==="ArrowUp" ||
+		       event.key==="ArrowDown" ||
+		       event.key==="Enter" ||
+		       event.key==="Escape")){
+		        return;
+		    }
+
+	let search =
+	document.getElementById("customerSearch")
+	.value.toLowerCase();
+
+	let dropdown =
+	document.getElementById("customerDropdown");
+	  // Search box blank asel tar dropdown close
+    if(search === ""){
+
+        dropdown.innerHTML = "";
+
+        dropdown.style.display = "none";
+
+        return;
+
+    }
+	let html = "";
+
+	customers
+	.filter(c =>
+	c.customerName.toLowerCase().includes(search)
+	)
+	.forEach(c => {
+
+		html += `
+			<div onclick="selectCustomer(${c.id}, '${c.customerName}')"
+			     style="padding:8px;cursor:pointer;">
+			     ${c.customerName}
+			</div>
+			`;
+
+	});
+
+	dropdown.innerHTML = html;
+
+	dropdown.style.display =
+	html ? "block" : "none";
+	}
+function selectCustomer(id, name){
+
+    document.getElementById("customerSearch").value = name;
+
+    document.getElementById("customerId").value = id;
+
+    document.getElementById("customerDropdown").style.display = "none";
+}function loadMedicines(){
+	let options = "";
+
+	medicines.forEach(m => {
+	    options += `
+	    <option value="${m.medicineName}">
+	    `;
+	});
+
+	fetch("/api/medicines")
+	.then(res => res.json())
+	.then(data => {
+
+	    medicines = data;
+
+	    let html = "";
+
+	    data.forEach(m => {
+
+	        html += `
+	        <div onclick="selectMedicine('${m.medicineName}')"
+	             style="padding:8px;cursor:pointer;">
+	            ${m.medicineName}
+	        </div>
+	        `;
+	    });
+
+	    document.getElementById("medicineDropdown").innerHTML = html;
+
+	});
+
+}
+function filterMedicines(event){
+	 if(event &&
+		      (event.key==="ArrowUp" ||
+		       event.key==="ArrowDown" ||
+		       event.key==="Enter" ||
+		       event.key==="Escape")){
+		        return;
+		    }
+	let search =
+	document.getElementById("medicineSearch")
+	.value.toLowerCase();
+
+	let dropdown =
+	document.getElementById("medicineDropdown");
+
+	let html = "";
+
+	medicines
+	.filter(m =>
+	m.medicineName.toLowerCase().includes(search)
+	)
+	.forEach(m => {
+
+		html += `
+			<div onclick="selectMedicine('${m.medicineName}')"
+			     style="padding:8px;cursor:pointer;
+			            display:flex;
+			            justify-content:space-between;
+			            align-items:center;">
+
+			    <span>${m.medicineName}</span>
+
+			    <span style="
+			        font-size:12px;
+			        color:white;
+			        background:${m.scheduleType === 'OTC' ? '#28a745' : '#dc3545'};
+			        padding:2px 8px;
+			        border-radius:12px;">
+			        ${m.scheduleType}
+			    </span>
+
+			</div>
+			`;
+
+	});
+
+	dropdown.innerHTML = html;
+
+	dropdown.style.display =
+	html ? "block" : "none";
+
+	}
+function selectMedicine(name){
+	
+
+	document.getElementById("medicineSearch").value =
+	name;
+
+	document.getElementById("medicineDropdown").style.display =
+	"none";
+	// Schedule
+	 
+
+	}
+function addMedicine(){
+	let medicineName =
+		document.getElementById("medicineSearch").value;
+
+		let medicine =
+		medicines.find(
+		m => m.medicineName === medicineName
+		);
+
+		if(!medicine){
+		    alert("Select valid medicine");
+		    return;
+		}
+
+		
+let qty =
+	parseInt(document.getElementById("quantity").value);
+
+	
+document.getElementById("stockInfo").innerText =
+	medicine.quantity || 0;
+	document.getElementById("mrpInfo").innerText =
+	medicine.mrp || 0;
+
+	document.getElementById("purchasePriceInfo").innerText =
+	medicine.purchasePrice || 0;
+
+	document.getElementById("marginInfo").innerText =
+	medicine.marginPercent || 0;
+
+	document.getElementById("contentsInfo").innerText =
+	medicine.contents || "-";
+
+	document.getElementById("symptomsInfo").innerText =
+	medicine.symptoms || "-";
+	
+//STOCK CHECK
+
+if(medicine.quantity <= 0){
+
+    alert("❌ Out Of Stock");
+
+    return;
+}
+
+// EXPIRY CHECK
+let today = new Date();
+
+let expiryDate =
+new Date(medicine.expiryDate);
+
+if(expiryDate < today){
+
+alert(
+"❌ Medicine Expired. Billing Not Allowed"
+);
+
+return;
+}
+let amount =
+medicine.mrp * qty;
+if(qty > medicine.quantity){
+
+    alert(
+    "❌ Available Stock : " +
+    medicine.quantity
+    );
+
+    return;
+}
+
+billItems.push({
+
+medicineId: medicine.id,
+medicineName: medicine.medicineName,
+scheduleType: medicine.scheduleType,
+batchNo: medicine.batchNo,
+
+quantity: qty,
+unit: medicine.unit,
+unitPrice: medicine.mrp,
+gst: medicine.gstPercent,   // Add this line
+amount: amount
+
+
+});
+
+renderTable();
+calculateTotal();
+}
+
+function renderTable(){
+
+let html="";
+let subtotal=0;
+
+billItems.forEach((item,index)=>{
+
+subtotal += item.amount;
+
+html += `
+<tr>
+
+<td>${index+1}</td>
+
+<td>${item.medicineName}</td>
+<td>${item.scheduleType}</td>
+<td>${item.batchNo}</td>
+<td>${item.gst}%</td>
+
+
+
+<td>
+<input type="number"
+value="${item.quantity}"
+	oninput="calculateRow(this)">
+</td>
+<td>${item.unit}</td>
+
+<td>
+<input type="number"
+value="${item.unitPrice}"
+	oninput="calculateRow(this)">
+</td>
+
+<td class="amount">
+${item.amount}
+</td>
+<td>
+<button onclick="removeItem(${index})">
+X
+</button>
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("billBody").innerHTML = html;
+
+document.getElementById("subTotal").innerText = subtotal;
+
+calculateTotal();
+
+}
+
+function removeItem(index){
+
+billItems.splice(index,1);
+
+renderTable();
+
+}
+
+
+
+function generateBill(){
+	let customerId =
+		document.getElementById("customerId").value;
+
+let medicinesPayload=[];
+
+billItems.forEach(item=>{
+
+medicinesPayload.push({
+
+medicineId:item.medicineId,
+quantity:item.quantity
+
+});
+
+});
+
+let billRequest = {
+
+customerId: customerId || null,
+customerName:
+    document.getElementById("customerSearch").value,
+
+doctorName:
+document.getElementById("doctorName").value,
+
+billType:
+document.getElementById("billType").value,
+
+discount:
+parseFloat(
+document.getElementById("discount").value || 0
+),
+
+paidAmount:
+parseFloat(
+document.getElementById("paidAmount").value || 0
+),
+
+medicines: medicinesPayload
+
+};
+
+fetch("/api/bills",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(billRequest)
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+	document.getElementById("invoiceNo").value = data.invoiceNo;
+
+	let discountPercent =
+		parseFloat(document.getElementById("discount").value) || 0;
+
+		let subTotal = data.subTotal;
+
+		let discountAmount =
+		(subTotal * discountPercent) / 100;
+
+		let netAmount =
+		subTotal - discountAmount;
+
+		let billContent = `
+			<p><b>Invoice :</b> ${document.getElementById("invoiceNo").value}</p>
+
+		<p><b>Bill No :</b> ${data.id}</p>
+
+		<p><b>Date :</b> ${data.billDate.substring(0,10)}</p>
+
+		<p><b>Customer :</b> ${data.customer.customerName}</p>
+
+		<p><b>Doctor :</b> ${data.doctorName}</p>
+
+		<hr>
+
+		<table>
+
+		<tr>
+		<th>Product</th>
+		<th>Batch</th>
+		<th>Qty</th>
+		<th>Unit</th>
+		<th>Rate</th>
+		</tr>
+
+		${billItems.map(item => `
+		<tr>
+		<td>${item.medicineName}</td>
+		<td>${item.batchNo}</td>
+		<td>${item.quantity}</td>
+		<td>${item.unit}</td>
+		<td>${item.unitPrice}</td>
+		</tr>
+		`).join("")}
+
+		</table>
+
+		<hr>
+
+		<p><b>Sub Total :</b> ₹ ${subTotal.toFixed(2)}</p>
+
+		<p><b>Discount (${discountPercent}%) :</b> ₹ ${discountAmount.toFixed(2)}</p>
+
+		<h3><b>Net Amount :</b> ₹ ${netAmount.toFixed(2)}</h3>
+
+		<p><b>Paid :</b> ₹ ${data.paidAmount}</p>
+
+		<p><b>Balance :</b> ₹ ${(netAmount - data.paidAmount).toFixed(2)}</p>
+
+		`;
+	let win = window.open("","_blank","width=900,height=700");
+
+	win.document.write(`
+			<html>
+			<head>
+			<title>Medical Bill</title>
+
+			<style>
+
+			body{
+			    font-family:Arial;
+			    padding:20px;
+			}
+
+			.bill{
+			    width:700px;
+			    margin:auto;
+			    border:1px solid #000;
+			    padding:15px;
+			}
+
+			.header{
+			    text-align:center;
+			    border-bottom:1px solid #000;
+			    padding-bottom:10px;
+			}
+
+			.header h2{
+			    margin:0;
+			}
+
+			table{
+			    width:100%;
+			    border-collapse:collapse;
+			    margin-top:10px;
+			}
+
+			th,td{
+			    border:1px solid #000;
+			    padding:6px;
+			    text-align:center;
+			}
+
+			.summary{
+			    margin-top:15px;
+			    text-align:right;
+			}
+
+			.footer{
+			    text-align:center;
+			    margin-top:20px;
+			    font-weight:bold;
+			}
+
+			</style>
+			</head>
+
+			<body>
+
+			<div class="bill">
+
+			<div class="header">
+			    <h2>🏥 MEDICAL STORE</h2>
+			    <p>Medical Billing System</p>
+			</div>
+
+			${billContent}
+
+			<div class="footer">
+			    Thank You Visit Again
+			</div>
+
+			</div>
+
+			</body>
+			</html>
+			`);
+	win.document.close();
+
+	});
+
+}
+function printtBill(){
+	let customerId =
+		document.getElementById("customerId").value;
+
+let medicinesPayload=[];
+
+billItems.forEach(item=>{
+
+medicinesPayload.push({
+
+medicineId:item.medicineId,
+quantity:item.quantity
+
+});
+
+});
+
+let billRequest = {
+
+		customerId: customerId || null,
+		customerName:
+	        document.getElementById("customerSearch").value,
+
+doctorName:
+document.getElementById("doctorName").value,
+
+billType:
+document.getElementById("billType").value,
+
+discount:
+parseFloat(
+document.getElementById("discount").value || 0
+),
+
+paidAmount:
+parseFloat(
+document.getElementById("paidAmount").value || 0
+),
+
+medicines: medicinesPayload
+
+};
+
+fetch("/api/bills",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(billRequest)
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+	let discountPercent =
+		parseFloat(document.getElementById("discount").value) || 0;
+
+		let subTotal = data.subTotal;
+
+		let discountAmount =
+		(subTotal * discountPercent) / 100;
+
+		let netAmount =
+		subTotal - discountAmount;
+
+		let billContent = `
+
+		<p><b>Invoice :</b> ${data.invoiceNo}</p>
+
+		<p><b>Bill No :</b> ${data.id}</p>
+
+		<p><b>Date :</b> ${data.billDate.substring(0,10)}</p>
+
+		<p><b>Customer :</b> ${data.customer.customerName}</p>
+
+		<p><b>Doctor :</b> ${data.doctorName}</p>
+
+		<hr>
+
+		<table>
+
+		<tr>
+		<th>Product</th>
+		<th>Batch</th>
+		<th>Qty</th>
+		<th>Unit</th>
+		<th>Rate</th>
+		</tr>
+
+		${billItems.map(item => `
+		<tr>
+		<td>${item.medicineName}</td>
+		<td>${item.batchNo}</td>
+		<td>${item.quantity}</td>
+		<td>${item.unit}</td>
+		<td>${item.unitPrice}</td>
+		</tr>
+		`).join("")}
+
+		</table>
+
+		<hr>
+
+		<p><b>Sub Total :</b> ₹ ${subTotal.toFixed(2)}</p>
+
+		<p><b>Discount (${discountPercent}%) :</b> ₹ ${discountAmount.toFixed(2)}</p>
+
+		<h3><b>Net Amount :</b> ₹ ${netAmount.toFixed(2)}</h3>
+
+		<p><b>Paid :</b> ₹ ${data.paidAmount}</p>
+
+		<p><b>Balance :</b> ₹ ${(netAmount - data.paidAmount).toFixed(2)}</p>
+
+		`;
+	let win = window.open("","_blank","width=900,height=700");
+
+	win.document.write(`
+			<html>
+			<head>
+			<title>Medical Bill</title>
+
+			<style>
+
+			body{
+			    font-family:Arial;
+			    padding:20px;
+			}
+
+			.bill{
+			    width:700px;
+			    margin:auto;
+			    border:1px solid #000;
+			    padding:15px;
+			}
+
+			.header{
+			    text-align:center;
+			    border-bottom:1px solid #000;
+			    padding-bottom:10px;
+			}
+
+			.header h2{
+			    margin:0;
+			}
+
+			table{
+			    width:100%;
+			    border-collapse:collapse;
+			    margin-top:10px;
+			}
+
+			th,td{
+			    border:1px solid #000;
+			    padding:6px;
+			    text-align:center;
+			}
+
+			.summary{
+			    margin-top:15px;
+			    text-align:right;
+			}
+
+			.footer{
+			    text-align:center;
+			    margin-top:20px;
+			    font-weight:bold;
+			}
+
+			</style>
+			</head>
+
+			<body>
+
+			<div class="bill">
+
+			<div class="header">
+			    <h2>🏥 MEDICAL STORE</h2>
+			    <p>Medical Billing System</p>
+			</div>
+
+			${billContent}
+
+			<div class="footer">
+			    Thank You Visit Again
+			</div>
+
+			</div>
+
+			</body>
+			</html>
+			`);
+	win.document.close();
+win.print();
+	});
+
+}
+function medicineChanged(){
+
+	let medicineId =
+	document.getElementById("medicineSelect").value;
+
+	let medicine =
+	medicines.find(m => m.id == medicineId);
+
+	document.getElementById("contentsView")
+	.innerText = medicine.contents || "";
+
+	document.getElementById("symptomsView")
+	.innerText = medicine.symptoms || "";
+
+	document.getElementById("marginView")
+	.innerText = medicine.marginPercent || 0;
+	document.getElementById("scheduleInfo").innerText =
+		medicine.scheduleType || "OTC";
+	}
+
+window.onload = function () {
+
+    let today = new Date();
+    let today1 = today.toISOString().split("T")[0];
+
+    let invoiceNo =
+        "INV-" +
+        today.getFullYear() +
+        String(today.getMonth()+1).padStart(2,"0") +
+        String(today.getDate()).padStart(2,"0") +
+        "-" +
+        Math.floor(Math.random()*1000);
+
+    document.getElementById("invoiceNo").value = invoiceNo;
+    document.getElementById("billDate").value = today1;
+
+    document.getElementById("invoiceNo").focus();
+}
+
+function calculateRow(element){
+
+    let row = element.parentElement.parentElement;
+
+    let qty = Number(row.cells[4].querySelector("input").value);
+
+    let rate = Number(row.cells[6].querySelector("input").value);
+
+    let amount = qty * rate;
+
+    row.cells[8].innerHTML = amount.toFixed(2);
+    // billItems array update
+    let index = row.rowIndex - 1;
+
+    billItems[index].quantity = qty;
+    billItems[index].unitPrice = rate;
+    billItems[index].amount = amount;
+
+    // Table total refresh
+    calculateBillTotal();
+    }
+/* ENTER = NEXT FIELD */
+
+
+function highlightCustomer(items){
+
+    items.forEach(item=>{
+        item.classList.remove("active-item");
+    });
+
+    if(customerIndex >= 0 && customerIndex < items.length){
+        items[customerIndex].classList.add("active-item");
+    }
+}
+
+function calculateTotal(){
+
+    let subTotal = Number(
+        document.getElementById("subTotal").innerText
+    ) || 0;
+
+    let discountPercent = Number(
+        document.getElementById("discount").value
+    ) || 0;
+
+    let discountAmount =
+        (subTotal * discountPercent) / 100;
+
+    let netAmount =
+        subTotal - discountAmount;
+
+    document.getElementById("netTotal").value =
+        netAmount.toFixed(2);
+
+    // Cash / Credit Logic
+    let billType =
+        document.getElementById("billType").value;
+
+    if(billType === "Cash"){
+
+        document.getElementById("paidAmount").value =
+            netAmount.toFixed(2);
+
+    }else{
+
+        document.getElementById("paidAmount").value = "0";
+
+    }
+
+}
+function calculateBillTotal(){
+
+    let subtotal = 0;
+
+    billItems.forEach(item=>{
+        subtotal += item.amount;
+    });
+
+    document.getElementById("subTotal").innerText = subtotal.toFixed(2);
+
+    calculateTotal();
+}
+function closePage(){
+
+    parent.closeModal();
+
+}
+function printBill(){
+
+    window.printtBill();
+
+}
+/*==========================================
+PART-1 : KEYBOARD NAVIGATION ENGINE
+==========================================*/
+
+const controls = [
+   "invoiceNo",
+   "billDate",
+   "customerSearch",
+   "billType",
+   "medicineSearch",
+   "quantity",
+   "addItemBtn",
+   "doctorName",
+   "discount",
+   "paidAmount",
+   "printBtn"
+];
+
+function focusField(id){
+
+   let el = document.getElementById(id);
+
+   if(!el) return;
+
+   el.focus();
+
+   if(el.tagName==="INPUT"){
+       el.select();
+   }
+
+}
+
+function nextField(currentId){
+
+   let index = controls.indexOf(currentId);
+
+   if(index < controls.length-1){
+
+       focusField(controls[index+1]);
+
+   }
+
+}
+
+function previousField(currentId){
+
+   let index = controls.indexOf(currentId);
+
+   if(index>0){
+
+       focusField(controls[index-1]);
+
+   }
+
+}
+
+
+/*==============================
+LEFT & RIGHT ARROW
+==============================*/
+
+document.addEventListener("keydown",function(e){
+
+   let id=document.activeElement.id;
+
+   if(e.key==="ArrowRight"){
+
+       // dropdown open ho to navigation mat karo
+       
+       e.preventDefault();
+
+       nextField(id);
+
+   }
+
+   if(e.key==="ArrowLeft"){
+
+      
+       e.preventDefault();
+
+       previousField(id);
+
+   }
+
+});
+
+
+/*==============================
+INITIAL FOCUS
+==============================*/
+
+window.addEventListener("load",function(){
+
+   let today=new Date();
+
+   document.getElementById("billDate").value=
+   today.toISOString().split("T")[0];
+
+   focusField("invoiceNo");
+
+});
+/*==========================================
+PART-2 : INVOICE + BILL DATE + CUSTOMER
+==========================================*/
+
+let customerIndex = -1;
+
+
+/*-------------------------
+Invoice -> Bill Date
+-------------------------*/
+document.getElementById("invoiceNo").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   focusField("billDate");
+
+});
+
+
+/*-------------------------
+Bill Date -> Customer
+-------------------------*/
+document.getElementById("billDate").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   focusField("customerSearch");
+
+});
+
+
+/*-------------------------
+Customer Keyboard
+-------------------------*/
+document.getElementById("customerSearch").addEventListener("keydown",function(e){
+
+   let dropdown=document.getElementById("customerDropdown");
+
+   let items=document.querySelectorAll("#customerDropdown div");
+
+   // DOWN
+   if(e.key==="ArrowDown"){
+
+       if(items.length===0) return;
+
+       e.preventDefault();
+
+       customerIndex++;
+
+       if(customerIndex>=items.length)
+           customerIndex=0;
+
+       items.forEach(x=>{
+           x.style.background="";
+           x.style.color="";
+       });
+
+       items[customerIndex].style.background="#0d6efd";
+       items[customerIndex].style.color="white";
+       items[customerIndex].scrollIntoView({
+    	    behavior:"smooth",
+    	    block:"nearest"
+    	});
+
+       return;
+   }
+
+   // UP
+   if(e.key==="ArrowUp"){
+
+       if(items.length===0) return;
+
+       e.preventDefault();
+
+       customerIndex--;
+
+       if(customerIndex<0)
+           customerIndex=items.length-1;
+
+       items.forEach(x=>{
+           x.style.background="";
+           x.style.color="";
+       });
+
+       items[customerIndex].style.background="#0d6efd";
+       items[customerIndex].style.color="white";
+       items[customerIndex].scrollIntoView({
+    	    behavior:"smooth",
+    	    block:"nearest"
+    	});
+
+       return;
+   }
+
+   // ESC
+   if(e.key==="Escape"){
+
+       dropdown.style.display="none";
+       customerIndex=-1;
+       return;
+   }
+
+   // ENTER
+   if(e.key==="Enter"){
+
+       e.preventDefault();
+
+       // Agar dropdown me item select hai
+       if(items.length>0 && customerIndex>=0){
+
+           items[customerIndex].click();
+
+       }
+
+       dropdown.style.display="none";
+
+       customerIndex=-1;
+
+       focusField("billType");
+
+   }
+
+});
+/*==========================================
+PART-3 : BILL TYPE KEYBOARD
+==========================================*/
+
+let typeOpen = false;
+
+const billType = document.getElementById("billType");
+
+billType.addEventListener("keydown", function(e){
+
+   // ENTER
+   if(e.key === "Enter"){
+
+       e.preventDefault();
+
+       // First Enter -> open dropdown
+       if(!typeOpen){
+
+           typeOpen = true;
+
+           // Edge/Chrome
+           if(this.showPicker){
+               this.showPicker();
+           }else{
+               this.click();
+           }
+
+           return;
+       }
+
+       // Second Enter -> confirm
+       typeOpen = false;
+
+       focusField("medicineSearch");
+
+       return;
+   }
+
+   // ESC
+   if(e.key === "Escape"){
+
+       typeOpen = false;
+
+       this.blur();
+
+   }
+
+   // UP & DOWN browser automatically handle karega
+});
+
+
+/*-----------------------------------
+Change hone ke baad Medicine pe jana
+------------------------------------*/
+
+billType.addEventListener("change",function(){
+
+   typeOpen = false;
+
+   focusField("medicineSearch");
+
+});
+/*==========================================
+PART-4 : MEDICINE + QTY + ADD ITEM
+==========================================*/
+
+let medicineIndex = -1;
+
+const medicineInput = document.getElementById("medicineSearch");
+
+medicineInput.addEventListener("keydown",function(e){
+
+   let items=document.querySelectorAll("#medicineDropdown div");
+
+   // DOWN
+   if(e.key==="ArrowDown"){
+
+       if(items.length===0) return;
+
+       e.preventDefault();
+
+       medicineIndex++;
+
+       if(medicineIndex>=items.length)
+           medicineIndex=0;
+
+       items.forEach(x=>{
+           x.style.background="";
+           x.style.color="";
+       });
+
+       items[medicineIndex].style.background="#0d6efd";
+       items[medicineIndex].style.color="white";
+       items[medicineIndex].scrollIntoView({
+    	    behavior:"smooth",
+    	    block:"nearest"
+    	
+    	});
+
+       return;
+   }
+
+   // UP
+   if(e.key==="ArrowUp"){
+
+       if(items.length===0) return;
+
+       e.preventDefault();
+
+       medicineIndex--;
+
+       if(medicineIndex<0)
+           medicineIndex=items.length-1;
+
+       items.forEach(x=>{
+           x.style.background="";
+           x.style.color="";
+       });
+
+       items[medicineIndex].style.background="#0d6efd";
+       items[medicineIndex].style.color="white";
+       items[medicineIndex].scrollIntoView({
+    	    behavior:"smooth",
+    	    block:"nearest"
+    	
+    	});
+
+       return;
+   }
+
+   // ESC
+   if(e.key==="Escape"){
+
+       document.getElementById("medicineDropdown").style.display="none";
+       medicineIndex=-1;
+       return;
+
+   }
+
+   // ENTER
+   if(e.key==="Enter"){
+
+       e.preventDefault();
+
+       // Dropdown item selected
+       if(items.length>0 && medicineIndex>=0){
+
+           items[medicineIndex].click();
+
+       }
+
+       document.getElementById("medicineDropdown").style.display="none";
+
+       medicineIndex=-1;
+
+       focusField("quantity");
+
+   }
+
+});
+
+
+/*==============================
+QUANTITY
+==============================*/
+
+document.getElementById("quantity").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   focusField("addItemBtn");
+
+});
+
+
+/*==============================
+ADD ITEM
+==============================*/
+
+document.getElementById("addItemBtn").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   let medicine =
+   document.getElementById("medicineSearch").value.trim();
+
+   // Medicine blank → Doctor
+   if(medicine===""){
+
+       focusField("doctorName");
+       return;
+
+   }
+
+   // Add medicine
+   addMedicine();
+
+   // Clear fields
+   document.getElementById("medicineSearch").value="";
+   document.getElementById("quantity").value="";
+
+   medicineIndex=-1;
+
+   document.getElementById("medicineDropdown").style.display="none";
+
+   // Back to medicine
+   focusField("medicineSearch");
+
+});
+/*==========================================
+PART-5 : DOCTOR → DISCOUNT → PAID → PRINT
+==========================================*/
+
+
+/*-----------------------
+Doctor
+-----------------------*/
+document.getElementById("doctorName").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   focusField("discount");
+
+   
+});
+
+
+/*-----------------------
+Discount
+-----------------------*/
+const discount=document.getElementById("discount");
+
+let discountOpen=false;
+
+discount.addEventListener("keydown",function(e){
+
+   // First Enter = open dropdown
+   if(e.key==="Enter" && !discountOpen){
+
+       e.preventDefault();
+
+       discountOpen=true;
+
+       if(this.showPicker){
+
+           this.showPicker();
+
+       }else{
+
+           this.click();
+
+       }
+
+       return;
+   }
+
+   // Second Enter = confirm
+   if(e.key==="Enter" && discountOpen){
+
+       e.preventDefault();
+
+       discountOpen=false;
+
+       focusField("paidAmount");
+
+       return;
+   }
+
+   if(e.key==="Escape"){
+
+       discountOpen=false;
+
+   }
+
+});
+
+
+discount.addEventListener("change",function(){
+
+   discountOpen=false;
+
+});
+
+
+/*-----------------------
+Paid Amount
+-----------------------*/
+
+document.getElementById("paidAmount").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   focusField("printBtn");
+
+});
+
+
+/*-----------------------
+Print
+-----------------------*/
+
+document.getElementById("printBtn").addEventListener("keydown",function(e){
+
+   if(e.key!=="Enter") return;
+
+   e.preventDefault();
+
+   printtBill();
+
+});
+</script>
+
+
+</body>
+</html>
+

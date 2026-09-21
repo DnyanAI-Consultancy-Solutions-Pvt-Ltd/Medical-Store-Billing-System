@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Expiry / Breakage Entry</title>
+
+<style>
+
+body{
+    font-family:"Segoe UI",Arial;
+    background:#eef3f8;
+    margin:0;
+}
+
+
+/* HEADER */
+
+.header{
+
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+
+    color:white;
+
+    padding:18px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+
+}
+
+
+.logo{
+
+    position:absolute;
+
+    left:20px;
+
+    height:60px;
+
+    width:170px;
+
+    border-radius:15px;
+
+}
+
+
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+
+
+/* CONTENT */
+
+.container{
+
+    background:white;
+
+    width:750px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+
+}
+
+
+
+h2{
+
+    color:#0f4c81;
+
+    margin:0 0 20px;
+
+    border-bottom:2px solid #2196f3;
+
+    padding-bottom:8px;
+
+}
+
+
+
+.row{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:flex-end;
+
+}
+
+
+
+.field{
+
+    flex:1;
+
+}
+
+
+
+label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+
+
+input,
+select{
+
+    width:100%;
+
+    height:38px;
+
+    box-sizing:border-box;
+
+    padding:8px 10px;
+
+    margin-top:5px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#2196f3;
+
+}
+
+
+
+/* BUTTON */
+
+.btn{
+
+    height:40px;
+
+    padding:0 30px;
+
+    background:#198754;
+
+    color:white;
+
+    border:none;
+
+    border-radius:7px;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+
+.btn:hover{
+
+    background:#146c43;
+
+}
+#medicineDropdown div{
+    padding:10px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+}
+
+#medicineDropdown div:hover,
+#medicineDropdown div.active{
+    background:#2196f3;
+    color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="header">
+
+<img src="/images/logo.jpeg" class="logo">
+
+<span>Expiry / Breakage Entry</span>
+
+<button class="close-btn" onclick="closePage()">
+✖ Close
+</button>
+
+</div>
+
+
+
+<div class="container">
+
+
+<h2>Expiry / Breakage Details</h2>
+
+
+<div class="row">
+
+
+<div class="field" style="position:relative;">
+
+<label>Medicine</label>
+
+<input
+    type="text"
+    id="medicineSearch"
+    placeholder="Search Medicine..."
+    autocomplete="off"
+>
+
+<input
+    type="hidden"
+    id="medicine"
+>
+
+<div
+    id="medicineDropdown"
+    style="
+        display:none;
+        position:absolute;
+        top:63px;
+        left:0;
+        width:100%;
+        max-height:220px;
+        overflow-y:auto;
+        background:white;
+        border:1px solid #ccc;
+        border-radius:6px;
+        box-shadow:0 3px 10px rgba(0,0,0,.2);
+        z-index:9999;
+    "
+>
+</div>
+
+</div>
+
+
+
+<div class="field">
+
+<label>Quantity</label>
+
+<input type="number" id="quantity">
+
+</div>
+
+
+
+<div class="field">
+
+<label>Reason</label>
+
+<select id="reason">
+
+<option value="EXPIRY">
+Expiry
+</option>
+
+<option value="BREAKAGE">
+Breakage
+</option>
+
+<option value="DAMAGED">
+Damaged
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="field">
+
+<button id="saveBtn" class="btn" onclick="saveEntry()">
+Save Entry
+</button>
+
+</div>
+
+
+
+</div>
+
+
+</div>
+<script>
+
+let medicines = [];
+let medicineIndex = -1;
+
+
+/* =========================================
+   LOAD MEDICINES
+========================================= */
+
+function loadMedicines(){
+
+    fetch("/api/medicines")
+    .then(res => res.json())
+    .then(data => {
+
+        medicines = Array.isArray(data) ? data : [];
+
+    })
+    .catch(error => {
+
+        console.error("Medicine loading error:", error);
+
+    });
+
+}
+
+
+/* =========================================
+   MEDICINE SEARCH ELEMENTS
+========================================= */
+
+const medicineSearch =
+    document.getElementById("medicineSearch");
+
+const medicineDropdown =
+    document.getElementById("medicineDropdown");
+
+
+/* =========================================
+   MEDICINE SEARCH
+========================================= */
+
+medicineSearch.addEventListener("input", function(){
+
+    let search =
+        this.value.trim().toLowerCase();
+
+    medicineIndex = -1;
+
+    document.getElementById("medicine").value = "";
+
+
+    if(search === ""){
+
+        medicineDropdown.innerHTML = "";
+        medicineDropdown.style.display = "none";
+
+        return;
+
+    }
+
+
+    let results = medicines.filter(m => {
+
+        let name = m.medicineName || "";
+
+        return name.toLowerCase().includes(search);
+
+    });
+
+
+    let html = "";
+
+
+    results.forEach(m => {
+
+        html += `
+        <div
+            data-id="${m.id}"
+            data-name="${m.medicineName || ""}"
+        >
+            ${m.medicineName || ""}
+        </div>
+        `;
+
+    });
+
+
+    if(results.length === 0){
+
+        html = `
+        <div style="color:gray;">
+            No Medicine Found
+        </div>
+        `;
+
+    }
+
+
+    medicineDropdown.innerHTML = html;
+
+    medicineDropdown.style.display = "block";
+
+});
+
+
+/* =========================================
+   MEDICINE KEYBOARD
+========================================= */
+
+medicineSearch.addEventListener("keydown", function(e){
+
+    let items =
+        medicineDropdown.querySelectorAll(
+            "div[data-id]"
+        );
+
+
+    /* ARROW DOWN */
+
+    if(e.key === "ArrowDown"){
+
+        if(items.length === 0)
+            return;
+
+        e.preventDefault();
+
+        medicineIndex++;
+
+        if(medicineIndex >= items.length)
+            medicineIndex = 0;
+
+        highlightMedicine(items);
+
+        return;
+
+    }
+
+
+    /* ARROW UP */
+
+    if(e.key === "ArrowUp"){
+
+        if(items.length === 0)
+            return;
+
+        e.preventDefault();
+
+        medicineIndex--;
+
+        if(medicineIndex < 0)
+            medicineIndex = items.length - 1;
+
+        highlightMedicine(items);
+
+        return;
+
+    }
+
+
+    /* ENTER */
+
+    if(e.key === "Enter"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        if(items.length > 0){
+
+            if(medicineIndex < 0)
+                medicineIndex = 0;
+
+
+            let selected =
+                items[medicineIndex];
+
+
+            selectMedicine(
+                selected.dataset.id,
+                selected.dataset.name
+            );
+
+
+            return;
+
+        }
+
+
+        /* Medicine already selected */
+
+        if(
+            document.getElementById("medicine").value !== ""
+        ){
+
+            document.getElementById("quantity").focus();
+
+        }
+
+    }
+
+
+    /* ESC */
+
+    if(e.key === "Escape"){
+
+        medicineDropdown.style.display = "none";
+
+        medicineIndex = -1;
+
+    }
+
+});
+
+
+/* =========================================
+   HIGHLIGHT MEDICINE
+========================================= */
+
+function highlightMedicine(items){
+
+    items.forEach(item => {
+
+        item.classList.remove("active");
+
+    });
+
+
+    if(
+        medicineIndex >= 0 &&
+        medicineIndex < items.length
+    ){
+
+        items[medicineIndex]
+            .classList.add("active");
+
+
+        items[medicineIndex]
+            .scrollIntoView({
+                block:"nearest"
+            });
+
+    }
+
+}
+
+
+/* =========================================
+   SELECT MEDICINE
+========================================= */
+
+function selectMedicine(id, name){
+
+    document.getElementById("medicine").value = id;
+
+    document.getElementById("medicineSearch").value = name;
+
+    medicineDropdown.style.display = "none";
+
+    medicineIndex = -1;
+
+    document.getElementById("quantity").focus();
+
+}
+
+
+/* =========================================
+   CLICK MEDICINE
+========================================= */
+
+medicineDropdown.addEventListener("click", function(e){
+
+    let item =
+        e.target.closest("div[data-id]");
+
+
+    if(!item)
+        return;
+
+
+    selectMedicine(
+        item.dataset.id,
+        item.dataset.name
+    );
+
+});
+
+
+/* =========================================
+   CLOSE DROPDOWN
+========================================= */
+
+document.addEventListener("click", function(e){
+
+    if(
+        !medicineSearch.contains(e.target) &&
+        !medicineDropdown.contains(e.target)
+    ){
+
+        medicineDropdown.style.display = "none";
+
+        medicineIndex = -1;
+
+    }
+
+});
+
+
+/* =========================================
+   SAVE ENTRY
+========================================= */
+
+function saveEntry(){
+
+    const medicineId =
+        document.getElementById("medicine").value;
+
+    const quantity =
+        document.getElementById("quantity").value;
+
+    const reason =
+        document.getElementById("reason").value;
+
+
+    /* Medicine validation */
+
+    if(!medicineId){
+
+        alert("Please select Medicine.");
+
+        medicineSearch.focus();
+
+        return;
+
+    }
+
+
+    /* Quantity validation */
+
+    if(!quantity || Number(quantity) <= 0){
+
+        alert("Please enter Quantity.");
+
+        document.getElementById("quantity").focus();
+
+        return;
+
+    }
+
+
+    const data = {
+
+        medicineId: medicineId,
+
+        quantity: quantity,
+
+        reason: reason
+
+    };
+
+
+    fetch("/api/stock-adjustments", {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(data)
+
+    })
+    .then(res => {
+
+        if(!res.ok){
+
+            throw new Error("Save failed");
+
+        }
+
+        return res.text();
+
+    })
+    .then(msg => {
+
+        alert("Saved Successfully");
+
+        location.reload();
+
+    })
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Error while saving entry.");
+
+    });
+
+}
+
+/* =====================================================
+LEFT / RIGHT ARROW = PREVIOUS / NEXT FIELD
+===================================================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(
+     e.key !== "ArrowLeft" &&
+     e.key !== "ArrowRight"
+ ){
+     return;
+ }
+
+ let active = document.activeElement;
+
+
+ /* Medicine Search मध्ये Left/Right normal typing राहू द्या */
+ if(active.id === "medicineSearch"){
+     return;
+ }
+
+
+ /* Date field मध्ये browser चे normal behavior */
+ if(active.type === "date"){
+     return;
+ }
+
+
+ /*
+  * फक्त form fields घ्या
+  */
+
+ let fields = Array.from(
+     document.querySelectorAll(
+         'input:not([type="hidden"]):not([disabled]),' +
+         'select:not([disabled]),' +
+         'button:not([disabled])'
+     )
+ ).filter(function(el){
+
+     return el.offsetParent !== null;
+
+ });
+
+
+ let index = fields.indexOf(active);
+
+
+ if(index === -1)
+     return;
+
+
+ /* =========================
+    RIGHT ARROW
+    Next Field
+ ========================= */
+
+ if(e.key === "ArrowRight"){
+
+     if(index < fields.length - 1){
+
+         e.preventDefault();
+
+         fields[index + 1].focus();
+
+     }
+
+     return;
+ }
+
+
+ /* =========================
+    LEFT ARROW
+    Previous Field
+ ========================= */
+
+ if(e.key === "ArrowLeft"){
+
+     if(index > 0){
+
+         e.preventDefault();
+
+         fields[index - 1].focus();
+
+     }
+
+     return;
+ }
+
+});
+/* =========================================
+   ENTER KEY HANDLING
+========================================= */
+
+document.addEventListener("keydown", function(e){
+
+    if(e.key !== "Enter")
+        return;
+
+
+    if(
+        document.activeElement.tagName === "TEXTAREA"
+    )
+        return;
+
+
+    let active =
+        document.activeElement;
+
+
+    /* =====================================
+       MEDICINE SEARCH
+       Its own keydown handles it
+    ===================================== */
+
+    if(active.id === "medicineSearch"){
+
+        return;
+
+    }
+
+
+    /* =====================================
+       QUANTITY
+       Enter -> REASON
+    ===================================== */
+
+    if(active.id === "quantity"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        document.getElementById("reason").focus();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       REASON
+       Enter -> SAVE ENTRY
+    ===================================== */
+
+    if(active.id === "reason"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        document.getElementById("saveBtn").focus();
+
+        return;
+
+    }
+
+
+    /* =====================================
+       SAVE ENTRY
+       Enter -> SAVE
+    ===================================== */
+
+    if(active.id === "saveBtn"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        saveEntry();
+
+        return;
+
+    }
+
+});
+
+
+/* =========================================
+   WINDOW ON LOAD
+========================================= */
+
+window.onload = function(){
+
+    loadMedicines();
+
+    document.getElementById("medicineSearch").focus();
+
+};
+
+
+/* =========================================
+   CLOSE PAGE
+========================================= */
+
+function closePage(){
+
+    parent.closeModal();
+
+}
+
+</script>
+</body>
+</html>

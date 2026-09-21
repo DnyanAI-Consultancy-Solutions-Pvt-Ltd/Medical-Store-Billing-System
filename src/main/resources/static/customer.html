@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medicine Management</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+.header{
+background:#198754;
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+    height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+}
+.header span{
+    margin:0 auto;
+}
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+.container{
+
+    padding:20px;
+
+    background:#eef3f8;
+
+}
+
+.card{
+
+    max-width:900px;
+
+    margin:auto;
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+
+}
+
+.form-title{
+
+    color:#0f4c81;
+
+    font-size:24px;
+
+    margin-bottom:20px;
+
+    border-bottom:2px solid #2196f3;
+
+    padding-bottom:10px;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    margin-bottom:6px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:#444;
+
+}
+
+.form-group input{
+
+    height:42px;
+
+    padding:10px;
+
+    border:1px solid #cfd8dc;
+
+    border-radius:6px;
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+.form-group input:focus{
+
+    border-color:#2196f3;
+
+    box-shadow:0 0 5px rgba(33,150,243,.4);
+
+}
+
+.full-width{
+
+    grid-column:1 / 3;
+
+}
+
+.btn-section{
+
+    margin-top:25px;
+
+    text-align:center;
+
+}
+
+.save-btn{
+
+    background:#198754;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 35px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#157347;
+
+}
+
+@media(max-width:768px){
+
+.form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.full-width{
+
+    grid-column:1;
+
+}
+
+}
+input{
+    width:250px;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body><div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
+<button id="closeBtn" class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+
+</div>
+
+<div class="menu">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="medicine.html">Medicine</a>
+
+<a href="customer.html">Customer</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="inventory.html">Inventory</a>
+
+</div>
+<div class="container">
+
+<input type="hidden" id="customerId">
+
+<div class="card">
+
+<h2 class="form-title">
+Customer Master
+</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Customer Name</label>
+<input
+type="text"
+id="customerName"
+placeholder="Enter Customer Name">
+</div>
+
+<div class="form-group">
+<label>Mobile Number</label>
+<input
+type="text"
+id="mobileNo"
+placeholder="Enter Mobile Number">
+</div>
+
+<div class="form-group">
+<label>Address</label>
+<input
+type="text"
+id="address"
+placeholder="Enter Customer Address">
+</div>
+
+<div class="form-group">
+<label>Opening Balance</label>
+<input
+type="number"
+id="balance"
+placeholder="0.00">
+</div>
+
+</div>
+
+<div class="btn-section">
+
+<button id="saveBtn" class="save-btn"
+onclick="saveCustomer()">
+💾 Save Customer
+</button>
+
+</div>
+
+</div>
+
+</div>
+<div class="card" style="margin-top:20px;">
+<div class="form-group">
+
+    <label><b>Search Customer</b></label>
+
+    <input
+        type="text"
+        id="searchCustomer"
+        placeholder="Search Customer by Name..."
+        onkeyup="searchCustomer()">
+
+</div>
+<h3>Customer List</h3>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Customer Name</th>
+<th>Mobile No</th>
+<th>Address</th>
+
+<th>Balance</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="customerTable">
+
+</tbody>
+
+</table>
+
+</div>
+<script>
+loadCustomers();
+function loadCustomers(){
+
+	fetch("/api/customers")
+
+	.then(res=>res.json())
+
+	.then(data=>{
+
+	let rows="";
+
+	data.forEach(c=>{
+
+	rows += `
+
+	<tr>
+
+	<td>${c.id}</td>
+
+	<td>${c.customerName}</td>
+
+	<td>${c.mobileNo}</td>
+	<td>${c.address}</td>
+	<td>${c.balance}</td>
+	<td>
+
+	<button onclick="editCustomer(${c.id})">
+	Edit
+	</button>
+
+	<button onclick="deleteCustomer(${c.id})">
+	Delete
+	</button>
+
+	</td>
+
+	</tr>
+
+	`;
+
+	});
+
+	document.getElementById("customerTable").innerHTML
+	= rows;
+
+	});
+
+	}
+function saveCustomer(){
+	   let customerName = document.getElementById("customerName").value.trim();
+	    let mobileNo = document.getElementById("mobileNo").value.trim();
+	    let address = document.getElementById("address").value.trim();
+	    let balance = document.getElementById("balance").value.trim();
+
+	    if(
+	        customerName === "" &&
+	        mobileNo === "" &&
+	        address === "" &&
+	        balance === ""
+	    ){
+	        alert("Please fill all required fields.");
+	        document.getElementById("customerName").focus();
+	        return;
+	    }
+
+	    if(customerName === ""){
+	        alert("Customer Name is required.");
+	        document.getElementById("customerName").focus();
+	        return;
+	    }
+
+	    if(mobileNo === ""){
+	        alert("Mobile Number is required.");
+	        document.getElementById("mobileNo").focus();
+	        return;
+	    }
+
+	    if(address === ""){
+	        alert("Address is required.");
+	        document.getElementById("address").focus();
+	        return;
+	    }
+
+	    if(balance === ""){
+	        alert("Opening Balance is required.");
+	        document.getElementById("balance").focus();
+	        return;
+	    }
+	let id =
+	document.getElementById("customerId").value;
+
+	let customer = {
+
+	customerName:
+	document.getElementById("customerName").value,
+
+	mobileNo:
+	document.getElementById("mobileNo").value,
+
+	address:
+		document.getElementById("address").value,
+		balance:
+			document.getElementById("balance").value
+		
+	};
+
+	let url="/api/customers";
+
+	let method="POST";
+
+	if(id){
+
+	url="/api/customers/"+id;
+
+	method="PUT";
+
+	}
+
+	fetch(url,{
+
+	method:method,
+
+	headers:{
+	"Content-Type":"application/json"
+	},
+
+	body:JSON.stringify(customer)
+
+	})
+	.then(()=>{
+
+	alert("Customer Saved");
+
+	loadCustomers();
+
+	document.getElementById("customerName").value="";
+	document.getElementById("mobileNo").value="";
+	document.getElementById("address").value = "";
+	document.getElementById("balance").value="";
+	document.getElementById("customerName").focus();
+
+	});
+
+	}
+	
+function editCustomer(id){
+
+	fetch("/api/customers/"+id)
+
+	.then(res=>res.json())
+
+	.then(c=>{
+
+	document.getElementById("customerId").value =
+	c.id;
+
+	document.getElementById("customerName").value =
+	c.customerName;
+
+	document.getElementById("mobileNo").value =
+	c.mobileNo;
+	document.getElementById("balance").value =
+		c.balance;
+	document.getElementById("address").value =
+		c.address;
+
+	});
+
+	}
+function deleteCustomer(id){
+
+	if(confirm("Delete Customer ?")){
+
+	fetch("/api/customers/"+id,{
+
+	method:"DELETE"
+
+	})
+	.then((res)=>{
+		if(res.ok){
+            alert("Customer deleted");
+            loadCustomers();
+        }else{
+            alert("Delete failed");
+        }
+	});
+
+	}
+
+	}
+/* ==============================
+ENTER KEY = NEXT FIELD
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(e.key !== "Enter") return;
+
+ let active = document.activeElement;
+
+ // Button वर Enter असेल तर click होऊ दे
+ if(active.tagName === "BUTTON"){
+     return;
+ }
+
+ // Textarea मध्ये Enter allow
+ if(active.tagName === "TEXTAREA"){
+     return;
+ }
+
+ e.preventDefault();
+
+ let fields = Array.from(
+     document.querySelectorAll(
+         "input:not([type='hidden']), select, textarea, button"
+     )
+ ).filter(el =>
+     !el.disabled &&
+     el.offsetParent !== null
+ );
+
+ let index = fields.indexOf(active);
+
+ if(index >= 0 && index < fields.length - 1){
+     fields[index + 1].focus();
+ }
+
+});
+/* ==============================
+ARROW KEY NAVIGATION
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ let fields = Array.from(
+     document.querySelectorAll(
+         "input:not([type='hidden']), select, textarea, button"
+     )
+ ).filter(el =>
+     !el.disabled &&
+     el.offsetParent !== null
+ );
+
+ let index = fields.indexOf(document.activeElement);
+
+ if(index === -1) return;
+
+ // Right Arrow / Down Arrow -> Next Field
+ if(e.key === "ArrowRight" || e.key === "ArrowDown"){
+
+     e.preventDefault();
+
+     if(index < fields.length - 1){
+         fields[index + 1].focus();
+     }
+
+ }
+
+ // Left Arrow / Up Arrow -> Previous Field
+ if(e.key === "ArrowLeft" || e.key === "ArrowUp"){
+
+     e.preventDefault();
+
+     if(index > 0){
+         fields[index - 1].focus();
+     }
+
+ }
+
+});
+/* ==============================
+ESC KEY = CLOSE PAGE
+============================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(e.key === "Escape"){
+
+     e.preventDefault();
+
+     closePage();
+
+ }
+
+});
+document.getElementById("saveBtn")
+.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+
+        e.preventDefault();
+        e.stopPropagation();   // हे add करा
+
+
+        saveCustomer();
+
+    }
+
+});
+function closePage(){
+
+    parent.closeModal();
+
+}
+function searchCustomer(){
+
+    let value = document
+        .getElementById("searchCustomer")
+        .value
+        .toLowerCase();
+
+    let rows = document.querySelectorAll("#customerTable tr");
+
+    rows.forEach(row => {
+
+        let customerName = row.cells[1].innerText.toLowerCase();
+
+        row.style.display =
+            customerName.includes(value) ? "" : "none";
+
+    });
+
+}
+window.onload = function(){
+
+
+    document.getElementById("customerName").focus();
+
+};
+
+</script>
+</div>
+</body>
+</html>

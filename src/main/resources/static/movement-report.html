@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Inventory Movement Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+background:#f4f6f9;
+}
+.header{
+background:#198754;
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+    height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+}
+.header span{
+    margin:0 auto;
+}
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+h2{
+color:#0f4c81;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Inventory Movement Report</span>
+<button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+</div>
+<table>
+
+<thead>
+
+<tr>
+
+<th>Medicine</th>
+
+<th>Opening</th>
+
+<th>Purchase</th>
+
+<th>Sale</th>
+
+<th>Purchase Return</th>
+
+<th>Sale Return</th>
+
+<th>Closing</th>
+
+</tr>
+
+</thead>
+
+<tbody id="reportTable">
+
+</tbody>
+
+</table>
+
+<script>
+
+fetch("/api/reports/movement")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(r=>{
+
+rows += `
+<tr>
+
+<td>${r.medicineName}</td>
+
+<td>${r.openingStock}</td>
+
+<td>${r.purchaseQty}</td>
+
+<td>${r.saleQty}</td>
+
+<td>${r.purchaseReturnQty}</td>
+
+<td>${r.saleReturnQty}</td>
+
+<td>${r.closingStock}</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById(
+"reportTable"
+).innerHTML = rows;
+
+});
+function closePage(){
+
+    parent.closeModal();
+
+}
+</script>
+
+</body>
+</html>

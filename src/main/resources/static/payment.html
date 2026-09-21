@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Supplier Payment</title>
+
+<style>
+
+body{
+    font-family:"Segoe UI",Arial;
+    background:#eef3f8;
+    margin:0;
+}
+
+
+/* HEADER */
+
+.header{
+
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+
+    color:white;
+
+    padding:18px;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+
+}
+
+
+.logo{
+
+    position:absolute;
+
+    left:20px;
+
+    height:60px;
+
+    width:170px;
+
+    border-radius:15px;
+
+}
+
+
+
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+
+/* FORM */
+
+.container{
+
+    background:white;
+
+    width:800px;
+
+    margin:25px auto;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+
+}
+
+
+
+h2{
+
+    color:#0f4c81;
+
+    margin:0 0 20px;
+
+    border-bottom:2px solid #2196f3;
+
+    padding-bottom:8px;
+
+}
+
+
+
+.row{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+.field{
+
+    flex:1;
+
+}
+
+
+
+label{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+
+
+input,
+select{
+
+    width:100%;
+
+    height:38px;
+
+    box-sizing:border-box;
+
+    padding:8px 10px;
+
+    margin-top:5px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+}
+
+
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#2196f3;
+
+}
+
+
+/* BUTTON */
+
+.btn{
+
+    background:#198754;
+
+    color:white;
+
+    border:none;
+
+    padding:11px 35px;
+
+    border-radius:7px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+
+.btn:hover{
+
+    background:#146c43;
+
+}
+
+#supplier{
+    width:100%;
+    height:42px;
+    font-size:15px;
+    padding:8px 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+
+<div class="header">
+
+<img src="/images/logo.jpeg" class="logo">
+
+<span>Supplier Payment Entry</span>
+
+<button class="close-btn" onclick="closePage()">
+✖ Close
+</button>
+
+</div>
+
+
+
+<div class="container">
+
+
+<h2>Supplier Payment Details</h2>
+
+
+<div class="row">
+
+
+<div class="field">
+
+ <select id="supplier"></select>
+</div>
+</div>
+<div class="row">
+
+<div class="field">
+
+<label>Payment Date</label>
+
+<input type="date" id="paymentDate">
+
+</div>
+</div>
+
+
+
+<div class="row">
+
+
+<div class="field">
+
+<label>Amount</label>
+
+<input type="number" id="amount">
+
+</div>
+
+</div>
+<div class="row">
+
+<div class="field">
+
+<label>Payment Mode</label>
+
+<select id="paymentMode">
+
+<option>Cash</option>
+
+<option>UPI</option>
+
+<option>Bank Transfer</option>
+
+<option>Cheque</option>
+
+</select>
+
+</div>
+</div>
+<div class="row">
+
+
+<div class="field">
+
+<label>Remarks</label>
+
+<input type="text" id="remarks">
+
+</div>
+
+
+</div>
+
+
+
+<center>
+
+<button id="saveBtn" class="btn" onclick="savePayment()">
+Save Payment
+</button>
+
+</center>
+
+
+</div>
+
+<script>
+
+let suppliers = [];
+
+let supplierOpen = false;
+let supplierSelected = false;
+let supplierIndex = 0;
+
+let paymentModeOpen = false;
+let paymentModeSelected = false;
+let paymentModeIndex = 0;
+
+
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+window.onload = function(){
+
+    loadSuppliers();
+
+    setTodayDate();
+
+    document
+        .getElementById("supplier")
+        .focus();
+
+};
+
+
+/* =====================================================
+   TODAY DATE
+===================================================== */
+
+function setTodayDate(){
+
+    const today = new Date();
+
+    const year =
+        today.getFullYear();
+
+    const month =
+        String(today.getMonth() + 1)
+        .padStart(2, "0");
+
+    const day =
+        String(today.getDate())
+        .padStart(2, "0");
+
+
+    document.getElementById("paymentDate").value =
+        `${year}-${month}-${day}`;
+
+}
+
+
+/* =====================================================
+   LOAD SUPPLIERS
+===================================================== */
+
+function loadSuppliers(){
+
+    fetch("/api/suppliers")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        suppliers = data;
+
+        let select =
+            document.getElementById("supplier");
+
+        let options = "";
+
+        data.forEach(function(s){
+
+            options += `
+                <option value="${s.id}">
+                    ${s.supplierName}
+                </option>
+            `;
+
+        });
+
+        select.innerHTML = options;
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Supplier loading error:",
+            error
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   SUPPLIER KEYBOARD
+===================================================== */
+
+document
+.getElementById("supplier")
+.addEventListener("keydown", function(e){
+
+    let select = this;
+
+    let options = select.options;
+
+
+    /* =========================
+       ENTER
+    ========================= */
+
+    if(e.key === "Enter"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        /* OPEN */
+
+        if(!supplierOpen && !supplierSelected){
+
+            supplierOpen = true;
+
+            supplierIndex =
+                select.selectedIndex >= 0
+                ? select.selectedIndex
+                : 0;
+
+            /*
+             * Native select dropdown
+             * open करण्यासाठी
+             */
+
+            select.size = Math.min(
+                options.length,
+                6
+            );
+
+            return;
+
+        }
+
+
+        /* SELECT */
+
+        if(supplierOpen){
+
+            supplierOpen = false;
+            supplierSelected = true;
+
+            select.size = 1;
+
+            document
+                .getElementById("paymentDate")
+                .focus();
+
+            return;
+
+        }
+
+
+        /* NEXT */
+
+        if(supplierSelected){
+
+            supplierSelected = false;
+
+            document
+                .getElementById("paymentDate")
+                .focus();
+
+            return;
+
+        }
+
+    }
+
+
+    /* =========================
+       ARROW DOWN
+    ========================= */
+
+    if(e.key === "ArrowDown"){
+
+        if(!supplierOpen)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        supplierIndex++;
+
+        if(
+            supplierIndex >=
+            options.length
+        ){
+
+            supplierIndex = 0;
+
+        }
+
+        select.selectedIndex =
+            supplierIndex;
+
+        return;
+
+    }
+
+
+    /* =========================
+       ARROW UP
+    ========================= */
+
+    if(e.key === "ArrowUp"){
+
+        if(!supplierOpen)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        supplierIndex--;
+
+        if(supplierIndex < 0){
+
+            supplierIndex =
+                options.length - 1;
+
+        }
+
+        select.selectedIndex =
+            supplierIndex;
+
+        return;
+
+    }
+
+});
+
+
+/* =====================================================
+   PAYMENT MODE KEYBOARD
+===================================================== */
+
+document
+.getElementById("paymentMode")
+.addEventListener("keydown", function(e){
+
+    let select = this;
+
+    let options = select.options;
+
+
+    /* =========================
+       ENTER
+    ========================= */
+
+    if(e.key === "Enter"){
+
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        /* OPEN */
+
+        if(
+            !paymentModeOpen &&
+            !paymentModeSelected
+        ){
+
+            paymentModeOpen = true;
+
+            paymentModeIndex =
+                select.selectedIndex >= 0
+                ? select.selectedIndex
+                : 0;
+
+            select.size = options.length;
+
+            return;
+
+        }
+
+
+        /* SELECT */
+
+        if(paymentModeOpen){
+
+            paymentModeOpen = false;
+            paymentModeSelected = true;
+
+            select.size = 1;
+
+            document
+                .getElementById("remarks")
+                .focus();
+
+            return;
+
+        }
+
+
+        /* NEXT */
+
+        if(paymentModeSelected){
+
+            paymentModeSelected = false;
+
+            document
+                .getElementById("remarks")
+                .focus();
+
+            return;
+
+        }
+
+    }
+
+
+    /* =========================
+       ARROW DOWN
+    ========================= */
+
+    if(e.key === "ArrowDown"){
+
+        if(!paymentModeOpen)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        paymentModeIndex++;
+
+        if(
+            paymentModeIndex >=
+            options.length
+        ){
+
+            paymentModeIndex = 0;
+
+        }
+
+        select.selectedIndex =
+            paymentModeIndex;
+
+        return;
+
+    }
+
+
+    /* =========================
+       ARROW UP
+    ========================= */
+
+    if(e.key === "ArrowUp"){
+
+        if(!paymentModeOpen)
+            return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        paymentModeIndex--;
+
+        if(paymentModeIndex < 0){
+
+            paymentModeIndex =
+                options.length - 1;
+
+        }
+
+        select.selectedIndex =
+            paymentModeIndex;
+
+        return;
+
+    }
+
+});
+
+
+/* =====================================================
+   ENTER = NEXT FIELD
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key !== "Enter")
+            return;
+
+
+        let active =
+            document.activeElement;
+
+
+        /*
+         * Supplier स्वतः Enter handle करतो
+         */
+
+        if(active.id === "supplier")
+            return;
+
+
+        /*
+         * Payment Mode स्वतः Enter handle करतो
+         */
+
+        if(active.id === "paymentMode")
+            return;
+
+
+        /*
+         * Save button
+         */
+
+        if(active.id === "saveBtn"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            savePayment();
+
+            return;
+
+        }
+
+
+        e.preventDefault();
+        e.stopPropagation();
+
+
+        let fields =
+            Array.from(
+                document.querySelectorAll(
+                    'input:not([type="hidden"]):not([disabled]),' +
+                    'select:not([disabled]),' +
+                    'button:not([disabled])'
+                )
+            )
+            .filter(function(el){
+
+                return el.offsetParent !== null;
+
+            });
+
+
+        let index =
+            fields.indexOf(active);
+
+
+        if(
+            index >= 0 &&
+            index < fields.length - 1
+        ){
+
+            fields[index + 1].focus();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SAVE PAYMENT
+===================================================== */
+
+function savePayment(){
+
+    const supplierId =
+        document.getElementById("supplier").value;
+
+    const paymentDate =
+        document.getElementById("paymentDate").value;
+
+    const amount =
+        document.getElementById("amount").value;
+
+    const paymentMode =
+        document.getElementById("paymentMode").value;
+
+    const remarks =
+        document.getElementById("remarks").value;
+
+
+    /* =========================
+       VALIDATION
+    ========================= */
+
+    if(!supplierId){
+
+        alert("Please select Supplier.");
+
+        document
+            .getElementById("supplier")
+            .focus();
+
+        return;
+
+    }
+
+
+    if(!paymentDate){
+
+        alert("Please select Payment Date.");
+
+        document
+            .getElementById("paymentDate")
+            .focus();
+
+        return;
+
+    }
+
+
+    if(!amount || Number(amount) <= 0){
+
+        alert("Please enter Amount.");
+
+        document
+            .getElementById("amount")
+            .focus();
+
+        return;
+
+    }
+
+
+    const payment = {
+
+        supplierId:
+            Number(supplierId),
+
+        paymentDate:
+            paymentDate,
+
+        amount:
+            Number(amount),
+
+        paymentMode:
+            paymentMode,
+
+        remarks:
+            remarks
+
+    };
+
+
+    console.log(
+        "Payment Request:",
+        payment
+    );
+
+
+    fetch("/api/payments", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type":
+                "application/json"
+        },
+
+        body:
+            JSON.stringify(payment)
+
+    })
+
+    .then(async function(res){
+
+        const text =
+            await res.text();
+
+        if(!res.ok){
+
+            throw new Error(
+                text ||
+                "Payment save failed"
+            );
+
+        }
+
+        return text ?
+            JSON.parse(text) :
+            {};
+
+    })
+
+    .then(function(data){
+
+        alert("Payment Saved Successfully");
+
+        location.reload();
+
+    })
+
+    .catch(function(error){
+
+        console.error(
+            "Payment Save Error:",
+            error
+        );
+
+        alert(
+            "Payment Failed:\n" +
+            error.message
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   CLOSE
+===================================================== */
+
+function closePage(){
+
+    if(
+        window.parent &&
+        typeof window.parent.closeModal ===
+        "function"
+    ){
+
+        window.parent.closeModal();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

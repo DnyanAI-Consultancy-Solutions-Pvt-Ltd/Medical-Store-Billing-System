@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>GST Master</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',Arial,sans-serif;
+}
+
+body{
+    background:#eef3f8;
+    padding:20px;
+}
+
+/* ===========================
+   CONTAINER
+=========================== */
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.header{
+    background:#0F4C81;
+    color:#fff;
+    height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    border-radius:10px 10px 0 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.2);
+    font-size:28px;
+    font-weight:bold;
+}
+
+.logo{
+    position:absolute;
+    left:20px;
+    width:170px;
+    height:60px;
+    border-radius:10px;
+}
+
+.close-btn{
+    position:absolute;
+    right:20px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.close-btn:hover{
+    background:#b02a37;
+}
+
+/* ===========================
+   CARD
+=========================== */
+
+.card{
+    background:#fff;
+    padding:25px;
+    margin-top:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+.card h3{
+    color:#0F4C81;
+    margin-bottom:20px;
+}
+
+/* ===========================
+   FORM
+=========================== */
+
+.form-row{
+    display:flex;
+    gap:20px;
+    align-items:flex-end;
+}
+.field{
+    flex:1;
+    position:relative;
+}
+.field label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.required{
+    color:red;
+}
+
+.field input{
+    width:100%;
+    height:45px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:0 12px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.field input:focus{
+    border-color:#2196F3;
+    outline:none;
+    box-shadow:0 0 5px rgba(33,150,243,.3);
+}
+
+/* ===========================
+   BUTTON
+=========================== */
+
+.btn-field{
+    flex:0.5;
+}
+
+.save-btn{
+    width:100%;
+    height:45px;
+    border:none;
+    background:#198754;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    background:#157347;
+}
+
+/* ===========================
+   SEARCH
+=========================== */
+
+.search-box{
+    margin:20px 0;
+}
+
+.search-box input{
+    width:100%;
+    height:45px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:0 15px;
+    font-size:15px;
+}
+
+.search-box input:focus{
+    border-color:#2196F3;
+    outline:none;
+}
+
+/* ===========================
+   TABLE
+=========================== */
+
+.table-container{
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    max-height:450px;
+    overflow-y:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    position:sticky;
+    top:0;
+    z-index:5;
+}
+
+thead th{
+    background:#0F4C81;
+    color:#fff;
+    padding:14px;
+    text-align:center;
+}
+
+tbody td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+tbody tr:nth-child(even){
+    background:#f8f9fa;
+}
+
+tbody tr:hover{
+    background:#e3f2fd;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+.form-row{
+    flex-direction:column;
+}
+
+.logo{
+    display:none;
+}
+
+.header{
+    font-size:22px;
+}
+
+.close-btn{
+    right:10px;
+    padding:8px 12px;
+}
+
+}#medicineDropdown{
+
+    display:none;
+
+    position:absolute;
+
+    width:100%;
+
+    max-height:220px;
+
+    overflow-y:auto;
+
+    background:white;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+
+    z-index:9999;
+}
+
+
+#medicineDropdown div{
+
+    padding:10px;
+
+    cursor:pointer;
+
+    border-bottom:1px solid #eee;
+
+    background:white;
+
+    color:#333;
+}
+
+
+#medicineDropdown div:hover{
+
+    background:#e3f2fd;
+
+}
+
+
+#medicineDropdown div.keyboard-selected{
+
+    background:#2196f3 !important;
+
+    color:white !important;
+}
+.edit-btn{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-right:5px;
+}
+
+.edit-btn:hover{
+    background:#0b5ed7;
+}
+
+.delete-btn{
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.delete-btn:hover{
+    background:#bb2d3b;
+}
+#gstDropdown div.active{
+    background:#2196f3 !important;
+    color:white !important;
+}#medicineDropdown div.keyboard-selected{
+    background:#2196f3 !important;
+    color:white !important;
+}
+
+</style>
+</head>
+
+<body>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <img src="/images/logo.jpeg" class="logo">
+
+        <span>GST Master</span>
+
+        <button  id="closeBtn" class="close-btn" onclick="closePage()">
+            ✖ Close
+        </button>
+
+    </div>
+
+    <!-- FORM CARD -->
+
+    <div class="card">
+
+        <h3>GST Details</h3>
+
+        <div class="form-row">
+
+         <div class="field">
+
+    <label>Medicine Name</label>
+
+    <input
+        type="text"
+        id="medicineSearch"
+        placeholder="Search Medicine"
+        autocomplete="off"
+    >
+
+    <input
+        type="hidden"
+        id="medicineId"
+    >
+
+    <div id="medicineDropdown"></div>
+
+</div>
+
+
+<div class="field">
+
+    <label>
+        GST % <span class="required">*</span>
+    </label>
+
+    <input
+        type="number"
+        id="gstPercentage"
+        placeholder="Example : 5"
+        min="0"
+        max="28"
+    >
+
+</div>
+
+
+<div class="field btn-field">
+
+    <button
+        id="saveBtn"
+        class="save-btn"
+        onclick="saveGST()">
+
+        Save GST
+
+    </button>
+
+</div>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchGST"
+            placeholder="Search GST..."
+            onkeyup="searchGST()"
+        >
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                   <th>Medicine Name</th>
+<th>GST %</th>
+<th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="gstTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<script>
+let medicines=[];
+let editId = null;
+/* =====================================================
+MEDICINE VARIABLES
+===================================================== */
+
+let medicineIndex = -1;
+
+
+/* =====================================================
+LOAD MEDICINES
+===================================================== */
+
+function loadMedicines(){
+
+ fetch("/api/medicines")
+
+ .then(res => res.json())
+
+ .then(data => {
+
+     medicines =
+         Array.isArray(data)
+         ? data
+         : [];
+
+ })
+
+ .catch(error => {
+
+     console.error(
+         "Medicine loading error:",
+         error
+     );
+
+ });
+
+}
+
+
+/* =====================================================
+FILTER MEDICINES
+===================================================== */
+
+function filterMedicines(){
+
+ let input =
+     document.getElementById(
+         "medicineSearch"
+     );
+
+ let dropdown =
+     document.getElementById(
+         "medicineDropdown"
+     );
+
+
+ let search =
+     input.value
+     .trim()
+     .toLowerCase();
+
+
+ /* Search बदलल्यावरच index reset */
+
+ medicineIndex = -1;
+
+
+ if(search === ""){
+
+     dropdown.innerHTML = "";
+
+     dropdown.style.display =
+         "none";
+
+     return;
+
+ }
+
+
+ let results =
+     medicines.filter(function(m){
+
+         let name =
+             String(
+                 m.medicineName || ""
+             ).toLowerCase();
+
+
+         return name.includes(search);
+
+     });
+
+
+ dropdown.innerHTML = "";
+
+
+ if(results.length === 0){
+
+     dropdown.style.display =
+         "none";
+
+     return;
+
+ }
+
+
+ results.forEach(function(m){
+
+     let div =
+         document.createElement("div");
+
+
+     div.textContent =
+         String(
+             m.medicineName || ""
+         );
+
+
+     div.dataset.id =
+         m.id;
+
+
+     /*
+      * Mouse click
+      */
+
+     div.addEventListener(
+         "mousedown",
+         function(e){
+
+             e.preventDefault();
+
+             selectMedicine(
+                 m.id,
+                 m.medicineName
+             );
+
+         }
+     );
+
+
+     dropdown.appendChild(div);
+
+ });
+
+
+ dropdown.style.display =
+     "block";
+
+}
+
+
+/* =====================================================
+MEDICINE SEARCH INPUT
+===================================================== */
+
+document
+.getElementById("medicineSearch")
+.addEventListener(
+ "input",
+ function(){
+
+     filterMedicines();
+
+ }
+);
+
+
+/* =====================================================
+MEDICINE KEYBOARD
+===================================================== */
+
+document
+.getElementById("medicineSearch")
+.addEventListener(
+ "keydown",
+ function(e){
+
+     let dropdown =
+         document.getElementById(
+             "medicineDropdown"
+         );
+
+
+     let items =
+         dropdown.querySelectorAll(
+             "div[data-id]"
+         );
+
+
+     /* ==========================================
+        ARROW DOWN
+     ========================================== */
+
+     if(e.key === "ArrowDown"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         /*
+          * Search result नसतील तर
+          * dropdown तयार करा
+          */
+
+         if(items.length === 0){
+
+             filterMedicines();
+
+             items =
+                 dropdown.querySelectorAll(
+                     "div[data-id]"
+                 );
+
+         }
+
+
+         if(items.length === 0)
+             return;
+
+
+         medicineIndex++;
+
+
+         if(
+             medicineIndex >=
+             items.length
+         ){
+
+             medicineIndex = 0;
+
+         }
+
+
+         highlightMedicine(
+             items
+         );
+
+
+         return;
+
+     }
+
+
+     /* ==========================================
+        ARROW UP
+     ========================================== */
+
+     if(e.key === "ArrowUp"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         if(items.length === 0){
+
+             filterMedicines();
+
+             items =
+                 dropdown.querySelectorAll(
+                     "div[data-id]"
+                 );
+
+         }
+
+
+         if(items.length === 0)
+             return;
+
+
+         medicineIndex--;
+
+
+         if(medicineIndex < 0){
+
+             medicineIndex =
+                 items.length - 1;
+
+         }
+
+
+         highlightMedicine(
+             items
+         );
+
+
+         return;
+
+     }
+
+
+     /* ==========================================
+        ENTER
+     ========================================== */
+
+     if(e.key === "Enter"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         /*
+          * Dropdown उघडा नसेल तर
+          * search results तयार करा
+          */
+
+         if(items.length === 0){
+
+             filterMedicines();
+
+             items =
+                 dropdown.querySelectorAll(
+                     "div[data-id]"
+                 );
+
+         }
+
+
+         if(items.length === 0)
+             return;
+
+
+         /*
+          * काही select केले नसेल
+          * तर first medicine
+          */
+
+         if(medicineIndex < 0){
+
+             medicineIndex = 0;
+
+         }
+
+
+         let selected =
+             items[medicineIndex];
+
+
+         if(selected){
+
+             selectMedicine(
+                 selected.dataset.id,
+                 selected.textContent
+             );
+
+         }
+
+
+         return;
+
+     }
+
+
+     /* ==========================================
+        ESC
+     ========================================== */
+
+     if(e.key === "Escape"){
+
+         e.preventDefault();
+         e.stopPropagation();
+
+
+         dropdown.style.display =
+             "none";
+
+
+         medicineIndex = -1;
+
+     }
+
+ }
+);
+
+
+/* =====================================================
+HIGHLIGHT MEDICINE
+===================================================== */
+
+function highlightMedicine(items){
+
+ items.forEach(function(item){
+
+     item.classList.remove(
+         "keyboard-selected"
+     );
+
+ });
+
+
+ if(
+     medicineIndex >= 0 &&
+     medicineIndex < items.length
+ ){
+
+     let selected =
+         items[medicineIndex];
+
+
+     selected.classList.add(
+         "keyboard-selected"
+     );
+
+
+     selected.scrollIntoView({
+         block:"nearest"
+     });
+
+ }
+
+}
+
+
+/* =====================================================
+SELECT MEDICINE
+===================================================== */
+
+function selectMedicine(
+ id,
+ name
+){
+
+ document
+ .getElementById(
+     "medicineId"
+ )
+ .value = id;
+
+
+ document
+ .getElementById(
+     "medicineSearch"
+ )
+ .value = name;
+
+
+ document
+ .getElementById(
+     "medicineDropdown"
+ )
+ .style.display = "none";
+
+
+ medicineIndex = -1;
+
+
+ /*
+  * Existing GST असल्यास load करा
+  */
+
+ loadMedicineGST(id);
+
+
+ /*
+  * GST field वर cursor
+  */
+
+ document
+ .getElementById(
+     "gstPercentage"
+ )
+ .focus();
+
+}
+/* ==========================================
+   LOAD GST
+========================================== */
+
+function loadGST(){
+
+    fetch("/api/gst-master")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        let rows = "";
+
+        if(data.length === 0){
+
+            rows = `
+                <tr>
+                    <td colspan="4"
+                        style="padding:25px;color:gray;">
+                        No GST Records Found
+                    </td>
+                </tr>
+            `;
+
+        }else{
+
+            data.forEach(g => {
+
+                rows += `
+                    <tr>
+
+                        <td>${g.id}</td>
+
+                        <td>
+                            ${g.medicine ?
+                            g.medicine.medicineName : ""}
+                        </td>
+
+                        <td>
+                            ${g.gstPercentage}%
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="edit-btn"
+                                onclick="editGST(${g.id})">
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteGST(${g.id})">
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+                `;
+
+            });
+
+        }
+
+        document.getElementById("gstTable")
+            .innerHTML = rows;
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "GST loading error:",
+            error
+        );
+
+    });
+
+}
+
+/* ==========================================
+SAVE GST
+========================================== */
+
+
+function saveGST(){
+
+    let medicineId =
+    document.getElementById("medicineId").value;
+
+    let medicineName =
+    document.getElementById("medicineSearch").value.trim();
+
+    let gstPercentage =
+    document.getElementById("gstPercentage").value;
+
+    if(medicineName===""){
+
+        alert("Select Medicine");
+
+        document.getElementById("medicineSearch").focus();
+
+        return;
+
+    }
+
+    if(gstPercentage===""){
+
+        alert("Enter GST Percentage");
+
+        document.getElementById("gstPercentage").focus();
+
+        return;
+
+    }
+
+    if(Number(gstPercentage)<0 || Number(gstPercentage)>28){
+
+        alert("GST must be between 0 and 28");
+
+        return;
+
+    }
+
+    let gst={
+
+        medicine:{
+            id:Number(medicineId)
+        },
+
+        gstPercentage:Number(gstPercentage)
+
+    };
+
+    let url="/api/gst-master";
+    let method="POST";
+
+    if(editId!=null){
+
+        url="/api/gst-master/"+editId;
+        method="PUT";
+
+    }
+
+    fetch(url,{
+
+        method:method,
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(gst)
+
+    })
+
+    .then(res=>{
+
+        if(!res.ok){
+
+            throw new Error("Save Failed");
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(data=>{
+
+        alert(editId==null ?
+        "GST Saved Successfully"
+        :
+        "GST Updated Successfully");
+
+        editId=null;
+
+        document.getElementById("medicineId").value="";
+
+        document.getElementById("medicineSearch").value="";
+
+        document.getElementById("gstPercentage").value="";
+
+        document.getElementById("saveBtn").innerHTML="Save GST";
+
+        loadGST();
+
+        document.getElementById("medicineSearch").focus();
+
+    })
+
+    .catch(err=>{
+
+        alert("Error : "+err.message);
+
+    });
+
+}
+function deleteGST(id){
+
+	if(!confirm("Delete this GST Record?")){
+
+	return;
+
+	}
+
+	fetch("/api/gst-master/"+id,{
+
+	method:"DELETE"
+
+	})
+
+	.then(()=>{
+
+	alert("GST Deleted Successfully");
+
+	loadGST();
+
+	});
+
+	}
+/* ==========================================
+SEARCH GST
+========================================== */
+
+function searchGST(){
+
+let value=
+document.getElementById("searchGST")
+.value.toLowerCase();
+
+let rows=
+document.querySelectorAll("#gstTable tr");
+
+rows.forEach(row=>{
+
+row.style.display=
+
+row.innerText.toLowerCase()
+.includes(value)
+
+?
+
+""
+
+:
+
+"none";
+
+});
+
+}
+/* =====================================================
+GST MASTER - KEYBOARD NAVIGATION
+===================================================== */
+
+
+
+/* =====================================================
+MEDICINE SEARCH KEYBOARD
+Arrow Up / Down = Select Medicine
+Enter = Select Medicine
+===================================================== */
+
+/* =====================================================
+   MEDICINE KEYBOARD NAVIGATION
+===================================================== */
+
+/* =====================================================
+   HIGHLIGHT
+===================================================== */
+
+
+/* =====================================================
+HIGHLIGHT MEDICINE
+===================================================== */
+
+
+/* =====================================================
+AFTER MEDICINE SELECT
+===================================================== */
+
+
+
+/* =====================================================
+LOAD SELECTED MEDICINE GST
+===================================================== */
+function loadMedicineGST(medicineId){
+
+    if(!medicineId){
+        return;
+    }
+
+
+    fetch("/api/gst-master")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        let record =
+            data.find(function(g){
+
+                return (
+                    g.medicine &&
+                    Number(g.medicine.id) ===
+                    Number(medicineId)
+                );
+
+            });
+
+
+        if(record){
+
+            document
+            .getElementById(
+                "gstPercentage"
+            )
+            .value =
+                record.gstPercentage;
+
+        }
+        else{
+
+            document
+            .getElementById(
+                "gstPercentage"
+            )
+            .value = "";
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "GST loading error:",
+            error
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+ENTER NAVIGATION
+===================================================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(e.key !== "Enter")
+     return;
+
+
+ let active =
+     document.activeElement;
+
+
+ /* =========================================
+    MEDICINE SEARCH
+    स्वतःचा handler आहे
+ ========================================= */
+
+ if(active.id === "medicineSearch"){
+
+     return;
+
+ }
+
+
+ /* =========================================
+    GST PERCENTAGE
+    Enter -> Save Button
+ ========================================= */
+
+ if(active.id === "gstPercentage"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     document.getElementById("saveBtn").focus();
+
+     return;
+
+ }
+
+
+ /* =========================================
+    SAVE GST
+    Enter -> ONLY ONE saveGST()
+ ========================================= */
+
+ if(active.id === "saveBtn"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     saveGST();
+
+     return;
+
+ }
+
+
+ /* =========================================
+    SEARCH GST
+    Enter -> Close
+ ========================================= */
+
+ if(active.id === "searchGST"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     document.getElementById("closeBtn").focus();
+
+     return;
+
+ }
+
+
+ /* =========================================
+    CLOSE
+    Enter -> Close Page
+ ========================================= */
+
+ if(active.id === "closeBtn"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     closePage();
+
+     return;
+
+ }
+
+});
+
+
+/* =====================================================
+LEFT / RIGHT ARROW NAVIGATION
+===================================================== */
+
+const controls = [
+
+ "medicineSearch",
+ "gstPercentage",
+ "saveBtn",
+ "searchGST",
+ "closeBtn"
+
+];
+
+
+/* =====================================================
+RIGHT ARROW = NEXT FIELD
+===================================================== */
+
+document.addEventListener("keydown", function(e){
+
+ if(
+     e.key !== "ArrowRight" &&
+     e.key !== "ArrowLeft"
+ ){
+     return;
+ }
+
+
+ let active =
+     document.activeElement;
+
+
+ /*
+  * Medicine search मध्ये Arrow Up/Down
+  * वेगळे काम करतात.
+  * Left/Right normal navigation.
+  */
+
+ let id = active.id;
+
+
+ let index =
+     controls.indexOf(id);
+
+
+ if(index === -1){
+     return;
+ }
+
+
+ /* ---------- RIGHT ---------- */
+
+ if(e.key === "ArrowRight"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     if(index < controls.length - 1){
+
+         document
+         .getElementById(
+             controls[index + 1]
+         )
+         .focus();
+
+     }
+
+     return;
+ }
+
+
+ /* ---------- LEFT ---------- */
+
+ if(e.key === "ArrowLeft"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+     if(index > 0){
+
+         document
+         .getElementById(
+             controls[index - 1]
+         )
+         .focus();
+
+     }
+
+     return;
+ }
+
+});
+
+
+/* =====================================================
+PAGE LOAD
+===================================================== */
+
+window.addEventListener("load", function(){
+
+ loadMedicines();
+
+ loadGST();
+
+ document
+     .getElementById("medicineSearch")
+     .focus();
+
+});
+
+
+/* =====================================================
+CLOSE PAGE
+===================================================== */
+
+
+/*------------------------------
+DEFAULT FOCUS
+------------------------------*/
+function closePage(){
+    parent.closeModal();
+}
+
+</script>
+
+</body>
+</html>

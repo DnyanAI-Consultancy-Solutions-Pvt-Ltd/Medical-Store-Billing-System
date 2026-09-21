@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Sale Return</title>
+
+<style>
+
+body{
+    font-family:"Segoe UI",Arial;
+    background:#eef3f8;
+    margin:0;
+}
+
+
+.header{
+    background:linear-gradient(135deg,#0f4c81,#2196f3);
+    color:white;
+    padding:20px;
+    font-size:28px;
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+
+.logo{
+    position:absolute;
+    left:20px;
+    height:60px;
+    width:170px;
+    border-radius:15px;
+}
+
+
+.close-btn{
+
+    position:absolute;
+    right:20px;
+
+    background:#dc3545;
+    color:white;
+
+    border:none;
+    padding:10px 18px;
+
+    border-radius:6px;
+    cursor:pointer;
+
+    font-weight:bold;
+}
+
+
+.close-btn:hover{
+    background:#bb2d3b;
+}
+
+
+
+.main{
+
+    padding:25px;
+
+}
+
+
+
+.card{
+
+    background:white;
+
+    padding:12px 15px;
+
+    border-radius:10px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+
+    margin-bottom:12px;
+
+}
+
+
+.card h2{
+
+    color:#0f4c81;
+
+    border-bottom:2px solid #2196f3;
+
+    font-size:20px;
+
+    margin:0 0 10px 0;
+
+    padding-bottom:5px;
+
+}
+
+
+
+.row{
+
+    display:flex;
+
+gap:10px;
+
+    align-items:center;
+}
+
+
+.field{
+
+    flex:1;
+
+}
+
+
+label{
+
+    font-weight:600;
+
+    color:#444;
+
+}
+
+
+
+input,select{
+
+    width:70%;
+
+padding:7px 10px;
+    margin-top:4px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:15px;
+
+}
+
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#2196f3;
+
+    box-shadow:0 0 5px #2196f3;
+
+}
+
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:55px;
+
+}
+
+
+th{
+
+    background:#198754;
+
+    color:white;
+
+    padding:10px;
+
+}
+
+
+td{
+
+    border:1px solid #ddd;
+
+    padding:8px;
+
+    text-align:center;
+
+}
+
+
+
+.summary{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:30px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    margin-top:20px;
+
+}
+
+
+
+.actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+}
+
+
+.btn{
+
+    width:160px;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+.save{
+
+    background:#198754;
+
+    color:white;
+
+}
+
+
+.print{
+
+    background:#0f4c81;
+
+    color:white;
+
+}
+.custom-dropdown-wrapper{
+    position:relative;
+    width:100%;
+}
+
+.custom-dropdown-wrapper input{
+    width:100%;
+    box-sizing:border-box;
+}
+
+.custom-dropdown{
+    display:none;
+    position:absolute;
+    top:100%;
+    left:0;
+    width:100%;
+    max-height:220px;
+    overflow-y:auto;
+    background:white;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+    z-index:9999;
+}
+
+.custom-dropdown div{
+    padding:10px 12px;
+    cursor:pointer;
+    border-bottom:1px solid #eee;
+}
+
+.custom-dropdown div.active{
+    background:#2196f3;
+    color:white;
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+<img src="/images/logo.jpeg" class="logo">
+
+<span>Sale Return / Credit Note</span>
+
+
+<button class="close-btn" onclick="closePage()">
+✖ Close
+</button>
+
+
+</div>
+
+
+
+<div class="main">
+
+
+
+<div class="card">
+
+<h2>Return Details</h2>
+
+<div class="row">
+<div class="field">
+
+    <label>Search Customer</label>
+
+    <div class="custom-dropdown-wrapper">
+
+        <input
+            type="text"
+            id="customerSearch"
+            placeholder="Search Customer..."
+            autocomplete="off"
+        >
+
+        <div id="customerResult"
+             class="custom-dropdown">
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="field">
+
+    <label>Bill No</label>
+
+    <select id="billNo">
+        <option value="">Select Bill</option>
+    </select>
+
+</div>
+
+
+
+
+
+
+<div class="field">
+
+<label>Return Date</label>
+
+<input type="date" id="returnDate">
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Medicine Return</h2>
+
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<th>Medicine</th>
+<th>Batch</th>
+<th>Sold Qty</th>
+<th>Return Qty</th>
+<th>Rate</th>
+<th>Amount</th>
+
+
+</tr>
+
+</thead>
+
+
+<tbody id="returnTable">
+
+
+</tbody>
+
+
+</table>
+
+
+
+<div class="summary">
+
+Return Amount :
+₹ <span id="total"></span>
+
+</div>
+
+
+</div>
+
+
+
+<div class="card actions">
+
+
+<button id="saveBtn" class="btn save"
+onclick="saveReturn()">
+
+Save Return
+
+</button>
+
+
+</div>
+<script>
+
+let customers = [];
+let billOpen = false;
+
+
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+window.onload = function(){
+
+    loadCustomers();
+
+    document.getElementById("customerSearch").focus();
+
+};
+
+
+/* =====================================================
+   LOAD CUSTOMERS
+===================================================== */
+
+function loadCustomers(){
+
+    fetch("/api/customers")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        customers = Array.isArray(data) ? data : [];
+
+    })
+
+    .catch(err => {
+
+        console.error("Customer loading error:", err);
+
+    });
+
+}
+
+
+/* =====================================================
+   CUSTOMER SEARCH
+===================================================== */
+
+function searchCustomer(){
+
+    let text =
+        document
+        .getElementById("customerSearch")
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    let box =
+        document.getElementById("customerResult");
+
+
+    customerIndex = -1;
+
+    box.innerHTML = "";
+
+
+    if(text === ""){
+
+        box.style.display = "none";
+
+        return;
+
+    }
+
+
+    let results =
+        customers.filter(function(c){
+
+            let name =
+                String(c.customerName || "")
+                .toLowerCase();
+
+            return name.includes(text);
+
+        });
+
+
+    if(results.length === 0){
+
+        box.innerHTML = `
+            <div style="
+                padding:10px;
+                color:gray;
+            ">
+                No Customer Found
+            </div>
+        `;
+
+        box.style.display = "block";
+
+        return;
+
+    }
+
+
+    results.forEach(function(c, index){
+
+        let div =
+            document.createElement("div");
+
+
+        div.dataset.index = index;
+
+        div.innerText =
+            String(c.customerName || "");
+
+
+        div.style.padding = "8px";
+
+        div.style.cursor = "pointer";
+
+        div.style.borderBottom =
+            "1px solid #eee";
+
+
+        div.onclick = function(){
+
+            selectCustomer(c);
+
+        };
+
+
+        box.appendChild(div);
+
+    });
+
+
+    box.style.display = "block";
+
+}
+
+
+/* =====================================================
+   CUSTOMER HIGHLIGHT
+===================================================== */
+
+function highlightCustomer(){
+
+    let items =
+        document.querySelectorAll(
+            "#customerResult div[data-index]"
+        );
+
+
+    items.forEach(function(item){
+
+        item.style.background = "";
+
+        item.style.color = "";
+
+    });
+
+
+    if(
+        customerIndex >= 0 &&
+        customerIndex < items.length
+    ){
+
+        let selected =
+            items[customerIndex];
+
+
+        selected.style.background =
+            "#2196f3";
+
+        selected.style.color =
+            "white";
+
+
+        selected.scrollIntoView({
+            block:"nearest"
+        });
+
+    }
+
+}
+
+/* =====================================================
+   CUSTOMER KEYBOARD
+===================================================== */
+
+let customerResults = [];
+
+/* =====================================================
+   CUSTOMER SEARCH
+===================================================== */
+
+document
+.getElementById("customerSearch")
+.addEventListener("input", function(){
+
+    let text = this.value
+        .trim()
+        .toLowerCase();
+
+    let box =
+        document.getElementById("customerResult");
+
+    customerIndex = -1;
+    customerResults = [];
+
+    box.innerHTML = "";
+
+    if(text === ""){
+
+        box.style.display = "none";
+        return;
+
+    }
+
+    customerResults =
+        customers.filter(function(c){
+
+            let name =
+                String(c.customerName || "")
+                .toLowerCase();
+
+            return name.includes(text);
+
+        });
+
+    if(customerResults.length === 0){
+
+        box.innerHTML = `
+            <div style="
+                padding:10px;
+                color:gray;
+            ">
+                No Customer Found
+            </div>
+        `;
+
+        box.style.display = "block";
+
+        return;
+    }
+
+
+    customerResults.forEach(function(c, index){
+
+        let div =
+            document.createElement("div");
+
+        div.dataset.index = index;
+
+        div.innerText =
+            String(c.customerName || "");
+
+        div.style.padding = "10px";
+
+        div.style.cursor = "pointer";
+
+        div.style.borderBottom =
+            "1px solid #eee";
+
+
+        div.onclick = function(){
+
+            selectCustomer(c);
+
+        };
+
+
+        box.appendChild(div);
+
+    });
+
+
+    box.style.display = "block";
+
+});
+
+/* =====================================================
+CUSTOMER KEYBOARD NAVIGATION
+===================================================== */
+
+let customerIndex = -1;
+
+const customerSearch =
+ document.getElementById("customerSearch");
+
+const customerResult =
+ document.getElementById("customerResult");
+
+
+customerSearch.addEventListener("input", function(){
+
+ searchCustomer();
+
+});
+
+
+customerSearch.addEventListener("keydown", function(e){
+
+ let items =
+     customerResult.querySelectorAll(
+         "div[data-index]"
+     );
+
+
+ /* =========================
+    ARROW DOWN
+ ========================= */
+
+ if(e.key === "ArrowDown"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+
+     if(items.length === 0){
+
+         searchCustomer();
+
+         items =
+             customerResult.querySelectorAll(
+                 "div[data-index]"
+             );
+
+     }
+
+
+     if(items.length === 0)
+         return;
+
+
+     customerIndex++;
+
+
+     if(customerIndex >= items.length){
+
+         customerIndex = 0;
+
+     }
+
+
+     highlightCustomer();
+
+     return;
+
+ }
+
+
+ /* =========================
+    ARROW UP
+ ========================= */
+
+ if(e.key === "ArrowUp"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+
+     if(items.length === 0)
+         return;
+
+
+     customerIndex--;
+
+
+     if(customerIndex < 0){
+
+         customerIndex =
+             items.length - 1;
+
+     }
+
+
+     highlightCustomer();
+
+     return;
+
+ }
+
+
+ /* =========================
+    ENTER
+ ========================= */
+
+ if(e.key === "Enter"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+
+     /*
+      * Dropdown बंद असेल तर
+      * आधी open करा
+      */
+
+     if(
+         customerResult.style.display !== "block" ||
+         items.length === 0
+     ){
+
+         searchCustomer();
+
+         items =
+             customerResult.querySelectorAll(
+                 "div[data-index]"
+             );
+
+     }
+
+
+     if(items.length === 0){
+
+         alert("No Customer Found");
+
+         return;
+
+     }
+
+
+     if(customerIndex < 0){
+
+         customerIndex = 0;
+
+     }
+
+
+     let selected =
+         items[customerIndex];
+
+
+     if(selected){
+
+         selected.click();
+
+     }
+
+
+     return;
+
+ }
+
+
+ /* =========================
+    ESC
+ ========================= */
+
+ if(e.key === "Escape"){
+
+     customerResult.style.display = "none";
+
+     customerIndex = -1;
+
+     return;
+
+ }
+
+});
+
+
+/* =====================================================
+CUSTOMER HIGHLIGHT
+===================================================== */
+
+function highlightCustomer(){
+
+ let items =
+     customerResult.querySelectorAll(
+         "div[data-index]"
+     );
+
+
+ items.forEach(function(item){
+
+     item.style.background = "";
+     item.style.color = "";
+
+ });
+
+
+ if(
+     customerIndex >= 0 &&
+     customerIndex < items.length
+ ){
+
+     let selected =
+         items[customerIndex];
+
+
+     selected.style.background =
+         "#2196f3";
+
+     selected.style.color =
+         "white";
+
+
+     selected.scrollIntoView({
+         block:"nearest"
+     });
+
+ }
+
+}
+
+
+/* =====================================================
+SELECT CUSTOMER
+===================================================== */
+function selectCustomer(customer){
+
+    document.getElementById("customerSearch").value =
+        String(customer.customerName || "");
+
+    document.getElementById("customerResult").innerHTML = "";
+
+    document.getElementById("customerResult").style.display = "none";
+
+    customerIndex = -1;
+
+    // Customer चे bills load करा
+    loadBills(customer.id);
+
+    // Bill No वर cursor
+    setTimeout(function(){
+        document.getElementById("billNo").focus();
+    }, 100);
+
+}
+
+/* =====================================================
+LOAD CUSTOMER BILLS
+===================================================== */
+
+function loadBills(customerId){
+
+ fetch(
+     "/api/bills/customer/" +
+     customerId
+ )
+
+ .then(res => res.json())
+
+ .then(data => {
+
+     let billSelect =
+         document.getElementById("billNo");
+
+
+     billSelect.innerHTML =
+         '<option value="">Select Bill</option>';
+
+
+     if(!Array.isArray(data)){
+
+         return;
+
+     }
+
+
+     data.forEach(function(b){
+
+         let option =
+             document.createElement("option");
+
+
+         option.value = b.id;
+
+         option.textContent =
+             "Bill No : " + b.id;
+
+
+         billSelect.appendChild(option);
+
+     });
+
+
+     /*
+      * Customer select झाल्यावर
+      * Bill No वर focus
+      */
+
+     billSelect.focus();
+
+ })
+
+ .catch(function(err){
+
+     console.error(
+         "Bill loading error:",
+         err
+     );
+
+ });
+
+}
+/* =====================================================
+BILL NO KEYBOARD NAVIGATION
+===================================================== */
+
+
+/* =====================================================
+LOAD CUSTOMER BILLS
+===================================================== */
+
+function loadBills(customerId){
+
+ fetch("/api/bills/customer/" + customerId)
+
+ .then(res => res.json())
+
+ .then(data => {
+
+     console.log("Bills Response:", data);
+
+     const billSelect =
+         document.getElementById("billNo");
+
+     billSelect.innerHTML =
+         '<option value="">Select Bill</option>';
+
+
+     if(!Array.isArray(data) || data.length === 0){
+
+         billSelect.innerHTML =
+             '<option value="">No Bills Found</option>';
+
+         return;
+
+     }
+
+
+     data.forEach(function(b){
+
+         const option =
+             document.createElement("option");
+
+         option.value = b.id;
+
+         option.textContent =
+             "Bill No : " + b.id;
+
+         billSelect.appendChild(option);
+
+     });
+
+
+     /* Customer select झाल्यावर Bill No वर focus */
+
+     billSelect.focus();
+
+ })
+
+ .catch(function(error){
+
+     console.error(
+         "Bill loading error:",
+         error
+     );
+
+ });
+
+}
+
+
+/* =====================================================
+BILL NO KEYBOARD
+===================================================== */
+
+document
+.getElementById("billNo")
+.addEventListener("keydown", function(e){
+
+ /* =========================
+    ARROW DOWN / UP
+    Native select ला काम करू द्या
+ ========================= */
+
+ if(
+     e.key === "ArrowDown" ||
+     e.key === "ArrowUp"
+ ){
+
+     billOpen = true;
+
+     return;
+
+ }
+
+
+ /* =========================
+    ENTER
+ ========================= */
+
+ if(e.key === "Enter"){
+
+     e.preventDefault();
+     e.stopPropagation();
+
+
+     /* =========================
+        FIRST ENTER
+        Dropdown open
+     ========================= */
+
+     if(!billOpen){
+
+         billOpen = true;
+
+         /*
+          * Native select dropdown open
+          */
+
+         this.focus();
+
+         this.click();
+
+         return;
+
+     }
+
+
+     /* =========================
+        SECOND ENTER
+        Bill select
+     ========================= */
+
+     billOpen = false;
+
+
+     if(this.value === ""){
+
+         alert("Please select Bill");
+
+         return;
+
+     }
+
+
+     loadBillItems();
+
+
+     /*
+      * Bill select झाल्यावर
+      * Return Date वर focus
+      */
+
+     setTimeout(function(){
+
+         document
+         .getElementById("returnDate")
+         .focus();
+
+     },100);
+
+ }
+
+});
+
+
+/* =====================================================
+BILL CHANGE
+===================================================== */
+
+document
+.getElementById("billNo")
+.addEventListener("change", function(){
+
+ /*
+  * Arrow Up / Down ने bill बदलला
+  */
+
+ billOpen = true;
+
+});
+/*===============================================
+   LOAD BILL ITEMS
+===================================================== */
+
+function loadBillItems(){
+
+    let billId =
+        document
+        .getElementById("billNo")
+        .value;
+
+
+    if(!billId){
+
+        document
+        .getElementById("returnTable")
+        .innerHTML = "";
+
+        return;
+
+    }
+
+
+    fetch("/api/bills/" + billId)
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        let rows = "";
+
+
+        if(
+            !data ||
+            !Array.isArray(data.items)
+        ){
+
+            return;
+
+        }
+
+
+        data.items.forEach(function(item){
+
+            let medicineId =
+                item.medicine
+                ? item.medicine.id
+                : "";
+
+
+            let medicineName =
+                item.medicineName ||
+                (
+                    item.medicine
+                    ? item.medicine.medicineName
+                    : ""
+                );
+
+
+            let batchNo =
+                item.batchNo || "";
+
+
+            let quantity =
+                Number(item.quantity || 0);
+
+
+            let unitPrice =
+                Number(item.unitPrice || 0);
+
+
+            rows += `
+
+                <tr data-id="${medicineId}">
+
+                    <td>
+                        ${medicineName}
+                    </td>
+
+
+                    <td>
+                        ${batchNo}
+                    </td>
+
+
+                    <td>
+                        ${quantity}
+                    </td>
+
+
+                    <td>
+
+                        <input
+                            type="number"
+                            class="returnQty"
+                            min="0"
+                            max="${quantity}"
+                            data-rate="${unitPrice}"
+                            data-qty="${quantity}"
+                            value="0"
+                            oninput="calculateReturn()"
+                        >
+
+                    </td>
+
+
+                    <td>
+                        ${unitPrice.toFixed(2)}
+                    </td>
+
+
+                    <td class="amount">
+                        0.00
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        document
+        .getElementById("returnTable")
+        .innerHTML = rows;
+
+
+        /*
+         * Quantity boxes तयार झाल्यावर
+         * first quantity ला focus
+         */
+
+    })
+
+    .catch(err => {
+
+        console.error(
+            "Bill items error:",
+            err
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   CALCULATE RETURN
+===================================================== */
+
+function calculateReturn(){
+
+    let total = 0;
+
+
+    let inputs =
+        document.querySelectorAll(
+            ".returnQty"
+        );
+
+
+    inputs.forEach(function(input, index){
+
+        let qty =
+            parseInt(
+                input.value || 0
+            );
+
+
+        let rate =
+            parseFloat(
+                input.dataset.rate || 0
+            );
+
+
+        let sold =
+            parseInt(
+                input.dataset.qty || 0
+            );
+
+
+        if(qty < 0){
+
+            qty = 0;
+
+            input.value = 0;
+
+        }
+
+
+        if(qty > sold){
+
+            alert(
+                "Return quantity cannot exceed sold quantity"
+            );
+
+
+            qty = sold;
+
+            input.value = sold;
+
+        }
+
+
+        let amount =
+            qty * rate;
+
+
+        let amountCells =
+            document.querySelectorAll(
+                ".amount"
+            );
+
+
+        if(amountCells[index]){
+
+            amountCells[index]
+                .innerHTML =
+                amount.toFixed(2);
+
+        }
+
+
+        total += amount;
+
+    });
+
+
+    document.getElementById(
+        "total"
+    ).innerHTML =
+        total.toFixed(2);
+
+}
+
+
+/* =====================================================
+   RETURN QUANTITY ENTER
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key !== "Enter")
+            return;
+
+
+        let active =
+            document.activeElement;
+
+
+        /*
+         * Return Quantity
+         */
+
+        if(
+            active.classList.contains(
+                "returnQty"
+            )
+        ){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            let qtyInputs =
+                Array.from(
+                    document.querySelectorAll(
+                        ".returnQty"
+                    )
+                );
+
+
+            let index =
+                qtyInputs.indexOf(active);
+
+
+            /*
+             * Multiple medicines असतील तर
+             * next quantity
+             */
+
+            if(
+                index >= 0 &&
+                index < qtyInputs.length - 1
+            ){
+
+                qtyInputs[index + 1]
+                    .focus();
+
+                return;
+
+            }
+
+
+            /*
+             * Last quantity
+             * -> Save Return
+             */
+
+            document
+            .getElementById("saveBtn")
+            .focus();
+
+
+            return;
+
+        }
+
+    },
+    true
+);
+
+
+/* =====================================================
+   RETURN DATE ENTER
+===================================================== */
+
+document
+.getElementById("returnDate")
+.addEventListener("keydown", function(e){
+
+    if(e.key !== "Enter")
+        return;
+
+
+    e.preventDefault();
+    e.stopPropagation();
+
+
+    let qty =
+        document.querySelector(
+            ".returnQty"
+        );
+
+
+    if(qty){
+
+        qty.focus();
+
+    }
+
+});
+
+
+/* =====================================================
+   SAVE RETURN
+===================================================== */
+
+function saveReturn(){
+
+    let items = [];
+
+
+    let inputs =
+        document.querySelectorAll(
+            ".returnQty"
+        );
+
+
+    inputs.forEach(function(input, index){
+
+        let qty =
+            parseInt(
+                input.value || 0
+            );
+
+
+        if(qty > 0){
+
+            let amount =
+                document.querySelectorAll(
+                    ".amount"
+                )[index]
+                .innerHTML;
+
+
+            items.push({
+
+                medicineId:
+                    input
+                    .closest("tr")
+                    .dataset.id,
+
+                quantity:
+                    qty,
+
+                amount:
+                    amount
+
+            });
+
+        }
+
+    });
+
+
+    if(items.length === 0){
+
+        alert(
+            "Select return quantity"
+        );
+
+        let qty =
+            document.querySelector(
+                ".returnQty"
+            );
+
+
+        if(qty){
+            qty.focus();
+        }
+
+        return;
+
+    }
+
+
+    let billId =
+        document
+        .getElementById("billNo")
+        .value;
+
+
+    if(!billId){
+
+        alert(
+            "Please select Bill No"
+        );
+
+        document
+        .getElementById("billNo")
+        .focus();
+
+        return;
+
+    }
+
+
+    let returnDate =
+        document
+        .getElementById("returnDate")
+        .value;
+
+
+    if(!returnDate){
+
+        alert(
+            "Please select Return Date"
+        );
+
+        document
+        .getElementById("returnDate")
+        .focus();
+
+        return;
+
+    }
+
+
+    let data = {
+
+        billId:
+            billId,
+
+        returnDate:
+            returnDate,
+
+        items:
+            items
+
+    };
+
+
+    fetch(
+        "/api/sale-returns",
+        {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                    "application/json"
+            },
+
+            body:
+                JSON.stringify(data)
+
+        }
+    )
+
+    .then(res => {
+
+        if(!res.ok){
+
+            throw new Error(
+                "Failed to save Sale Return"
+            );
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(data => {
+
+        alert(
+            "Sale Return Saved"
+        );
+
+        location.reload();
+
+    })
+
+    .catch(err => {
+
+        console.error(
+            "Sale Return Error:",
+            err
+        );
+
+        alert(
+            "Failed to save Sale Return"
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   GLOBAL ENTER
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key !== "Enter")
+            return;
+
+
+        let active =
+            document.activeElement;
+
+
+        /*
+         * Customer
+         */
+
+        if(
+            active.id ===
+            "customerSearch"
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Bill
+         */
+
+        if(
+            active.id ===
+            "billNo"
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Return Date
+         */
+
+        if(
+            active.id ===
+            "returnDate"
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Quantity
+         */
+
+        if(
+            active.classList.contains(
+                "returnQty"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Save Button
+         */
+
+        if(
+            active.id === "saveBtn"
+        ){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            saveReturn();
+
+            return;
+
+        }
+
+    },
+    true
+);
+
+
+/* =====================================================
+   LEFT / RIGHT ARROW NAVIGATION
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+        if(
+            e.key !== "ArrowLeft" &&
+            e.key !== "ArrowRight"
+        ){
+
+            return;
+
+        }
+
+
+        let active =
+            document.activeElement;
+
+
+        /*
+         * Customer search मध्ये
+         * Left / Right typing normal
+         */
+
+        if(
+            active.id ===
+            "customerSearch"
+        ){
+
+            return;
+
+        }
+
+
+        /*
+         * Date field मध्ये browser
+         * date navigation normal
+         */
+
+        if(
+            active.type === "date"
+        ){
+
+            return;
+
+        }
+
+
+        let fields =
+            Array.from(
+                document.querySelectorAll(
+                    '#customerSearch,' +
+                    '#billNo,' +
+                    '#returnDate,' +
+                    '.returnQty,' +
+                    '#saveBtn'
+                )
+            ).filter(function(el){
+
+                return (
+                    el.offsetParent !== null &&
+                    !el.disabled
+                );
+
+            });
+
+
+        let index =
+            fields.indexOf(active);
+
+
+        if(index === -1)
+            return;
+
+
+        /* =========================
+           RIGHT
+        ========================= */
+
+        if(e.key === "ArrowRight"){
+
+            if(
+                index <
+                fields.length - 1
+            ){
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                fields[index + 1]
+                    .focus();
+
+            }
+
+            return;
+
+        }
+
+
+        /* =========================
+           LEFT
+        ========================= */
+
+        if(e.key === "ArrowLeft"){
+
+            if(index > 0){
+
+                e.preventDefault();
+                e.stopPropagation();
+
+
+                fields[index - 1]
+                    .focus();
+
+            }
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CLOSE PAGE
+===================================================== */
+
+function closePage(){
+
+    if(
+        window.parent &&
+        typeof window.parent.closeModal ===
+        "function"
+    ){
+
+        window.parent.closeModal();
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

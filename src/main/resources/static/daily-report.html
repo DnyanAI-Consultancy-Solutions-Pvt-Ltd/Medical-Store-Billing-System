@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Daily Transaction Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+padding:20px;
+background:#f4f6f9;
+}
+.header{
+background:#198754;
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+   height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+    
+}
+.header span{
+    margin:0 auto;
+}
+.card{
+background:white;
+padding:20px;
+margin:10px;
+border-radius:10px;
+box-shadow:0px 2px 5px gray;
+}
+
+h2{
+color:#0f4c81;
+}
+
+</style>
+</head>
+
+<body>
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Daily Transaction Report</span>
+<button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+
+</div>
+
+<div class="card">
+<h2>Total Sales :
+<span id="sales"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Total Purchases :
+<span id="purchase"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Total Payments :
+<span id="payment"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Sale Returns :
+<span id="saleReturn"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Purchase Returns :
+<span id="purchaseReturn"></span>
+</h2>
+</div>
+
+<div class="card">
+<h2>Today's Profit :
+<span id="profit"></span>
+</h2>
+</div>
+
+<script>
+
+fetch("/api/daily-report")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("sales")
+.innerHTML="₹"+data.totalSales;
+
+document.getElementById("purchase")
+.innerHTML="₹"+data.totalPurchases;
+
+document.getElementById("payment")
+.innerHTML="₹"+data.totalPayments;
+
+document.getElementById("saleReturn")
+.innerHTML="₹"+data.saleReturns;
+
+document.getElementById("purchaseReturn")
+.innerHTML="₹"+data.purchaseReturns;
+
+document.getElementById("profit")
+.innerHTML="₹"+data.profit;
+
+});
+function closePage(){
+
+    parent.closeModal();
+
+}
+</script>
+
+</body>
+</html>

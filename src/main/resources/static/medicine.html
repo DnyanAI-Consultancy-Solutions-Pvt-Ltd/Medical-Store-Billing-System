@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Medicine Management</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    margin:0;
+}
+
+.navbar{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+    font-size:22px;
+}
+.header{
+background:#198754;
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+     position:relative;
+}
+.close-btn{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+}
+
+.close-btn:hover{
+
+    background:#bb2d3b;
+
+}
+.logo{
+ position:absolute;
+   left:20px;
+
+    height:60px;
+    width:170px;
+    border-radius: 15px;  
+    margin-left:10px;
+    
+}
+
+.header span{
+    margin:0 auto;
+}
+.menu{
+    background:white;
+    padding:15px;
+    text-align:center;
+}
+
+.menu a{
+    text-decoration:none;
+    margin:20px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+.modal-content{
+    overflow-y:auto;
+}
+
+.container{
+
+    padding:20px;
+    background:#eef3f8;
+
+}
+
+.card{
+
+    width:100%;
+
+    max-width:100%;
+
+    background:#fff;
+
+    padding:20px;
+
+    border-radius:10px;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+
+    overflow:hidden;
+
+    box-sizing:border-box;
+
+}
+
+
+.form-title{
+
+    font-size:24px;
+    color:#0f4c81;
+    margin-bottom:25px;
+    border-bottom:2px solid #2196f3;
+    padding-bottom:10px;
+
+}
+
+.form-grid{
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+     column-gap:30px;  
+
+}
+
+.form-group{
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    font-size:14px;
+    color:#444;
+    font-weight:500;
+    margin-bottom:6px;
+
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    width:100%;
+    padding:10px;
+    font-size:14px;
+    border:1px solid #cfd8dc;
+    border-radius:6px;
+    outline:none;
+    transition:.3s;
+
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color:#2196f3;
+    box-shadow:0 0 5px rgba(33,150,243,.4);
+
+}
+
+textarea{
+
+    resize:vertical;
+    min-height:80px;
+
+}
+
+.full-width{
+
+    grid-column:1/4;
+
+}
+
+.btn-section{
+
+    text-align:center;
+    margin-top:25px;
+
+}
+
+.save-btn{
+
+    background:#198754;
+    color:#fff;
+    border:none;
+    padding:12px 40px;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.save-btn:hover{
+
+    background:#157347;
+
+}
+
+@media(max-width:992px){
+
+.form-grid{
+
+    grid-template-columns:repeat(2,1fr);
+
+}
+
+.full-width{
+
+    grid-column:1/3;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+.full-width{
+
+    grid-column:1;
+
+}
+
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+.table-container{
+
+    width:100%;
+
+    overflow-x:auto;
+
+    overflow-y:hidden;
+
+    margin-top:15px;
+
+}
+
+.resultTable{
+
+    min-width:1800px;      /* 15 columns sathi */
+
+    border-collapse:collapse;
+
+    background:#fff;
+
+}
+
+.resultTable th{
+
+    background:#3498db;
+
+    color:#fff;
+
+    padding:10px;
+
+    white-space:nowrap;
+
+    text-align:center;
+
+}
+
+.resultTable td{
+
+    padding:10px;
+
+    border:1px solid #ddd;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+}
+.form-group{
+    position:relative;
+}
+
+.dropdown{
+
+display:none;
+
+position:absolute;
+
+top:72px;
+
+left:0;
+
+width:100%;
+
+max-height:220px;
+
+overflow-y:auto;
+
+background:white;
+
+border:1px solid #ccc;
+
+border-radius:6px;
+
+box-shadow:0 2px 8px rgba(0,0,0,.2);
+
+z-index:9999;
+
+}
+
+.dropdown div{
+
+padding:10px;
+
+cursor:pointer;
+
+}
+
+.dropdown div:hover,
+.dropdown .active{
+
+background:#2196f3;
+
+color:white;
+
+}
+</style>
+
+</head>
+
+<body>
+<div class="header">
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
+<button class="close-btn" onclick="closePage()">
+        ✖ Close
+    </button>
+
+</div>
+<div class="menu">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="medicine.html">Medicine</a>
+
+<a href="customer.html">Customer</a>
+
+<a href="billing.html">Billing</a>
+
+<a href="inventory.html">Inventory</a>
+
+</div>
+
+<div class="container">
+
+<input type="hidden" id="medicineId">
+
+<div class="card">
+
+<h2 class="form-title">Medicine Master</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Product Name</label>
+<input type="text" id="medicineName" placeholder="Enter Product Name">
+<datalist id="medicineList"></datalist>
+</div>
+
+<div class="form-group">
+<label>Company Name</label>
+<input type="text" id="companyName" placeholder="Enter Company Name">
+<datalist id="companyList"></datalist>
+</div>
+
+<div class="form-group">
+<label>Batch No</label>
+<input type="text" id="batchNo">
+</div>
+
+<div class="form-group">
+
+<label>Unit</label>
+
+<input
+type="text"
+id="unit"
+placeholder="Select Unit"
+readonly>
+
+<div id="unitDropdown" class="dropdown">
+
+    <div>Tablet</div>
+    <div>Capsule</div>
+    <div>Strip</div>
+    <div>Bottle</div>
+    <div>Tube</div>
+    <div>Vial</div>
+    <div>Injection</div>
+    <div>Sachet</div>
+    <div>Pack</div>
+    <div>Piece</div>
+
+</div>
+
+</div>
+
+<div class="form-group">
+<label>MRP (₹)</label>
+<input type="number" id="mrp">
+</div>
+
+<div class="form-group">
+<label>Purchase Price (₹)</label>
+<input type="number" id="purchasePrice">
+</div>
+
+<div class="form-group">
+<label>Opening Stock</label>
+<input type="number" id="openingStock">
+</div>
+
+<!-- ================= GST ================= -->
+
+<div class="form-group">
+
+<label>GST %</label>
+
+<input
+type="text"
+id="gstPercent"
+placeholder="Select GST"
+readonly>
+
+<input type="hidden" id="gstValue">
+
+<div id="gstDropdown" class="dropdown">
+
+<div data-value="0">0%</div>
+<div data-value="5">5%</div>
+<div data-value="12">12%</div>
+<div data-value="18">18%</div>
+<div data-value="28">28%</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= SCHEDULE ================= -->
+
+<div class="form-group">
+
+<label>Schedule Type</label>
+
+<input
+type="text"
+id="scheduleType"
+placeholder="Select Schedule"
+readonly>
+
+<input type="hidden" id="scheduleValue">
+
+<div id="scheduleDropdown" class="dropdown">
+
+<div>OTC</div>
+<div>Schedule H</div>
+<div>Schedule H1</div>
+<div>Schedule X</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= EXPIRY DATE ================= -->
+
+<div class="form-group">
+
+<label>Expiry Date</label>
+
+<input
+type="date"
+id="expiryDate">
+
+</div>
+<div class="form-group">
+<label>Margin %</label>
+<input type="number" id="marginPercent">
+</div>
+
+<div class="form-group full-width">
+<label>Contents / Composition</label>
+<textarea id="contents" rows="3"
+placeholder="Medicine Composition"></textarea>
+</div>
+
+<div class="form-group full-width">
+<label>Substitutes / Uses</label>
+<textarea id="symptoms" rows="3"
+placeholder="Medicine Uses"></textarea>
+</div>
+
+</div>
+
+<div class="btn-section">
+
+<button id="saveBtn" class="save-btn"
+onclick="saveMedicine()">
+💾 Save Medicine
+</button>
+
+</div>
+
+</div>
+
+</div>
+<div class="card" style="margin-top:20px;">
+ <label><b>Search Medicine</b></label>
+
+        <input
+            type="text"
+            id="searchMedicine"
+            placeholder="Search Medicine by Name..."
+            onkeyup="searchMedicine()"
+            style="width:320px;height:40px;padding:8px;">
+
+    </div>
+
+<div class="table-container">
+<h3>Medicine List</h3>
+
+<table class="resultTable">
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Name</th>
+<th>Company</th>
+<th>Batch</th>
+<th>Unit</th>
+<th>MRP</th>
+<th>Purchase Price</th>
+<th>GST</th>
+<th>Schedule</th>
+<th>Opening</th>
+<th>Stock</th>
+<th>Expiry</th>
+<th>Margin %</th>
+<th>Contents</th>
+<th>Substitutes</th>
+
+</tr>
+
+</thead>
+
+<tbody id="medicineTable">
+
+</tbody>
+</table>
+</div>
+</div>
+<script>
+loadMedicines();
+
+function loadMedicines(){
+	
+	
+fetch("/api/medicines")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(m=>{
+	 
+rows += `
+
+<tr>
+
+<td>${m.id}</td>
+
+<td>${m.medicineName}</td>
+
+<td>${m.companyName}</td>
+
+<td>${m.batchNo}</td>
+<td>${m.unit}</td>
+<td>${m.mrp}</td>
+<td>${m.purchasePrice}</td>
+<td>${m.gstPercent}%</td>
+<td>${m.scheduleType}</td>
+<td>${m.openingStock}</td>
+<td>${m.quantity}</td>
+<td>${m.expiryDate}</td>
+<td>${m.marginPercent || 0}</td>
+<td>${m.contents || ''}</td>
+<td>${m.symptoms || ''}</td>
+
+
+<td>
+<button onclick="editMedicine(${m.id})">
+Edit
+</button>
+
+<button onclick="deleteMedicine(${m.id})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+document.getElementById("medicineTable").innerHTML
+= rows;
+
+});
+
+}
+function saveMedicine(){
+
+    let medicineName =
+        document.getElementById("medicineName").value.trim();
+
+    let companyName =
+        document.getElementById("companyName").value.trim();
+
+    let mrp =
+        document.getElementById("mrp").value.trim();
+
+    let purchasePrice =
+        document.getElementById("purchasePrice").value.trim();
+
+    let gstPercent =
+        document.getElementById("gstPercent").value.trim();
+
+   
+    let batchNo =
+        document.getElementById("batchNo").value.trim();
+
+    let expiryDate =
+        document.getElementById("expiryDate").value.trim();
+
+    let unit =
+        document.getElementById("unit").value.trim();
+
+    let scheduleType =
+        document.getElementById("scheduleType").value.trim();
+
+    let marginPercent =
+        document.getElementById("marginPercent").value.trim();
+
+    let openingStock =
+        document.getElementById("openingStock").value.trim();
+
+    let contents =
+        document.getElementById("contents").value.trim();
+
+    let symptoms =
+        document.getElementById("symptoms").value.trim();
+
+
+    /* ALL FIELDS EMPTY */
+
+    if(
+        medicineName === "" &&
+        companyName === "" &&
+        mrp === "" &&
+        purchasePrice === "" &&
+        gstPercent === "" &&
+        
+        batchNo === "" &&
+        expiryDate === "" &&
+        unit === "" &&
+        scheduleType === "" &&
+        marginPercent === "" &&
+        openingStock === "" &&
+        contents === "" &&
+        symptoms === ""
+    ){
+
+        alert("Please fill all required fields.");
+
+        document.getElementById("medicineName").focus();
+
+        return;
+    }
+
+
+    /* MEDICINE NAME */
+
+    if(medicineName === ""){
+
+        alert("Medicine Name is required.");
+
+        document.getElementById("medicineName").focus();
+
+        return;
+    }
+
+
+    /* COMPANY */
+
+    if(companyName === ""){
+
+        alert("Company Name is required.");
+
+        document.getElementById("companyName").focus();
+
+        return;
+    }
+
+
+    /* BATCH */
+
+    if(batchNo === ""){
+
+        alert("Batch Number is required.");
+
+        document.getElementById("batchNo").focus();
+
+        return;
+    }
+
+
+    /* UNIT */
+
+    if(unit === ""){
+
+        alert("Unit is required.");
+
+        document.getElementById("unit").focus();
+
+        return;
+    }
+
+
+    /* MRP */
+
+    if(mrp === ""){
+
+        alert("MRP is required.");
+
+        document.getElementById("mrp").focus();
+
+        return;
+    }
+
+
+    /* PURCHASE PRICE */
+
+    if(purchasePrice === ""){
+
+        alert("Purchase Price is required.");
+
+        document.getElementById("purchasePrice").focus();
+
+        return;
+    }
+
+
+    /* OPENING STOCK */
+
+    if(openingStock === ""){
+
+        alert("Opening Stock is required.");
+
+        document.getElementById("openingStock").focus();
+
+        return;
+    }
+
+
+    /* GST */
+
+    if(gstPercent === ""){
+
+        alert("GST Percentage is required.");
+
+        document.getElementById("gstPercent").focus();
+
+        return;
+    }
+
+
+    /* SCHEDULE */
+
+    if(scheduleType === ""){
+
+        alert("Schedule Type is required.");
+
+        document.getElementById("scheduleType").focus();
+
+        return;
+    }
+
+
+    /* EXPIRY */
+
+    if(expiryDate === ""){
+
+        alert("Expiry Date is required.");
+
+        document.getElementById("expiryDate").focus();
+
+        return;
+    }
+
+
+    /* MARGIN */
+
+    if(marginPercent === ""){
+
+        alert("Margin Percentage is required.");
+
+        document.getElementById("marginPercent").focus();
+
+        return;
+    }
+
+
+    /* CONTENTS */
+
+    if(contents === ""){
+
+        alert("Contents is required.");
+
+        document.getElementById("contents").focus();
+
+        return;
+    }
+
+
+    /* SYMPTOMS */
+
+    if(symptoms === ""){
+
+        alert("Symptoms is required.");
+
+        document.getElementById("symptoms").focus();
+
+        return;
+    }
+
+
+    /* MEDICINE ID */
+
+    let id =
+        document.getElementById("medicineId").value;
+
+
+    /* MEDICINE OBJECT */
+
+    let medicine = {
+
+        medicineName: medicineName,
+
+        companyName: companyName,
+
+        batchNo: batchNo,
+
+        unit: unit,
+
+        mrp: parseFloat(mrp),
+
+        purchasePrice: parseFloat(purchasePrice),
+
+        openingStock: parseInt(openingStock),
+
+        quantity: parseInt(openingStock),
+
+        gstPercent: parseFloat(gstPercent),
+
+        scheduleType: scheduleType,
+
+        expiryDate: expiryDate,
+
+        marginPercent: marginPercent,
+
+        contents: contents,
+
+        symptoms: symptoms
+
+    };
+
+
+    let url = "/api/medicines";
+
+    let method = "POST";
+
+
+    /* UPDATE */
+
+    if(id){
+
+        url = "/api/medicines/" + id;
+
+        method = "PUT";
+
+    }
+
+
+    fetch(url,{
+
+        method: method,
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify(medicine)
+
+    })
+
+    .then(res => {
+
+        if(!res.ok){
+
+            throw new Error("Failed to save medicine");
+
+        }
+
+        return res.json();
+
+    })
+
+    .then(data => {
+
+        alert("Medicine Saved Successfully");
+
+        loadMedicines();
+
+
+        /* CLEAR */
+
+        document.getElementById("medicineId").value = "";
+
+        document.getElementById("medicineName").value = "";
+
+        document.getElementById("companyName").value = "";
+
+        document.getElementById("batchNo").value = "";
+
+        document.getElementById("unit").value = "";
+
+        document.getElementById("mrp").value = "";
+
+        document.getElementById("purchasePrice").value = "";
+
+        document.getElementById("openingStock").value = "";
+
+        document.getElementById("gstPercent").value = "";
+
+        document.getElementById("scheduleType").value = "";
+
+        document.getElementById("expiryDate").value = "";
+
+        document.getElementById("marginPercent").value = "";
+
+        document.getElementById("contents").value = "";
+
+        document.getElementById("symptoms").value = "";
+
+
+        document.getElementById("medicineName").focus();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Failed to save medicine.");
+
+    });
+
+}
+function editMedicine(id){
+
+    fetch("/api/medicines/" + id)
+
+    .then(res => res.json())
+
+    .then(m => {
+
+        document.getElementById("medicineId").value = m.id;
+
+        document.getElementById("medicineName").value = m.medicineName;
+
+        document.getElementById("companyName").value = m.companyName;
+
+        document.getElementById("batchNo").value = m.batchNo;
+
+        document.getElementById("unit").value = m.unit;
+
+        document.getElementById("mrp").value = m.mrp;
+
+        document.getElementById("purchasePrice").value = m.purchasePrice;
+
+        document.getElementById("openingStock").value = m.openingStock;
+
+        document.getElementById("gstPercent").value = m.gstPercent;
+
+        document.getElementById("scheduleType").value = m.scheduleType;
+
+        document.getElementById("expiryDate").value = m.expiryDate;
+
+        document.getElementById("marginPercent").value = m.marginPercent || "";
+
+        document.getElementById("contents").value = m.contents || "";
+
+        document.getElementById("symptoms").value = m.symptoms || "";
+        document.getElementById("medicineName").focus();
+        console.log("Schedule :", m.scheduleType);
+    });
+
+}
+function deleteMedicine(id){
+
+	if(confirm("Delete Medicine ?")){
+
+	fetch("/api/medicines/"+id,{
+
+	method:"DELETE"
+
+	})
+	.then(()=>{
+
+	loadMedicines();
+
+	});
+
+	}
+
+}
+function closeModal(){
+
+    document.getElementById("pageModal").style.display = "none";
+
+    document.getElementById("pageFrame").src = "";
+
+}
+function closePage(){
+
+    parent.closeModal();
+
+}
+function searchMedicine(){
+
+    let value = document
+        .getElementById("searchMedicine")
+        .value
+        .toLowerCase();
+
+    let rows = document.querySelectorAll("#medicineTable tr");
+
+    rows.forEach(row => {
+
+        let medicineName =
+            row.cells[1].innerText.toLowerCase();
+
+        if(medicineName.includes(value)){
+
+            row.style.display = "";
+
+        }else{
+
+             row.style.display = "none";
+
+        }
+
+    });
+
+}
+window.onload = function(){
+
+    document.getElementById("medicineName").focus();
+
+};
+document.addEventListener("DOMContentLoaded", function(){
+
+    /* =====================================================
+       UNIT
+    ===================================================== */
+
+    let unitOpen = false;
+    let unitSelected = false;
+    let unitIndex = 0;
+
+    const unit = document.getElementById("unit");
+    const unitDropdown = document.getElementById("unitDropdown");
+    const unitItems = unitDropdown.querySelectorAll("div");
+
+
+    function highlightUnit(){
+
+        unitItems.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        if(unitItems.length > 0){
+
+            unitItems[unitIndex].classList.add("active");
+
+        }
+
+    }
+
+
+    unit.addEventListener("keydown", function(e){
+
+        /* ENTER */
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            /* 1. OPEN DROPDOWN */
+
+            if(!unitOpen && !unitSelected){
+
+                unitDropdown.style.display = "block";
+
+                unitOpen = true;
+                unitIndex = 0;
+
+                highlightUnit();
+
+                return;
+            }
+
+
+            /* 2. SELECT OPTION */
+
+            if(unitOpen){
+
+                unit.value =
+                    unitItems[unitIndex].innerText;
+
+                unitDropdown.style.display = "none";
+
+                unitOpen = false;
+                unitSelected = true;
+
+                unitItems.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                return;
+            }
+
+
+            /* 3. NEXT FIELD */
+
+            if(unitSelected){
+
+                unitSelected = false;
+
+                document.getElementById("mrp").focus();
+
+                return;
+            }
+
+        }
+
+
+        /* ARROW DOWN */
+
+        if(e.key === "ArrowDown" && unitOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            unitIndex++;
+
+            if(unitIndex >= unitItems.length){
+
+                unitIndex = 0;
+
+            }
+
+            highlightUnit();
+
+            return;
+        }
+
+
+        /* ARROW UP */
+
+        if(e.key === "ArrowUp" && unitOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            unitIndex--;
+
+            if(unitIndex < 0){
+
+                unitIndex = unitItems.length - 1;
+
+            }
+
+            highlightUnit();
+
+            return;
+        }
+
+
+        /* ESC */
+
+        if(e.key === "Escape"){
+
+            e.preventDefault();
+
+            unitDropdown.style.display = "none";
+
+            unitOpen = false;
+            unitSelected = false;
+            unitIndex = 0;
+
+            unitItems.forEach(item => {
+                item.classList.remove("active");
+            });
+
+        }
+
+    });
+
+
+
+    /* =====================================================
+       GST
+    ===================================================== */
+
+    let gstOpen = false;
+    let gstSelected = false;
+    let gstIndex = 0;
+
+    const gst = document.getElementById("gstPercent");
+    const gstDropdown = document.getElementById("gstDropdown");
+    const gstItems = gstDropdown.querySelectorAll("div");
+
+
+    function highlightGST(){
+
+        gstItems.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        if(gstItems.length > 0){
+
+            gstItems[gstIndex].classList.add("active");
+
+        }
+
+    }
+
+
+    gst.addEventListener("keydown", function(e){
+
+        /* ENTER */
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            /* OPEN */
+
+            if(!gstOpen && !gstSelected){
+
+                gstDropdown.style.display = "block";
+
+                gstOpen = true;
+                gstIndex = 0;
+
+                highlightGST();
+
+                return;
+            }
+
+
+            /* SELECT */
+
+            if(gstOpen){
+
+                gst.value =
+                    gstItems[gstIndex].innerText;
+
+                document.getElementById("gstValue").value =
+                    gstItems[gstIndex].dataset.value;
+
+                gstDropdown.style.display = "none";
+
+                gstOpen = false;
+                gstSelected = true;
+
+                gstItems.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                return;
+            }
+
+
+            /* NEXT */
+
+            if(gstSelected){
+
+                gstSelected = false;
+
+                document.getElementById("scheduleType").focus();
+
+                return;
+            }
+
+        }
+
+
+        /* ARROW DOWN */
+
+        if(e.key === "ArrowDown" && gstOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            gstIndex++;
+
+            if(gstIndex >= gstItems.length){
+
+                gstIndex = 0;
+
+            }
+
+            highlightGST();
+
+            return;
+        }
+
+
+        /* ARROW UP */
+
+        if(e.key === "ArrowUp" && gstOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            gstIndex--;
+
+            if(gstIndex < 0){
+
+                gstIndex = gstItems.length - 1;
+
+            }
+
+            highlightGST();
+
+            return;
+        }
+
+
+        /* ESC */
+
+        if(e.key === "Escape"){
+
+            e.preventDefault();
+
+            gstDropdown.style.display = "none";
+
+            gstOpen = false;
+            gstSelected = false;
+            gstIndex = 0;
+
+        }
+
+    });
+
+
+
+    /* =====================================================
+       SCHEDULE
+    ===================================================== */
+
+    let scheduleOpen = false;
+    let scheduleSelected = false;
+    let scheduleIndex = 0;
+
+    const schedule =
+        document.getElementById("scheduleType");
+
+    const scheduleDropdown =
+        document.getElementById("scheduleDropdown");
+
+    const scheduleItems =
+        scheduleDropdown.querySelectorAll("div");
+
+
+    function highlightSchedule(){
+
+        scheduleItems.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        if(scheduleItems.length > 0){
+
+            scheduleItems[scheduleIndex]
+                .classList.add("active");
+
+        }
+
+    }
+
+
+    schedule.addEventListener("keydown", function(e){
+
+        /* ENTER */
+
+        if(e.key === "Enter"){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            /* OPEN */
+
+            if(!scheduleOpen && !scheduleSelected){
+
+                scheduleDropdown.style.display = "block";
+
+                scheduleOpen = true;
+                scheduleIndex = 0;
+
+                highlightSchedule();
+
+                return;
+            }
+
+
+            /* SELECT */
+
+            if(scheduleOpen){
+
+                schedule.value =
+                    scheduleItems[scheduleIndex].innerText;
+
+                document.getElementById("scheduleValue").value =
+                    scheduleItems[scheduleIndex].innerText;
+
+                scheduleDropdown.style.display = "none";
+
+                scheduleOpen = false;
+                scheduleSelected = true;
+
+                scheduleItems.forEach(item => {
+                    item.classList.remove("active");
+                });
+
+                return;
+            }
+
+
+            /* NEXT */
+
+            if(scheduleSelected){
+
+                scheduleSelected = false;
+
+                document.getElementById("expiryDate").focus();
+
+                return;
+            }
+
+        }
+
+
+        /* ARROW DOWN */
+
+        if(e.key === "ArrowDown" && scheduleOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            scheduleIndex++;
+
+            if(scheduleIndex >= scheduleItems.length){
+
+                scheduleIndex = 0;
+
+            }
+
+            highlightSchedule();
+
+            return;
+        }
+
+
+        /* ARROW UP */
+
+        if(e.key === "ArrowUp" && scheduleOpen){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            scheduleIndex--;
+
+            if(scheduleIndex < 0){
+
+                scheduleIndex = scheduleItems.length - 1;
+
+            }
+
+            highlightSchedule();
+
+            return;
+        }
+
+
+        /* ESC */
+
+        if(e.key === "Escape"){
+
+            e.preventDefault();
+
+            scheduleDropdown.style.display = "none";
+
+            scheduleOpen = false;
+            scheduleSelected = false;
+            scheduleIndex = 0;
+
+        }
+
+    });
+
+
+
+    /* =====================================================
+       GLOBAL ENTER NAVIGATION
+    ===================================================== */
+
+    document.addEventListener("keydown", function(e){
+
+        if(e.key !== "Enter")
+            return;
+
+
+        let id =
+            document.activeElement.id;
+
+
+        /*
+         * Custom dropdowns स्वतः Enter handle करतात.
+         */
+
+        if(
+            id === "unit" ||
+            id === "gstPercent" ||
+            id === "scheduleType"
+        ){
+
+            return;
+
+        }
+
+
+        e.preventDefault();
+
+
+        switch(id){
+
+            case "medicineName":
+
+                document.getElementById("companyName").focus();
+
+                break;
+
+
+            case "companyName":
+
+                document.getElementById("batchNo").focus();
+
+                break;
+
+
+            case "batchNo":
+
+                document.getElementById("unit").focus();
+
+                break;
+
+
+            case "mrp":
+
+                document.getElementById("purchasePrice").focus();
+
+                break;
+
+
+            case "purchasePrice":
+
+                document.getElementById("openingStock").focus();
+
+                break;
+
+
+            case "openingStock":
+
+                document.getElementById("gstPercent").focus();
+
+                break;
+
+
+            case "expiryDate":
+
+                document.getElementById("marginPercent").focus();
+
+                break;
+
+
+            case "marginPercent":
+
+                document.getElementById("contents").focus();
+
+                break;
+
+
+            case "contents":
+
+                document.getElementById("symptoms").focus();
+
+                break;
+
+
+            case "symptoms":
+
+                document.getElementById("saveBtn").focus();
+
+                break;
+
+
+            case "saveBtn":
+
+                saveMedicine();
+
+                break;
+
+        }
+
+    });
+    /* =====================================================
+    LEFT / RIGHT ARROW NAVIGATION
+ ===================================================== */
+
+ document.addEventListener("keydown", function(e){
+
+     if(
+         e.key !== "ArrowLeft" &&
+         e.key !== "ArrowRight"
+     ){
+         return;
+     }
+
+     let active = document.activeElement;
+
+     /* -----------------------------------------
+        Custom dropdown open असेल तर
+        Left / Right field navigation करू द्या
+        ----------------------------------------- */
+
+     let fields = Array.from(
+         document.querySelectorAll(
+             '#medicineName,' +
+             '#companyName,' +
+             '#batchNo,' +
+             '#unit,' +
+             '#mrp,' +
+             '#purchasePrice,' +
+             '#openingStock,' +
+             '#gstPercent,' +
+             '#scheduleType,' +
+             '#expiryDate,' +
+             '#marginPercent,' +
+             '#contents,' +
+             '#symptoms,' +
+             '#saveBtn'
+         )
+     ).filter(function(el){
+
+         return el.offsetParent !== null &&
+                !el.disabled;
+
+     });
+
+
+     let index = fields.indexOf(active);
+
+
+     if(index === -1){
+         return;
+     }
+
+
+     /* -----------------------------------------
+        RIGHT ARROW = NEXT FIELD
+        ----------------------------------------- */
+
+     if(e.key === "ArrowRight"){
+
+         if(index < fields.length - 1){
+
+             e.preventDefault();
+             e.stopPropagation();
+
+             fields[index + 1].focus();
+
+         }
+
+         return;
+     }
+
+
+     /* -----------------------------------------
+        LEFT ARROW = PREVIOUS FIELD
+        ----------------------------------------- */
+
+     if(e.key === "ArrowLeft"){
+
+         if(index > 0){
+
+             e.preventDefault();
+             e.stopPropagation();
+
+             fields[index - 1].focus();
+
+         }
+
+         return;
+     }
+
+ });
+
+});
+</script>
+</body>
+</html>

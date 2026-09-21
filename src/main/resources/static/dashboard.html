@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+rel="stylesheet">
+<meta charset="UTF-8">
+<title>Medical Billing System</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;}
+
+body{
+background:#eef3f8;
+}
+
+/* HEADER */
+
+.navbar{
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.header{
+background:linear-gradient(135deg,#0f4c81,#2196f3);
+color:white;
+padding:15px;
+font-size:28px;
+font-weight:bold;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    
+}
+
+.logo{
+    height:60px;
+    width:170px;
+    
+    margin-left:10px;
+    border-radius: 15px;  
+}
+
+.help-modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:9999;
+}
+
+.help-content{
+    width:150px;
+    max-width:85%;
+    background:white;
+    margin:50px auto;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.help-header{
+    background:#0d6efd;
+    color:white;
+    padding:10px 15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+
+.close-help{
+    cursor:pointer;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.help-header h2{
+    font-size:18px;
+    margin:0;
+}
+
+.help-body{
+    padding:15px;
+    line-height:1.3;
+    font-size:14px;
+}
+
+.help-body h4{
+    margin:8px 0;
+    font-size:16px;
+}
+
+.help-body p{
+    margin:6px 0;
+}
+.help-btn{
+    background:#ffc107;
+    color:black;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+    cursor:pointer;
+    font-weight:bold;
+}
+.help-dropdown{
+    position:relative;
+    display:inline-block;
+}
+
+.help-btn{
+    background:#ffc107;
+    border:none;
+    padding:10px 15px;
+    cursor:pointer;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.help-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:100%;
+    background:white;
+    width:170px;          /* box width kam */
+    min-width:170px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    border-radius:6px;
+    z-index:999;
+}
+.help-menu a{
+    display:block;
+    padding:6px 10px;     /* padding kam */
+    text-decoration:none;
+    color:black;
+    font-size:12px;       /* font size kam */
+}
+.help-menu a:hover{
+    background:#f1f1f1;
+}
+
+.help-dropdown:hover .help-menu{
+    display:block;
+}
+/* MENU */
+
+.menu{
+background:white;
+display:flex;
+justify-content:center;
+gap:30px;
+padding:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.dropdown{
+position:relative;
+}
+
+.dropbtn{
+    font-size:20px;
+    font-weight:520;
+    padding:12px 25px;
+}
+
+.dropdown-content{
+display:none;
+position:absolute;
+background:white;
+min-width:230px;
+box-shadow:0 4px 10px rgba(0,0,0,.2);
+z-index:1000;
+}
+
+.dropdown-content a{
+display:block;
+padding:10px;
+text-decoration:none;
+color:black;
+}
+
+.dropdown-content a:hover{
+background:#f5f5f5;
+}
+
+.dropdown:hover .dropdown-content{
+display:block;
+}
+
+/* CONTAINER */
+
+.container{
+padding:20px;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+
+margin-bottom:10px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,.08);
+text-align:center;
+}
+
+.card h3{
+font-size:14px;
+margin-bottom:4px;
+}
+
+.card h2{
+font-size:24px;
+color:#0f4c81;
+}
+/* QUICK ACTIONS */
+
+.section{
+background:white;
+padding:20px;
+border-radius:15px;
+margin-top:25px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.section h2{
+margin-bottom:15px;
+color:#0f4c81;
+}
+
+.btn{
+padding:12px 18px;
+border:none;
+background:#2196f3;
+color:white;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+font-size:15px;
+}
+
+.btn:hover{
+background:#1976d2;
+}
+
+/* GRAPHS */
+
+.graph-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:10px;
+}
+
+.graph-card{
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+height:320px;
+}
+
+.graph-card h2{
+font-size:18px;
+margin-bottom:10px;
+color:#0f4c81;
+}
+
+.graph-card canvas{
+width:100% !important;
+height:240px !important;
+}
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+background:#2196f3;
+color:white;
+padding:12px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+@media(max-width:900px){
+
+.graph-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:9999;
+}
+
+.modal-content{
+    width:100vw;
+    height:100vh;
+    margin:0;
+    border-radius:0;
+    background:white;
+}
+
+#pageFrame{
+    width:100%;
+    height:100%;
+    border:none;
+
+}
+#contentFrame{
+width:100%;
+height:calc(95vh - 50px);
+border:none;
+}
+
+
+.modal-header{
+    background:#0d6efd;
+    color:white;
+    padding:12px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+
+
+#pageFrame{
+    width:100%;
+    height:calc(98vh - 60px);
+    border:none;
+}
+.alert-box{
+    background:white;
+    border-radius:8px;
+    padding:10px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+}
+
+.alert-title{
+    font-weight:bold;
+    color:red;
+    margin-bottom:8px;
+}
+
+.marquee{
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.marquee-content{
+    display:inline-block;
+    animation:scrollLeft 18s linear infinite;
+}
+
+.marquee:hover .marquee-content{
+    animation-play-state:paused;
+}
+
+@keyframes scrollLeft{
+
+0%{
+transform:translateX(100%);
+}
+
+100%{
+transform:translateX(-100%);
+}
+
+}
+.dropdown-content{
+    display:none;
+    position:absolute;
+    background:#fff;
+    min-width:230px;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+    z-index:1000;
+}
+
+.dropdown-content.show{
+    display:block;
+}
+
+.dropdown-content a:focus{
+    background:#0f4c81;
+    color:#fff;
+    outline:none;
+}
+
+.dropbtn:focus{
+    outline:2px solid #0d6efd;
+}
+
+.close-btn{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+.close-btn:hover{
+    background:darkred;
+}
+.medicine-modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:9999;
+
+    justify-content:center;
+    align-items:center;
+}
+
+.medicine-modal-content{
+    background:#fff;
+    width:700px;
+    max-width:90%;
+    max-height:80vh;
+    overflow:auto;
+    border-radius:10px;
+    padding:20px;
+    position:relative;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<img src="/images/logo.jpeg" class="logo">
+<span>Medical Billing System</span>
+<div class="help-dropdown">
+
+<button class="help-btn">
+❓ Help
+</button>
+
+<div class="help-menu">
+
+<a href="#"
+onclick="openPage('medicine.html');return false;">
+💊 Add Medicine
+</a>
+
+<a href="#"
+onclick="openPage('supplier.html');return false;">
+🏢 Suppliers
+</a>
+
+<a href="#"
+onclick="openPage('purchase.html');return false;">
+📦 Purchase
+</a>
+
+<a href="#"
+onclick="openPage('billing.html');return false;">
+🧾 Billing
+</a>
+
+<a href="dashboard.html">
+📊 Dashboard
+</a>
+
+<hr>
+
+<p>
+
+<a href="helpme@dnyanai.co.in">
+ 📧 Email : helpme@dnyanai.co.in
+</a>
+</p>
+
+<p>
+
+<a href="tel:+919876543210">
+📞 Call : +91 7506064193
+</a>
+</p>
+
+<p>
+
+<a href="https://wa.me/919876543210"
+target="_blank">
+💬 WhatsApp : +91 7506064193
+</a>
+</p>
+</div>
+</div>
+</div>
+<div class="menu">
+
+
+
+
+
+<div class="dropdown" >
+<span class="dropbtn" id="transactionBtn"
+      tabindex="1">
+Transactions ▼
+</span>
+
+<div id="transactionMenu"
+class="dropdown-content">
+<a href="#"
+onclick="openPage('billing.html');return false;">
+Sale
+</a>
+
+<a href="#"
+onclick="openPage('purchase.html');return false;">
+Purchase
+</a>
+
+
+
+<a href="#"
+onclick="openPage('sale-return.html');return false;">
+Sale Return
+</a>
+
+<a href="#"
+onclick="openPage('purchase-return.html');return false;">
+Purchase Return
+</a>
+
+<a href="#"
+onclick="openPage('opening-stock.html');return false;">
+Opening Stock
+</a>
+
+<a href="#"
+onclick="openPage('expiry-breakage.html');return false;">
+Expiry / Breakage
+</a>
+
+
+
+
+
+</div>
+</div>
+<div class="dropdown">
+<span id="masterBtn"
+ class="dropbtn" tabindex="2">
+Masters ▼
+</span>
+
+<div  id="masterMenu"
+class="dropdown-content">
+
+<a href="#"
+ tabindex="0"
+onclick="openPage('medicine.html');return false;">
+Medicine Master
+</a>
+
+<a href="#"
+ tabindex="0"
+onclick="openPage('customer.html');return false;">
+Customer Master
+</a>
+
+<a href="#"
+ tabindex="0"
+onclick="openPage('supplier.html');return false;">
+Supplier/Wholesaler Master
+</a>
+<a href="#"
+ tabindex="0"
+onclick="openPage('gst-master.html')">
+GST Master
+</a>
+
+<a href="#"
+ tabindex="0"
+onclick="openPage('schedule-master.html')">
+Schedule Master
+</a>
+<a href="#"
+ tabindex="0"
+onclick="openPage('payment.html');return false;">
+Supplier Payment Entry
+</a>
+
+</div>
+</div>
+<div class="dropdown" >
+<span id="reportBtn" class="dropbtn" tabindex="3">
+Reports ▼
+</span>
+
+<div id="reportMenu"
+class="dropdown-content">
+<a href="#"
+onclick="openPage('bill-history.html');return false;">
+Bill History
+</a>
+<a href="#"
+onclick="openPage('purchase-list.html');return false;">
+Purchase History
+</a>
+<a href="#"
+onclick="openPage('payment-history.html');return false;">
+Supplier Payment History
+</a>
+
+<a href="#"
+onclick="openPage('daily-report.html');return false;">
+Daily Transaction Report
+</a>
+<a href="#" onclick="openPage('movement-report.html')">
+Inventory Movement Report
+</a>
+<a href="#"
+onclick="openPage('inventory.html');return false;">
+Inventory Report
+</a>
+
+<a href="#"
+onclick="openPage('outstanding.html');return false;">
+Outstanding Supplier Balance
+</a>
+
+
+</div>
+</div>
+
+<div  class="dropdown" >
+<span id="utilitiesBtn" class="dropbtn" tabindex="4">
+Utilities ▼
+</span>
+
+<div id="utilitiesMenu"
+class="dropdown-content">
+
+<a href="order-generation.html">
+Order Generation
+</a>
+
+<a href="medicine-reminder.html">
+Medicine Reminder
+</a>
+
+<a href="whatsapp.html">
+WhatsApp Reminder
+</a>
+
+<a href="wholesaler.html">
+Wholesaler / Company
+</a>
+</div>
+</div>
+</div>
+<!-- DASHBOARD CARDS -->
+<div class="container">
+
+<div class="cards">
+
+
+<div class="card">
+<h3>Total Medicines</h3>
+<h2 id="medicines">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Customers</h3>
+<h2 id="customers">0</h2>
+</div>
+
+
+<div class="card">
+<h3>Out Of Stock</h3>
+<h2 id="outOfStock">0</h2>
+</div>
+
+
+<div class="card">
+<h3>Total Suppliers</h3>
+<h2 id="suppliers">0</h2>
+</div>
+
+<div class="card">
+<h3>Today's Bills</h3>
+<h2 id="bills">0</h2>
+</div>
+
+
+<div class="card">
+    <h3>Today's Sales</h3>
+    <h2 id="todaySales">0</h2>
+</div>
+
+<div class="card">
+    <h3>Today's Purchase</h3>
+    <h2 id="todayPurchase">0</h2>
+</div>
+
+<div class="card">
+    <h3>Today's Profit</h3>
+    <h2 id="todayProfit">0</h2>
+</div>
+
+</div>
+
+<!-- QUICK ACTION -->
+
+<div class="alert-box">
+
+    <div class="alert-title">
+        🔴 Low Stock Medicines
+    </div>
+
+    <div class="marquee"  onclick="showLowStockMedicines()">
+
+        <div id="lowStockBanner"
+             class="marquee-content">
+        </div>
+
+    </div>
+
+</div>
+
+<div class="alert-box">
+
+    <div class="alert-title" onclick="showExpiringMedicines()">
+        🟠 Expiring Medicines
+    </div>
+
+    <div class="marquee">
+
+        <div id="expiryBanner"
+             class="marquee-content">
+        </div>
+
+    </div>
+
+</div>
+<!-- GRAPHS -->
+
+<div class="graph-grid">
+
+<div class="graph-card">
+
+<h2>Monthly Sales Graph</h2>
+
+<canvas id="salesChart"></canvas>
+
+</div>
+<div class="graph-card">
+
+<h2>Top Selling Medicines</h2>
+
+<canvas id="medicineChart"></canvas>
+
+</div>
+
+
+</div>
+
+<div class="graph-grid">
+
+<div class="graph-card">
+
+<h2>Inventory Status</h2>
+
+<canvas id="inventoryChart"></canvas>
+
+</div>
+<div class="graph-card">
+
+<h2>Monthly Purchase Graph</h2>
+
+<canvas id="purchaseChart"></canvas>
+
+</div>
+
+
+</div>
+
+<!-- RECENT PURCHASE -->
+
+<div class="section">
+
+<h2>Recent Purchases</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Invoice</th>
+<th>Supplier</th>
+<th>Date</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="purchaseTable">
+</tbody>
+
+</table>
+
+<br>
+
+<button id="pbtn"  class="btn" tabindex="5"
+onclick="openPage('purchase-list.html');return false;">
+View Full Purchase History
+</button>
+
+</div>
+<!-- RECENT BILLS -->
+
+<div class="section">
+
+<h2>Recent Bills</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Bill No</th>
+<th>Customer</th>
+<th>Date</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="billTable">
+</tbody>
+
+</table>
+<br>
+
+<button id="bbtn" class="btn" tabindex="6"
+onclick="openPage('bill-history.html');return false;">
+View Full Bill History
+</button>
+</div>
+
+<div id="medicineModal" class="medicine-modal">
+
+    <div class="medicine-modal-content">
+<button class="close-btn"
+                    onclick="closeMedicineModal()">
+                ✖
+            </button>
+        
+        <h3 id="modalTitle"></h3>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Medicine</th>
+                <th>Stock</th>
+                <th>Expiry</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="modalBody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<script>
+let dashboardAlerts = {};
+window.onload = function() {
+
+    loadMedicineAlerts();
+    
+
+        document
+            .getElementById("transactionBtn")
+            .focus();
+
+    
+
+
+};
+/* EXISTING API */
+
+fetch("/api/dashboard/stast")
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("medicines").innerText =
+data.totalMedicines;
+
+document.getElementById("customers").innerText =
+data.totalCustomers;
+
+
+document.getElementById("outOfStock").innerText =
+data.outOfStock;
+
+
+document.getElementById("suppliers").innerText =
+	data.totalSuppliers;
+
+	document.getElementById("bills").innerText =
+	data.totalBills;
+
+	
+	document.getElementById("todaySales").innerText =
+		"₹" + data.todaySales;
+
+		document.getElementById("todayPurchase").innerText =
+		"₹" + data.todayPurchase;
+
+		document.getElementById("todayProfit").innerText =
+		"₹" + data.todayProfit;
+
+});
+/*alerts*/
+ 
+ function loadMedicineAlerts(){
+
+fetch("/api/dashboard/alerts")
+
+.then(res=>res.json())
+
+.then(data=>{
+	dashboardAlerts = data;
+let low="";
+
+data.lowStock.forEach(m=>{
+
+low +=
+`🔴 ${m.medicineName}
+(Stock : ${m.quantity})
+&nbsp;&nbsp;&nbsp;&nbsp;`;
+
+});
+
+document.getElementById("lowStockBanner")
+.innerHTML = low;
+
+
+
+let exp="";
+
+data.expiring.forEach(m=>{
+
+exp +=
+`🟠 ${m.medicineName}
+(Expiry : ${m.expiryDate})
+&nbsp;&nbsp;&nbsp;&nbsp;`;
+
+});
+
+document.getElementById("expiryBanner")
+.innerHTML = exp;
+
+});
+
+}
+/* SALES GRAPH */
+fetch("/api/dashboard/sales")
+.then(res=>res.json())
+.then(data=>{
+
+new Chart(
+document.getElementById('salesChart'),
+{
+type:'line',
+data:{
+labels:[
+'Jan','Feb','Mar','Apr',
+'May','Jun','Jul','Aug',
+'Sep','Oct','Nov','Dec'
+],
+datasets:[{
+label:'Sales',
+data:data,
+borderWidth:3,
+fill:false
+}]
+}
+});
+
+});
+
+/* PURCHASE GRAPH */
+fetch("/api/dashboard/purchase")
+.then(res=>res.json())
+.then(data=>{
+
+new Chart(
+document.getElementById('purchaseChart'),
+{
+type:'bar',
+data:{
+labels:[
+'Jan','Feb','Mar','Apr',
+'May','Jun','Jul','Aug',
+'Sep','Oct','Nov','Dec'
+],
+datasets:[{
+label:'Purchase',
+data:data
+}]
+}
+});
+
+});
+
+
+/* INVENTORY GRAPH */
+fetch("/api/dashboard/inventory")
+.then(res => res.json())
+.then(data => {
+
+new Chart(
+document.getElementById('inventoryChart'),
+{
+type:'pie',
+data:{
+labels:[
+'Available',
+'Low Stock',
+'Out Of Stock'
+],
+datasets:[{
+data:[
+data.available,
+data.lowStock,
+data.outOfStock
+]
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false
+}
+});
+
+});
+
+
+/* TOP MEDICINES */
+fetch("/api/dashboard/top-medicines")
+.then(res=>res.json())
+.then(data=>{
+
+new Chart(
+document.getElementById('medicineChart'),
+{
+type:'doughnut',
+data:{
+labels:data.labels,
+datasets:[{
+data:data.data
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{
+position:'bottom'
+}
+}
+}
+});
+
+});
+
+/* RECENT PURCHASES */
+
+fetch("/api/purchases")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.slice(-5).reverse().forEach(p => {
+
+rows += `
+<tr>
+<td>${p.invoiceNo}</td>
+<td>${p.supplier ? p.supplier.supplierName : ''}</td>
+<td>${p.purchaseDate}</td>
+<td>₹${p.totalAmount}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("purchaseTable").innerHTML = rows;
+
+});
+
+
+/* RECENT BILLS */
+
+fetch("/api/bills")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.slice(-5).reverse().forEach(b => {
+
+rows += `
+<tr>
+<td>${b.id}</td>
+<td>${b.customer ? b.customer.customerName : '-'}</td>
+<td>${b.billDate ? b.billDate.substring(0,10) : '-'}</td>
+<td>₹${b.totalAmount}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("billTable").innerHTML = rows;
+
+});
+
+/* LOW STOCK MEDICINES */
+
+fetch("/api/inventory/low-stock")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(m => {
+
+rows += `
+<tr>
+<td>${m.medicineName}</td>
+<td>${m.quantity}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"lowStockMedicineTable").innerHTML = rows;
+
+});
+/* EXPIRING MEDICINES */
+
+fetch("/api/inventory/expiring-soon")
+.then(res => res.json())
+.then(data => {
+
+let rows = "";
+
+data.forEach(m => {
+
+rows += `
+<tr>
+<td>${m.medicineName}</td>
+<td>${m.expiryDate}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"expiryMedicineTable").innerHTML = rows;
+
+});
+function showLowStockMedicines(){
+
+	document.getElementById("modalTitle").innerText =
+	"Low Stock Medicines";
+
+	let rows = "";
+
+	dashboardAlerts.lowStock.forEach(m=>{
+
+	rows += `
+	<tr>
+	<td>${m.medicineName}</td>
+	<td>${m.quantity}</td>
+	<td>${m.expiryDate}</td>
+	</tr>
+	`;
+
+	});
+
+	document.getElementById("modalBody").innerHTML = rows;
+
+	document.getElementById("medicineModal").style.display =
+	"block";
+	document.getElementById("medicineModal").style.display = "flex";
+	}
+function showExpiringMedicines(){
+
+	document.getElementById("modalTitle").innerText =
+	"Expiring Medicines";
+
+	let rows = "";
+
+	dashboardAlerts.expiring.forEach(m=>{
+
+	rows += `
+	<tr>
+	<td>${m.medicineName}</td>
+	<td>${m.quantity}</td>
+	<td>${m.expiryDate}</td>
+	</tr>
+	`;
+
+	});
+
+	document.getElementById("modalBody").innerHTML = rows;
+
+	document.getElementById("medicineModal").style.display =
+	"block";
+	document.getElementById("medicineModal").style.display = "flex";
+	}
+
+function closeAlertModal(){
+
+    document.getElementById("alertModal").style.display =
+    "none";
+
+    document.getElementById("alertFrame").src = "";
+}
+function openPage(page){
+
+    document.getElementById("pageModal")
+    .style.display = "block";
+
+    document.getElementById("pageFrame")
+    .src = page;
+}
+
+function closeModal(){
+
+    document.getElementById("pageModal")
+    .style.display = "none";
+
+    document.getElementById("pageFrame")
+    .src = "";
+}
+    function closeMedicineModal(){
+
+    	document.getElementById("medicineModal").style.display =
+    	"none";
+    	}
+function showHelp(){
+
+    document.getElementById("helpModal")
+    .style.display = "block";
+
+}
+
+function closeHelp(){
+
+    document.getElementById("helpModal")
+    .style.display = "none";
+
+}
+const menus = [
+    {
+        button: document.getElementById("transactionBtn"),
+        menu: document.getElementById("transactionMenu")
+    },
+    {
+        button: document.getElementById("masterBtn"),
+        menu: document.getElementById("masterMenu")
+    },
+    {
+        button: document.getElementById("reportBtn"),
+        menu: document.getElementById("reportMenu")
+    },
+    {
+        button: document.getElementById("utilitiesBtn"),
+        menu: document.getElementById("utilitiesMenu")
+    }
+];
+
+const focusOrder = [
+    document.getElementById("transactionBtn"),
+    document.getElementById("masterBtn"),
+    document.getElementById("reportBtn"),
+    document.getElementById("utilitiesBtn"),
+    document.getElementById("pbtn"),
+    document.getElementById("bbtn")
+];
+
+function closeMenus(){
+
+	document.querySelectorAll(".dropdown-content")
+	.forEach(menu=>menu.classList.remove("show"));
+
+	}
+menus.forEach((m,index)=>{
+
+    const btn=m.button;
+    const menu=m.menu;
+    const items=menu.querySelectorAll("a");
+
+    let current=0;
+
+    btn.addEventListener("keydown",function(e){
+
+        // TAB
+        if(e.key==="Tab"){
+
+            e.preventDefault();
+
+            closeMenus();
+
+            let i=focusOrder.indexOf(btn);
+
+            if(e.shiftKey){
+
+                i=(i-1+focusOrder.length)%focusOrder.length;
+
+            }else{
+
+                i=(i+1)%focusOrder.length;
+
+            }
+
+            focusOrder[i].focus();
+
+        }
+
+        // RIGHT
+        if(e.key==="ArrowRight"){
+
+            e.preventDefault();
+
+            closeMenus();
+
+            menus[(index+1)%menus.length].button.focus();
+
+        }
+
+        // LEFT
+        if(e.key==="ArrowLeft"){
+
+            e.preventDefault();
+
+            closeMenus();
+
+            menus[(index-1+menus.length)%menus.length].button.focus();
+
+        }
+
+        // OPEN
+        if(e.key==="Enter"){
+
+            e.preventDefault();
+
+            closeMenus();
+
+            menu.classList.add("show");
+            current=0;
+
+            items[current].focus();
+
+        }
+
+    });
+
+    items.forEach((item,i)=>{
+
+        item.addEventListener("keydown",function(e){
+
+            if(e.key==="ArrowDown"){
+
+                e.preventDefault();
+
+                current=(i+1)%items.length;
+
+                items[current].focus();
+
+            }
+
+            if(e.key==="ArrowUp"){
+
+                e.preventDefault();
+
+                current=(i-1+items.length)%items.length;
+
+                items[current].focus();
+
+            }
+
+            if(e.key==="Enter"){
+
+                e.preventDefault();
+
+                item.click();
+
+            }
+
+            if(e.key==="Escape"){
+
+                e.preventDefault();
+
+                menu.classList.remove("show");
+
+                button.focus();
+
+            }
+
+        });
+
+    });
+
+});
+
+// Purchase History
+document.getElementById("pbtn").addEventListener("keydown",function(e){
+
+    if(e.key==="Tab"){
+
+        e.preventDefault();
+
+        if(e.shiftKey){
+
+            document.getElementById("utilitiesBtn").focus();
+
+        }else{
+
+            document.getElementById("bbtn").focus();
+
+        }
+
+    }
+
+});
+
+// Bill History
+document.getElementById("bbtn").addEventListener("keydown",function(e){
+
+    if(e.key==="Tab"){
+
+        e.preventDefault();
+
+        if(e.shiftKey){
+
+            document.getElementById("pbtn").focus();
+
+        }else{
+
+            document.getElementById("transactionBtn").focus();
+
+        }
+
+    }
+
+});
+document.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+
+        let modal = document.getElementById("medicineModal");
+
+        if(modal.style.display === "flex" ||
+           modal.style.display === "block"){
+
+            closeMedicineModal();
+        }
+    }
+
+});
+
+</script>
+<div style="
+margin-top:30px;
+padding:15px;
+text-align:center;
+background:white;
+color:#666;
+font-weight:bold;
+">
+
+DnyanAi © 2026
+
+</div>
+<!-- SALE MODAL -->
+<div id="pageModal" class="modal">
+
+    
+
+    <div class="modal-content">
+        <iframe id="pageFrame"></iframe>
+    </div>
+
+</div>
+
+
+        </div>
+
+    
+
+</body>
+</html>
