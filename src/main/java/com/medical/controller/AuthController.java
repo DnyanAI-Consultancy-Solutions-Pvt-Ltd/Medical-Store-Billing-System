@@ -20,75 +20,52 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request){
-    	  Optional<User> userOptional =
-    	            userRepository.findByUsername(request.getUsername());
-
-    	    if (userOptional.isEmpty()) {
-    	        return ResponseEntity
-    	                .status(HttpStatus.UNAUTHORIZED)
-    	                .body("Username does not exist");
-    	    }
-
-    	    User user = userOptional.get();
-
-    	    if (!user.getPassword().equals(request.getPassword())) {
-    	        return ResponseEntity
-    	                .status(HttpStatus.UNAUTHORIZED)
-    	                .body("Incorrect password");
-    	    }
-
-    	    if (!user.getAgent().equals(request.getAgent())) {
-    	        return ResponseEntity
-    	                .status(HttpStatus.UNAUTHORIZED)
-    	                .body("You are not registered for this Agent. Please select the Agent you selected during Signup.");
-    	    }
-        if(authService.login(
-                request.getUsername(),
-                request.getPassword())){
-
-            return "LOGIN_SUCCESS";
-
-        }
-
-        return "INVALID_CREDENTIALS";
-
-    }
     private final UserRepository userRepository;
 
     public AuthController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(
-            @RequestBody SignupRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        if (userRepository.existsByUsername(
-                request.getUsername())) {
+        Optional<User> userOptional =
+                userRepository.findByUsername(request.getUsername());
 
+        if (userOptional.isEmpty()) {
             return ResponseEntity
-                    .badRequest()
-                    .body("Username already exists");
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Username does not exist");
         }
 
-        User user = new User();
+        User user = userOptional.get();
 
-        user.setFullName(request.getName());
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setMobileNumber(request.getMobileNumber());
-        user.setPassword(request.getPassword());
+        if (!user.getPassword().equals(request.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Incorrect password");
+        }
 
-        // Convert List to String
-        user.setAllowedAgents(
-                String.join(",", request.getAllowedAgents())
-        );
+        // Check Agent Access
+        if (user.getAllowedAgents() == null ||
+            !user.getAllowedAgents().contains(request.getAgent())) {
 
-        User savedUser = userRepository.save(user);
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("You are not registered for this Agent. Please select the Agent you selected during Signup.");
+        }
 
-        return ResponseEntity.ok(savedUser);
+        if (authService.login(
+                request.getUsername(),
+                request.getPassword())) {
+
+            return ResponseEntity.ok("LOGIN_SUCCESS");
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("INVALID_CREDENTIALS");
     }
 
+   
 }
