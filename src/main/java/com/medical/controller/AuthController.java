@@ -75,7 +75,7 @@ public class AuthController {
     public ResponseEntity<String> dnyanailogin(
             @RequestBody LoginRequest request) {
 
-        String result = authService.login(
+        String result = authService.dnyanailogin(
                 request.getUsername(),
                 request.getPassword(),
                 request.getAgent()
@@ -141,7 +141,7 @@ public class AuthController {
 
         User user = new User();
 
-        user.setFullName(request.getName());
+        user.setFullName(request.getFullName());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setMobileNumber(request.getMobileNumber());

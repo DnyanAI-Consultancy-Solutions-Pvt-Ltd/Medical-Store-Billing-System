@@ -30,7 +30,7 @@ public class AuthService {
         return false;
 
     }
-    public String login(String username, String password, String agent) {
+    public String dnyanailogin(String username, String password, String agent) {
 
         Optional<User> userOptional =
                 repository.findByUsername(username);
