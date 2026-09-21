@@ -67,5 +67,94 @@ public class AuthController {
                 .body("INVALID_CREDENTIALS");
     }
 
+    // =========================
+    // LOGIN
+    // =========================
+
+    @PostMapping("/dnyanailogin")
+    public ResponseEntity<String> dnyanailogin(
+            @RequestBody LoginRequest request) {
+
+        String result = authService.login(
+                request.getUsername(),
+                request.getPassword(),
+                request.getAgent()
+        );
+
+        switch (result) {
+
+            case "LOGIN_SUCCESS":
+                return ResponseEntity.ok("LOGIN_SUCCESS");
+
+            case "USERNAME_NOT_FOUND":
+                return ResponseEntity
+                        .badRequest()
+                        .body("Username not found. Please check your username.");
+
+            case "INVALID_PASSWORD":
+                return ResponseEntity
+                        .badRequest()
+                        .body("Incorrect password. Please enter the correct password.");
+
+            case "AGENT_NOT_ALLOWED":
+                return ResponseEntity
+                        .badRequest()
+                        .body("You are not registered for this Agent. Please login using the Agent selected during Signup.");
+
+            case "NO_AGENT_ASSIGNED":
+                return ResponseEntity
+                        .badRequest()
+                        .body("No Agent is assigned to this account. Please contact the administrator.");
+
+            default:
+                return ResponseEntity
+                        .badRequest()
+                        .body("Login failed. Please try again.");
+        }
+    }
+
+    // =========================
+    // SIGNUP
+    // =========================
+
+    @PostMapping("/dnyanaisignup")
+    public ResponseEntity<?> signup(
+            @RequestBody SignupRequest request) {
+
+        // Username already exists
+        if (userRepository.existsByUsername(
+                request.getUsername())) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body("Username already exists");
+        }
+
+        // Agent validation
+        if (request.getAllowedAgents() == null
+                || request.getAllowedAgents().isEmpty()) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body("Please select at least one Agent.");
+        }
+
+        User user = new User();
+
+        user.setFullName(request.getName());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setMobileNumber(request.getMobileNumber());
+        user.setPassword(request.getPassword());
+
+        // Save selected agents as comma-separated string
+        user.setAllowedAgents(
+                String.join(",", request.getAllowedAgents())
+        );
+
+        User savedUser = userRepository.save(user);
+
+        return ResponseEntity.ok(savedUser);
+    }
    
 }
