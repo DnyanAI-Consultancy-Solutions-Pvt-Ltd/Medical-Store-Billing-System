@@ -32,39 +32,24 @@ public class AuthController {
         Optional<User> userOptional =
                 userRepository.findByUsername(request.getUsername());
 
+        // Username check
         if (userOptional.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("Username does not exist");
+                    .body("Invalid credentials");
         }
 
         User user = userOptional.get();
 
+        // Password check
         if (!user.getPassword().equals(request.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body("Incorrect password");
+                    .body("Invalid credentials");
         }
 
-        // Check Agent Access
-        if (user.getAllowedAgents() == null ||
-            !user.getAllowedAgents().contains(request.getAgent())) {
-
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body("You are not registered for this Agent. Please select the Agent you selected during Signup.");
-        }
-
-        if (authService.login(
-                request.getUsername(),
-                request.getPassword())) {
-
-            return ResponseEntity.ok("LOGIN_SUCCESS");
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body("INVALID_CREDENTIALS");
+        // Login successful
+        return ResponseEntity.ok("LOGIN_SUCCESS");
     }
 
     // =========================
