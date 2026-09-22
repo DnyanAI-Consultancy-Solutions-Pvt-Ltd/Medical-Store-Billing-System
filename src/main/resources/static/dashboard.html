@@ -536,6 +536,12 @@ target="_blank">
 💬 WhatsApp : +91 7506064193
 </a>
 </p>
+<p>
+    <a href="javascript:void(0);" onclick="logout()">
+        🚪 Logout
+    </a>
+</p>
+
 </div>
 </div>
 </div>
@@ -1518,7 +1524,11 @@ document.addEventListener("keydown", function(e){
     }
 
 });
-
+function logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = "login.html";
+}
 </script>
 <div style="
 margin-top:30px;
