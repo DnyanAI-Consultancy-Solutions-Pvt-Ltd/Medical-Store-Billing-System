@@ -1,15 +1,28 @@
-# Step 1: Maven ka use karke project ko build karna
-FROM maven:3.8.5-openjdk-17 AS build
+# Multi-stage build: build the Spring Boot application, then run Java + PostgreSQL.
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /build
 COPY . .
-RUN mvn clean package -DskipTests
+RUN mvn -B -DskipTests package
 
-# Step 2: Java runtime environment taiyar karna
-FROM openjdk:17-jdk-slim
-COPY --from=build /target/*.jar app.jar
+FROM debian:bookworm-slim
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       openjdk-17-jre-headless postgresql postgresql-contrib cron ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Hugging Face Spaces port 7860 par chalta hai
+WORKDIR /app
+COPY --from=build /build/target/*.jar /app/app.jar
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker/backup-db.sh /usr/local/bin/backup-db.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/backup-db.sh
+
+# Hugging Face serves the web application on 7860.
+# PostgreSQL stays internal to this same container on localhost:5432.
 EXPOSE 7860
-ENV PORT=7860
+ENV APP_PORT=7860 \
+    POSTGRES_DB=medicalbilling \
+    POSTGRES_USER=medicaluser \
+    BACKUP_DIR=/data/backups
 
-# Server port ko bind karke application run karna
-ENTRYPOINT ["java","-Dserver.port=7860","-jar","/app.jar"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
